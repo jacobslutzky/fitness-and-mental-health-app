@@ -1,0 +1,54 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-gymindapp-staging-154651-authRole",
+      "UnauthRoleArn": "arn:aws:iam::140531166314:role/amplify-gymindapp-staging-154651-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::140531166314:role/amplify-gymindapp-staging-154651-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-gymindapp-staging-154651-deployment",
+      "UnauthRoleName": "amplify-gymindapp-staging-154651-unauthRole",
+      "StackName": "amplify-gymindapp-staging-154651",
+      "StackId": "arn:aws:cloudformation:us-east-1:140531166314:stack/amplify-gymindapp-staging-154651/edb1d950-c991-11ed-b630-0eab65fc7c21",
+      "AmplifyAppId": "d2f2h7ebk4cluy"
+    }
+  },
+  "test": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-gymindapp-test-115246-authRole",
+      "UnauthRoleArn": "arn:aws:iam::140531166314:role/amplify-gymindapp-test-115246-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::140531166314:role/amplify-gymindapp-test-115246-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-gymindapp-test-115246-deployment",
+      "UnauthRoleName": "amplify-gymindapp-test-115246-unauthRole",
+      "StackName": "amplify-gymindapp-test-115246",
+      "StackId": "arn:aws:cloudformation:us-east-1:140531166314:stack/amplify-gymindapp-test-115246/c2d94320-c992-11ed-8e3f-0a8450f38057",
+      "AmplifyAppId": "d2f2h7ebk4cluy"
+    }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-gymindapp-dev-115940-authRole",
+      "UnauthRoleArn": "arn:aws:iam::140531166314:role/amplify-gymindapp-dev-115940-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::140531166314:role/amplify-gymindapp-dev-115940-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-gymindapp-dev-115940-deployment",
+      "UnauthRoleName": "amplify-gymindapp-dev-115940-unauthRole",
+      "StackName": "amplify-gymindapp-dev-115940",
+      "StackId": "arn:aws:cloudformation:us-east-1:140531166314:stack/amplify-gymindapp-dev-115940/b9935750-c993-11ed-9f0c-124f6ca9daa7",
+      "AmplifyAppId": "d2f2h7ebk4cluy"
+    }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-gymindapp-prod-120055-authRole",
+      "UnauthRoleArn": "arn:aws:iam::140531166314:role/amplify-gymindapp-prod-120055-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::140531166314:role/amplify-gymindapp-prod-120055-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-gymindapp-prod-120055-deployment",
+      "UnauthRoleName": "amplify-gymindapp-prod-120055-unauthRole",
+      "StackName": "amplify-gymindapp-prod-120055",
+      "StackId": "arn:aws:cloudformation:us-east-1:140531166314:stack/amplify-gymindapp-prod-120055/e5ec0860-c993-11ed-b88a-0a417ec1938b",
+      "AmplifyAppId": "d2f2h7ebk4cluy"
+    }
+  }
+}
