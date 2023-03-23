@@ -36,6 +36,11 @@
       "StackName": "amplify-gymindapp-dev-115940",
       "StackId": "arn:aws:cloudformation:us-east-1:140531166314:stack/amplify-gymindapp-dev-115940/b9935750-c993-11ed-9f0c-124f6ca9daa7",
       "AmplifyAppId": "d2f2h7ebk4cluy"
+    },
+    "categories": {
+      "api": {
+        "gymindapp": {}
+      }
     }
   },
   "prod": {
