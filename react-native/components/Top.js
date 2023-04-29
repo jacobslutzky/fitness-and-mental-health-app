@@ -3,11 +3,11 @@ import { StyleSheet, Image, TouchableOpacity, Text, View } from 'react-native';
 export default function Top({navigation}){
       return(
         <View style = {styles.top}>
-        <Image style = {styles.buffalo} source={require('../../assets/buffalo.png')} />
-        <Text style = {[styles.text, styles.points]}>Total Points:{"\n"}850</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-        <Image style = {styles.caleb} source={require('../../assets/caleb.jpeg')} />
-        </TouchableOpacity>
+          <Image style = {styles.buffalo} source={require('../../assets/buffalo.png')} />
+          <Text style = {[styles.text, styles.points]}>Total Points:{"\n"}850</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+            <Image style = {styles.caleb} source={require('../../assets/caleb.jpeg')} />
+          </TouchableOpacity>
         
         </View>
       )}
@@ -15,7 +15,8 @@ export default function Top({navigation}){
       const styles = StyleSheet.create({
         top: {
             flexDirection: "row",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
+            marginTop: 20,
           } ,
         points : {
             justifyContent : "center",
