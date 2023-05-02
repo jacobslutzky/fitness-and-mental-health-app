@@ -61,6 +61,7 @@ export default function Community({navigation}) {
   
     container : {
       flex: 1,
+      marginTop: 20
     },
     headerContainer : {
       alignItems: 'center',

@@ -59,6 +59,7 @@ export default function Main() {
       <Tab.Screen name="Fitness" component={Fitness} />
       <Tab.Screen name="Community" component={Community} />
       <Tab.Screen name="Profile" component={Profile} />
+    
     </Tab.Navigator>
     
   );

@@ -2,6 +2,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Landing from './Landing';
 import Main from './Main';
 import Register from './Register';
+import FitnessFavorites from './FitnessFavorites';
+import FitnessWorkouts from './FitnessWorkouts';
+import FitnessYoga from './FitnessYoga';
 import { NavigationContainer } from '@react-navigation/native';
 import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Colors } from './constants/Colors';
@@ -42,6 +45,9 @@ export default function App() {
         <Stack.Screen name = "Register" component={Register} options={{
           headerShown:true,  headerShadowVisible: false,
         }}/>
+        <Stack.Screen name = "FitnessWorkouts" component={FitnessWorkouts}/>
+        <Stack.Screen name = "FitnessYoga" component={FitnessYoga}/>
+        <Stack.Screen name = "FitnessFavorites" component={FitnessFavorites}/>
       </Stack.Navigator>
     </NavigationContainer>
     
