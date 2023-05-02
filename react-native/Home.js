@@ -42,7 +42,7 @@ export default function Home({navigation}){
           <Text>All</Text>
         </View>
         <View style = {styles.notCompletedButton}>
-          <Text>Not Completed</Text>
+          <Text style={{color:'white'}}>Not Completed</Text>
         </View>
       </View>
 
@@ -54,7 +54,9 @@ export default function Home({navigation}){
         <View style={[styles.brainContainer, {backgroundColor: item.brainColor}]}>
           <FontAwesome5 name="brain" size={24} color={"white"} />
         </View>
-        <Text style={[styles.buttonText, {color: colors.text}]}>{item.label}</Text>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={[styles.buttonText, {color: colors.text}]}>{item.label}</Text>
+        </View>
       </TouchableOpacity>
     </View>
   ))}
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     justifyContent: "center",
     backgroundColor: "#4c4c4c",
-    height: 60,
+    height: 70,
     width: '90%',
     borderRadius: 20,
     marginVertical: 10,
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: "column",
     marginTop: 30,
-    marginBottom: 10,
+    marginBottom: 15,
   },
   filterContainer : {
     paddingLeft: 20,
