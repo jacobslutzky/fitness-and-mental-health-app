@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, ImageBackground, TouchableOpacity, Text, View, TextBase } from 'react-native';
+import { ScrollView, StyleSheet, Image, ImageBackground, TouchableOpacity, Text, View, TextBase } from 'react-native';
 import { NavigationContainer, useTheme } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Colors } from './constants/Colors';
@@ -28,7 +28,7 @@ export default function FitnessYoga({navigation}){
       ]
       
       const FirstRoute = () => (
-        <View style={styles.cardsContainer}>
+        <ScrollView contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}} style={styles.cardsContainer}>
         {communityCards.map((item, index) => (
           <View style={[styles.communityCard]} key={index} >
             <ImageBackground source = {item.img}>
@@ -51,7 +51,7 @@ export default function FitnessYoga({navigation}){
             </ImageBackground>
           </View>
         ))}
-        </View>
+        </ScrollView>
       );
 
       state = {
@@ -128,8 +128,6 @@ const styles = StyleSheet.create({
         flex: 1,
       },
       cardsContainer : {
-        alignItems: 'center',
-        justifyContent: 'center',
         marginTop: 40,
       },
       communityCard : {

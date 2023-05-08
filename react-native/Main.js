@@ -30,6 +30,7 @@ export default function Main() {
           header: props => <Top {...props} />,
 
           tabBarStyle: {backgroundColor: colors.backgroundColor},
+          sceneContainerStyle: {height: '100%', flex: 1},
           tabBarIcon: ({color, size }) => {
             let icon;
 

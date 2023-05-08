@@ -36,7 +36,7 @@ export default function App() {
   return (
     
     <NavigationContainer theme = {MyTheme}>
-    <Stack.Navigator screenOptions={{headerShown: false, headerStyle: {
+    <Stack.Navigator cardStyle= {{height: "100%"}} screenOptions={{headerShown: false, headerStyle: {
        backgroundColor: MyTheme.colors.background
     }
     }}> 
