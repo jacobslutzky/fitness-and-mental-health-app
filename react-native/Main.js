@@ -27,7 +27,15 @@ export default function Main() {
      <Tab.Navigator 
         screenOptions={({ route }) => ({
     
-          header: props => <Top {...props} />,
+          header: props =>{
+            if(route.name == "Profile"){
+              return <></>
+            }
+            else{
+              return <Top {...props} />
+            }
+             
+          },
 
           tabBarStyle: {backgroundColor: colors.backgroundColor},
           sceneContainerStyle: {height: '100%', flex: 1},

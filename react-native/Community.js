@@ -40,7 +40,7 @@ export default function Community({navigation}) {
                       <Text style={[styles.title, styles.textLeft]}>{item.title}</Text>
                       <Text style={[styles.subtitle, styles.textLeft]}>{item.subtitle}</Text>
                     </View>
-                    <Image style = {styles.cardImages} source={item.img} />
+                    <Image style = {[styles.cardImages, {right: 0, position: 'absolute'}]} source={item.img} />
                   </View>
             
               }
@@ -72,13 +72,21 @@ export default function Community({navigation}) {
       fontWeight: 'bold',
     },
     title : {
-      fontSize: 40,
-      fontWeight: 'bold',
-      color: "rgb(22, 18, 17)",
+      overflow: 'hidden',
+       whiteSpace: 'pre-wrap',
+       color: 'rgb(22, 18, 17)',
+       fontWeight: 700,
+       fontSize: 45,
+       letterSpacing: 0,
+      lineHeight: 60,
+       textAlign: 'left',
+       textTransform: 'none',
+       opacity: 1,
     },
     subtitle : {
-      fontSize: 12,
+      fontSize: 18,
       color: "rgb(22, 18, 17)",
+      marginTop: 10
     },
     cardsContainer : {
       alignItems: 'center',
@@ -98,10 +106,20 @@ export default function Community({navigation}) {
       width: 150,
     },
     cardMainV1 : {
-      width: 225,
+      width: 250,
+      position: 'absolute',
+      left: 0,
+      height: '100%',
+      borderRadius: 20,
+      justfiyContent: 'center',
+      zIndex: 100
     },
     cardMainV2 : {
-      width: 225,
+      width: 250,
+      position: 'absolute',
+      right: 0,
+      height: '100%',
+      borderRadius: 20,
       justfiyContent: 'center',
     },
     communityCardContents : {

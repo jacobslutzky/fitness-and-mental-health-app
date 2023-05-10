@@ -6,6 +6,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { AntDesign } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+
 
 
 export default function Fitness({navigation}) {
@@ -38,105 +40,17 @@ export default function Fitness({navigation}) {
       />
     );
     
-    const FirstRoute = () => (
-      <View style={styles.cardsContainer}>
-      {communityCards.map((item, index) => (
-        <View style={[styles.communityCard]} key={index} >
-          <ImageBackground source = {item.img}>
-          <TouchableOpacity style={{position: 'relative', height: "100%"}} onPress={() => handlePress(item)}>
-            <View style={styles.cardTimeContainer}>
-              <Text style={styles.cardTimeText}>{item.time}</Text>
-            </View>
-            <View style={styles.cardHeartContainer}>
-              <AntDesign name="heart" size={13} color="white" />
-            </View>
-            <View style={styles.cardStarsContainer}>
-              <FontAwesome name="star" size={15} color="white" style = {{marginLeft: 10}}/>
-              <Text style={styles.cardStarsText}>{item.stars}</Text>
-            </View>
-            <View style={styles.cardBottom}>
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardAuthor}>{item.author}</Text>
-            </View>
-          </TouchableOpacity>
-          </ImageBackground>
-        </View>
-      ))}
-      </View>
-    );
-    const SecondRoute = () => (
-      <View style={styles.cardsContainer}>
-      {communityCards.map((item, index) => (
-        <View style={[styles.communityCard]} key={index} >
-          <ImageBackground source = {item.img}>
-          <TouchableOpacity style={{position: 'relative', height: "100%"}} onPress={() => handlePress(item)}>
-            <View style={styles.cardTimeContainer}>
-              <Text style={styles.cardTimeText}>{item.time}</Text>
-            </View>
-            <View style={styles.cardHeartContainer}>
-              <AntDesign name="heart" size={13} color="white" />
-            </View>
-            <View style={styles.cardStarsContainer}>
-              <FontAwesome name="star" size={15} color="white" style = {{marginLeft: 10}}/>
-              <Text style={styles.cardStarsText}>{item.stars}</Text>
-            </View>
-            <View style={styles.cardBottom}>
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardAuthor}>{item.author}</Text>
-            </View>
-          </TouchableOpacity>
-          </ImageBackground>
-        </View>
-      ))}
-      </View>
-    );
-    const ThirdRoute = () => (
-      <View style={styles.cardsContainer}>
-      {communityCards.map((item, index) => (
-        <View style={[styles.communityCard]} key={index} >
-          <ImageBackground source = {item.img}>
-          <TouchableOpacity style={{position: 'relative', height: "100%"}} onPress={() => handlePress(item)}>
-            <View style={styles.cardTimeContainer}>
-              <Text style={styles.cardTimeText}>{item.time}</Text>
-            </View>
-            <View style={styles.cardHeartContainer}>
-              <AntDesign name="heart" size={13} color="white" />
-            </View>
-            <View style={styles.cardStarsContainer}>
-              <FontAwesome name="star" size={15} color="white" style = {{marginLeft: 10}}/>
-              <Text style={styles.cardStarsText}>{item.stars}</Text>
-            </View>
-            <View style={styles.cardBottom}>
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardAuthor}>{item.author}</Text>
-            </View>
-          </TouchableOpacity>
-          </ImageBackground>
-        </View>
-      ))}
-      </View>
-    );
-    state = {
-      index: 0,
-      routes: [
-        { key: 'first', title: 'Workouts' },
-        { key: 'second', title: 'Yoga' },
-        { key: 'third', title: 'Favorites' },
-      ],
-    };
 
-
-    const navigateToWorkouts = () => {
-      navigation.navigate("FitnessWorkouts")
+    const handlePress = ( item ) => {
+      navigation.navigate(item.screen);
     }
 
-    const navigateToYoga = () => {
-      navigation.navigate("FitnessYoga")
-    }
 
-    const navigateToFavorites = () => {
-      navigation.navigate("FitnessFavorites")
-    }
+    const taskLabels = [
+      {label: "Workouts", screen: "FitnessWorkouts"},
+      {label: "Yoga", screen: "FitnessYoga"},
+      {label: "Favorites", screen: "FitnessFavorites"},
+    ]
 
 
     return(
@@ -162,24 +76,25 @@ export default function Fitness({navigation}) {
           </View>
         </View>
 
-        <View style={styles.redirectContainer}>
-        <TouchableOpacity style={styles.button} onPress={navigateToWorkouts}>
-            <Text style={styles.buttonText}>Workouts</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={navigateToYoga}>
-            <Text style={styles.buttonText}>Yoga</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={navigateToFavorites}>
-            <Text style={styles.buttonText}>Favorites</Text>
-          </TouchableOpacity>
+
+          {/* Task List */}
+        <View style={styles.tasks}>
+          {taskLabels.map((item, index) => (
+            <View style={styles.taskButton} key={index} >
+              <TouchableOpacity onPress={() => handlePress(item)} style={styles.taskButtonContents}>
+                <View style={{justifyContent: 'center'}}>
+                  <Text style={[styles.buttonText, {color: colors.text}]}>{item.label}</Text>
+                </View>
+                <View style={styles.cardArrowContainer}>
+                    <MaterialIcons name="keyboard-arrow-right" size={24} color="white" />
+                </View>
+              </TouchableOpacity>
+            </View>
+          ))}
         </View>
 
       </View>
     )
-    
-  
-  
-  
   }
 
 const styles = StyleSheet.create({
@@ -188,7 +103,7 @@ const styles = StyleSheet.create({
       flex: 1,
       marginTop: 20,
       justifyCoontent: 'center',
-      alignIterms: 'center'
+      alignIterms: 'center',
     },
     tabsContainer: {
       marginTop: 10,
@@ -320,18 +235,53 @@ const styles = StyleSheet.create({
       paddingTop: 15
     },
     button: {
-      width: "25%",
-      height: 50,
+      width: "95%",
+      height: 100,
       backgroundColor: Colors.primary,
-      borderRadius: 6,
+      borderRadius: 15,
       justifyContent: 'center',
       alignItems: 'center',
       margin: 10
     },
     redirectContainer : {
-      flexDirection: 'row',
+      flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      marginTop: 50
-    }
+      marginTop: 0
+    },
+    buttonText : {
+      fontSize: 40
+    },
+    tasks: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: "column",
+      marginTop: 15
+    },
+    taskButton: {
+      textAlign: "center",
+      justifyContent: "center",
+      backgroundColor: "#4c4c4c",
+      height: 90,
+      width: '95%',
+      borderRadius: 20,
+      marginVertical: 15,
+    },
+    buttonText : {
+      marginLeft: 15,
+      fontSize: 25,
+      textAlign: 'center',
+      
+    },
+  cardArrowContainer : {
+    height: 40,
+    width: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 'auto'
+  },
+
+  taskButtonContents : {
+    flexDirection: 'row',
+  },
   });
