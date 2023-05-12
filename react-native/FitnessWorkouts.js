@@ -290,7 +290,6 @@ const styles = StyleSheet.create({
       searchBar : {
         backgroundColor: "#4c4c4c",
         textAlign: "left",
-        alignItems :"left",
         justifyContent: "center",
         borderRadius: 15,
         width: '95%',

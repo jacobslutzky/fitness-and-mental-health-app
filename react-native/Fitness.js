@@ -1,4 +1,4 @@
-import { StyleSheet, Image, ImageBackground, TouchableOpacity, Text, View, TextBase } from 'react-native';
+import { ScrollView, StyleSheet, Image, ImageBackground, TouchableOpacity, Text, View, TextBase } from 'react-native';
 import { NavigationContainer, useTheme } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Colors } from './constants/Colors';
@@ -54,7 +54,7 @@ export default function Fitness({navigation}) {
 
 
     return(
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         {/* Header */}
         <View style={styles.headerContainer}>
           <Text style={[styles.header, {color: colors.text}]}>Fitness</Text>
@@ -93,7 +93,7 @@ export default function Fitness({navigation}) {
           ))}
         </View>
 
-      </View>
+      </ScrollView>
     )
   }
 
@@ -198,7 +198,6 @@ const styles = StyleSheet.create({
       height: 125,
       width: "95%",
       borderRadius: 20,
-      alignItems: 'left',
       justifyContent: 'center',
     },
     achievementBubbleContainer : {

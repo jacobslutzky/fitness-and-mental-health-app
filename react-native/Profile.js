@@ -259,7 +259,6 @@ const styles = StyleSheet.create({
     height: 125,
     width: "95%",
     borderRadius: 20,
-    alignItems: 'left',
     justifyContent: 'center',
   },
   achievementBubbleContainer: {

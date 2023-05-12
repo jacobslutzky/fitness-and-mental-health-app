@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Button, Image, TouchableOpacity, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Button, Image, TouchableOpacity, Text, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import {useState} from 'react';
 import { block } from 'react-native-reanimated';
@@ -52,7 +52,7 @@ export default function Home({navigation}){
     }
   }
     return(
-    <View style = {styles.container}>
+    <ScrollView style = {styles.container}>
 
       {/* Temporary mock for search bar */}
       <View style={styles.searchContainer}>
@@ -101,7 +101,7 @@ export default function Home({navigation}){
     </View>
 
    
-     </View>
+     </ScrollView>
     )
 }
 
@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
   searchBar : {
     backgroundColor: "#4c4c4c",
     textAlign: "left",
-    alignItems :"left",
     justifyContent: "center",
     borderRadius: 15,
     width: '90%',

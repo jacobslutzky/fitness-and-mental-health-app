@@ -1,4 +1,4 @@
-import { StyleSheet, Image, TouchableOpacity, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Image, TouchableOpacity, Text, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
 export default function Community({navigation}) {
@@ -16,7 +16,7 @@ export default function Community({navigation}) {
     ]
 
     return(
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         {/* Header */}
         <View style={styles.headerContainer}>
           <Text style={[styles.header, {color: colors.text}]}>Commmunity</Text>
@@ -50,7 +50,7 @@ export default function Community({navigation}) {
         ))}
         </View>
 
-      </View>
+      </ScrollView>
     )
   
   
