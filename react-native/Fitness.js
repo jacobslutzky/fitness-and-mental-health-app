@@ -7,39 +7,11 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { AntDesign } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-
+import AchievementBubble from './components/AchievementBubble';
 
 
 export default function Fitness({navigation}) {
     const colors = useTheme().colors;
-    const Tab = createMaterialTopTabNavigator();
-    const Stack = createStackNavigator();
-
-   
-    const MyTheme = {
-
-      colors: {
-        primary: Colors.primary,
-        background: Colors.background,
-        text: Colors.text,
-        card: 'rgb(255, 255, 255)',
-        border: 'rgb(199, 199, 204)',
-        notification: 'rgb(255, 69, 58)',
-      },
-    };
-
-    const communityCards = [
-      {title: "20-minute guided meditation", author: "Nama Ste", img: require('../assets/calebCommunity.jpg'), time: "20 min", stars: "4.7"},
-      {title: "10-minute affirmation therapy", author: "Caleb Saks", img: require('../assets/calebCommunity2.jpg'), time: "10 min", stars: "4.9"},
-    ]
-
-    const renderTabBar = props => (
-      <TabBar
-        {...props}
-        style={{ backgroundColor: 'black' }}
-      />
-    );
-    
 
     const handlePress = ( item ) => {
       navigation.navigate(item.screen);
@@ -52,6 +24,9 @@ export default function Fitness({navigation}) {
       {label: "Favorites", screen: "FitnessFavorites"},
     ]
 
+    const achievementName = "You've done 3 workouts this week!"
+    const achievementProgressText = "75% of your weekly goal is complete"
+    const achievementProgress = 75
 
     return(
       <ScrollView style={styles.container}>
@@ -61,20 +36,9 @@ export default function Fitness({navigation}) {
         </View>
 
         {/* Achievements */}
-        <View style={styles.achievementBubbleContainer}>
-          <View style={styles.achievementBubble}>
-            <Text style={styles.achievementName}>You've done 3 workouts this week!</Text>
-            <Text style={styles.achievementProgressText}>75% of your weekly goal is complete.</Text>
-
-            {/* Progress Bar */}
-            <View style={styles.progressBarContainer}>
-              <View style={styles.progressBarOuter}>
-                <View style={styles.progressBarInner}>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
+        <AchievementBubble achievementName={achievementName}
+                          achievementProgress={achievementProgress}
+                          achievementProgressText={achievementProgressText}/>
 
 
           {/* Task List */}

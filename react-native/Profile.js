@@ -1,7 +1,6 @@
-import { StyleSheet, StatusBar, ScrollView, SafeAreaView, Image, TouchableOpacity, Text, View } from 'react-native';
+import { StyleSheet, ScrollView, Image, TouchableOpacity, Text, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { Ionicons, FontAwesome5, Entypo } from '@expo/vector-icons';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 
@@ -37,16 +36,6 @@ export default function Profile() {
 
     </View>
   )
-
-  /*  Removed because it seems like the arrow is pointless
-        <View style={styles.leaderboardHeader}>
-          <Text style={[styles.sectionName, { color: colors.text }]}>Leaderboard</Text>
-          <TouchableOpacity style={styles.cardArrowContainer}>
-            <Entypo name="chevron-small-right" color="white" size={25} />
-          </TouchableOpacity>
-        </View>
-  */
-
 
   return (
 

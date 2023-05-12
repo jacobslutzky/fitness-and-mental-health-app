@@ -1,5 +1,5 @@
 import { useTheme } from '@react-navigation/native';
-import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Colors } from './constants/Colors';
 
 
@@ -24,10 +24,6 @@ export default function Login({navigation}) {
           </TouchableOpacity>
         </View>
       );
-
-    
-  
-  
   
   }
   const styles = StyleSheet.create({

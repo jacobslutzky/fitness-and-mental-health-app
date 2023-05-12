@@ -1,8 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
-import { ScrollView, StyleSheet, Button, Image, TouchableOpacity, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import {useState} from 'react';
-import { block } from 'react-native-reanimated';
 import { AntDesign } from '@expo/vector-icons'; 
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons';
@@ -22,7 +20,6 @@ export default function Home({navigation}){
     {label: "Therapy Check-in", screen: "Mindfulness", brainColor: "#F5AB26"}
   ]
 
-  const taskLabelsFiltered = taskLabels
 
   const [isPressed, setIsPressed] = useState(new Array(taskLabels.length).fill(false));
   const [tasksFiltered, setTasksFiltered] = useState(taskLabels);
