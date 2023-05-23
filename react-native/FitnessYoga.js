@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         alignIterms: 'center'
       },
     button: {
-      width: 40,
+      width: '35%',
       height: 40,
       borderRadius: 6,
       justifyContent: 'center',
@@ -98,8 +98,6 @@ const styles = StyleSheet.create({
       header : {
         fontSize: 40,
         fontWeight: 'bold',
-        position: 'absolute',
-        right: '40%',
         marginTop: 50
       },
       scene: {

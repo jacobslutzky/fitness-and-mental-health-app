@@ -4,7 +4,7 @@ import {useState} from 'react';
 import { AntDesign } from '@expo/vector-icons'; 
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons';
-
+import { SearchBar } from 'react-native-elements';
 
 
 export default function Home({navigation}){
@@ -23,7 +23,9 @@ export default function Home({navigation}){
 
   const [isPressed, setIsPressed] = useState(new Array(taskLabels.length).fill(false));
   const [tasksFiltered, setTasksFiltered] = useState(taskLabels);
+  const [tasksSearched, setTasksSearched] = useState(taskLabels)
   const [isAll, setIsAll] = useState(true)
+  const [search, setSearch] = useState("")
 
   const handlePress = ( item, index ) => {
     isPressed[index] = !isPressed[index]
@@ -34,7 +36,8 @@ export default function Home({navigation}){
 
   const handleFilter = ( command ) => {
     if(command == 'all'){
-      setTasksFiltered(taskLabels)
+      setTasksFiltered([...taskLabels])
+      setTasksSearched([...taskLabels])
       setIsAll(true)
     }
     else if(command == 'not completed'){
@@ -45,33 +48,56 @@ export default function Home({navigation}){
         }
       }
       setTasksFiltered([...tasksFilteredTemp])
+      setTasksSearched([...tasksFilteredTemp])
       setIsAll(false)
     }
   }
+
+  const updateSearch = (text) => {
+    
+    const updatedData = tasksFiltered.filter((item) => {
+      const item_data = `${item.label.toUpperCase()})`;
+      const text_data = text.toUpperCase();
+      return item_data.indexOf(text_data) > -1;
+    });
+    setTasksSearched(updatedData)
+    
+    setSearch(text)
+  };
     return(
     <ScrollView style = {styles.container}>
 
-      {/* Temporary mock for search bar */}
+      <View style={styles.headerContainer}>
+          <Text style={[styles.header, {color: colors.text}]}>Home</Text>
+      </View>
+
       <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
-          <Text style={styles.searchText}>Search</Text>
-        </View>
+      <SearchBar
+        placeholder="Search"
+        onChangeText={updateSearch}
+        containerStyle={{backgroundColor: 'black'}}
+        inputContainerStyle={styles.searchBar}
+        value={search}
+        round={true}
+      />
       </View>
 
       {/* Filter Buttons */}
       <View style={styles.filterContainer}>
-        <TouchableOpacity onPress={() => handleFilter('all')} style = {styles.allButton}>
-          <Text>All</Text>
+        <TouchableOpacity onPress={() => handleFilter('all')} style = {[styles.allButton, {backgroundColor : isAll ? "#CFB87B" : "#1A1A1A"}]}>
+          <Text style={{color:'white', fontSize: 16}}>All</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleFilter('not completed')} style = {styles.notCompletedButton}>
-          <Text style={{color:'white'}}>Not Completed</Text>
+        <TouchableOpacity onPress={() => handleFilter('not completed')} style = {[styles.notCompletedButton, {backgroundColor : isAll ? "#1A1A1A" : "#CFB87B"}]}>
+          <Text style={{color:'white', fontSize: 16}}>Not Completed</Text>
         </TouchableOpacity>
       </View>
 
       {/* Task List */}
       <View style={styles.tasks}>
-        {tasksFiltered.map((item, index) => (
-          <View style={(isPressed[index] && isAll) ? styles.taskButtonPressed : styles.taskButton} key={index} >
+        {taskLabels.map((item, index) => (
+          <>
+          {(tasksSearched.map((item) => item.label)).includes(item.label) 
+          ? <View style={(isPressed[index] && isAll) ? styles.taskButtonPressed : styles.taskButton} key={index} >
             <TouchableOpacity onPress={() => isPressed[index] == true ? null : handlePress(item, index)} style={styles.taskButtonContents}>
               <View style={[styles.brainContainer, {backgroundColor: item.brainColor}]}>
                 <FontAwesome5 name="brain" size={24} color={"white"} />
@@ -89,6 +115,9 @@ export default function Home({navigation}){
               }
             </TouchableOpacity>
           </View>
+          : <></>
+          }
+          </>
         ))}
     </View>
 
@@ -107,8 +136,17 @@ const styles = StyleSheet.create({
   
   container:{
     flex: 1,
+    marginTop: 20,
   },
   
+  headerContainer : {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  header : {
+    fontSize: 40,
+    fontWeight: 'bold',
+  },
 
   tasks: {
     
@@ -138,7 +176,7 @@ const styles = StyleSheet.create({
   },
   buttonText : {
     marginLeft: 15,
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'center',
     
   },
@@ -147,7 +185,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     justifyContent: "center",
     borderRadius: 15,
-    width: '90%',
+    width: '95%',
     height: 50
   },
   searchContainer: {
@@ -155,7 +193,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: "column",
     marginTop: 30,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   filterContainer : {
     paddingLeft: 20,
@@ -163,7 +201,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: "90%",
     flexDirection: 'row',
-    marginBottom: 10,
+    marginBottom: 10
   },
   allButton : {
     backgroundColor: "#CFB87B",
@@ -176,7 +214,7 @@ const styles = StyleSheet.create({
   notCompletedButton : {
     backgroundColor: "#1A1A1A",
     height: '100%',
-    width: 120,
+    width: 150,
     marginLeft: 20,
     borderRadius: 20,
     alignItems: 'center',

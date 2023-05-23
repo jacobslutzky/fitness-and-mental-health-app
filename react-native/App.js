@@ -5,6 +5,8 @@ import Register from './Register';
 import FitnessFavorites from './FitnessFavorites';
 import FitnessWorkouts from './FitnessWorkouts';
 import FitnessYoga from './FitnessYoga';
+import VideoOverview from './VideoOverview';
+import VideoPlay from './VideoPlay';
 import { NavigationContainer } from '@react-navigation/native';
 import { Colors } from './constants/Colors';
 
@@ -39,6 +41,8 @@ export default function App() {
         <Stack.Screen name = "FitnessWorkouts" component={FitnessWorkouts}/>
         <Stack.Screen name = "FitnessYoga" component={FitnessYoga}/>
         <Stack.Screen name = "FitnessFavorites" component={FitnessFavorites}/>
+        <Stack.Screen name = "VideoOverview" component={VideoOverview}/>
+        <Stack.Screen name = "VideoPlay" component={VideoPlay}/>
       </Stack.Navigator>
     </NavigationContainer>
     

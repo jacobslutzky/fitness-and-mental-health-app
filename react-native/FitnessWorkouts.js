@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
         alignIterms: 'center'
       },
     button: {
-      width: 40,
+      width: '25%',
       height: 40,
       borderRadius: 6,
       justifyContent: 'center',
@@ -163,9 +163,7 @@ const styles = StyleSheet.create({
       header : {
         fontSize: 40,
         fontWeight: 'bold',
-        position: 'absolute',
-        right: '30%',
-        marginTop: 50
+        marginTop: 50,
       },
       cardRow : {
         flexDirection:'row',

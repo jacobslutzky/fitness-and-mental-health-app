@@ -76,7 +76,7 @@ export default function Community({navigation}) {
        whiteSpace: 'pre-wrap',
        color: 'rgb(22, 18, 17)',
        fontWeight: 700,
-       fontSize: 45,
+       fontSize: 40,
        letterSpacing: 0,
       lineHeight: 60,
        textAlign: 'left',

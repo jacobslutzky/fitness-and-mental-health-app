@@ -1,8 +1,17 @@
 import { StyleSheet, TouchableOpacity, ImageBackground, Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function VideoCard( {item, index} ) {
+  const navigation = useNavigation();
+  const handlePress = ( item ) => {
+    navigation.navigate('VideoOverview', {
+      title: item.title,
+      author: item.author
+    });
+  }
+
     return (
         <View style={[styles.communityCard]} key={index} >
           <ImageBackground source = {item.img}>
