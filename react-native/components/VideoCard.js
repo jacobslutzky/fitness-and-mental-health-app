@@ -8,7 +8,8 @@ export default function VideoCard( {item, index} ) {
   const handlePress = ( item ) => {
     navigation.navigate('VideoOverview', {
       title: item.title,
-      author: item.author
+      author: item.author,
+      image: item.img,
     });
   }
 

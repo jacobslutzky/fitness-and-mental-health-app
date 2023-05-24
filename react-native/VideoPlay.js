@@ -11,7 +11,7 @@ import { Feather } from '@expo/vector-icons';
 
 export default function VideoPlay({ route, navigation }) {
     const colors = useTheme().colors;
-    const { title, author, sections, section } = route.params;
+    const { title, author, image, sections, section } = route.params;
     const [currentTime, setCurrentTime] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false)
     const multipliers = [1.0, 1.25, 1.5, 2]
@@ -47,13 +47,13 @@ export default function VideoPlay({ route, navigation }) {
             {/* Back arrow */}
             <View style={styles.headerContainer}>
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("VideoOverview", {title: title, author: author})}>
-                    <Ionicons name="arrow-back" size={40} color="white" />
+                    <Ionicons name="arrow-back" size={35} color="white" />
                 </TouchableOpacity>
             </View>
 
             {/* Image */}
             <View style={styles.imageContainer}>
-                <Image style={styles.image} source={require('../assets/calebCommunity.jpg')} />
+                <Image style={styles.image} source={image} />
             </View>
 
 
@@ -131,10 +131,6 @@ const styles = StyleSheet.create({
     tabsContainer: {
         marginTop: 10,
         backgroundColor: 'black'
-    },
-    headerContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     header: {
         fontSize: 40,
