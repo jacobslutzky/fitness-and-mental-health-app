@@ -31,7 +31,6 @@ export default function VideoPlay({ route, navigation }) {
                         clearInterval(id)
                         return oldTime
                     }
-                    console.log(speedMultiplier)
                     return oldTime + ((1 / 10) * speedMultiplier)
                 })
             }, ((1000 / 10)))
@@ -227,14 +226,13 @@ const styles = StyleSheet.create({
     progressBarOuter: {
         width: '100%',
         height: 5,
-        backgroundColor: '#707071',
-        opacity: 0.3,
+        backgroundColor: 'rgba(112, 112, 113, 0.3)',
         borderRadius: 10
     },
     progressBarInner: {
-        backgroundColor: '#1A1A1A',
+        backgroundColor: '#CFB87B',
         borderRadius: 10,
-        height: 10,
+        height: 5,
     },
     progressBarContainer: {
         width: '100%',
