@@ -42,7 +42,7 @@ export default function App() {
         <Stack.Screen name = "FitnessYoga" component={FitnessYoga}/>
         <Stack.Screen name = "FitnessFavorites" component={FitnessFavorites}/>
         <Stack.Screen name = "VideoOverview" component={VideoOverview}/>
-        <Stack.Screen name = "VideoPlay" component={VideoPlay}/>
+        <Stack.Screen name ="VideoPlay" component={VideoPlay}/>
       </Stack.Navigator>
     </NavigationContainer>
     

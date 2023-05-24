@@ -10,13 +10,13 @@ export default function VideoOverview({ route, navigation }) {
     const colors = useTheme().colors;
     const { title, author } = route.params
     const sections = [
-      {title: "Introduction", description: "This is a description placeholder that I made long to take multiple lines.", length: 10},
-      {title: "Body", description: "This is a description placeholder that I made long to take multiple lines.", length: 120},
+      {title: "Introduction", description: "This is a description placeholder that I made long to take multiple lines.", length: 120},
+      {title: "Body", description: "This is a description placeholder that I made long to take multiple lines.", length: 10},
       {title: "Ending", description: "This is a description placeholder that I made long to take multiple lines.", length: 5},
     ]
     console.log(title)
     return(
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
 
         {/* Back arrow */}
         <View style={styles.headerContainer}>
@@ -47,8 +47,13 @@ export default function VideoOverview({ route, navigation }) {
           <Text style={styles.lengthText}>2h 15m</Text>
 
           {/* Play Button */}
-          <TouchableOpacity onPress={() => navigation.navigate("VideoPlay")} style={styles.playButton}>
-            <FontAwesome name="play" size={24} color="white" />
+          <TouchableOpacity onPress={() => navigation.navigate("VideoPlay", {
+            title: title,
+            author: author,
+            sections: sections,
+            section: sections[0],
+          })} style={styles.playButton}>
+            <FontAwesome name="play" size={16} color="white" />
           </TouchableOpacity>
 
           {/* Section Container */}
@@ -57,14 +62,17 @@ export default function VideoOverview({ route, navigation }) {
               <View style={styles.sectionContainer}>
                 <Text style={styles.sectionTitle}>{item.title}</Text>
                 <Text style={styles.sectionDescription}>{item.description}</Text>
-                <Text style={styles.sectionLength}>{item.length}</Text>
+                {item.length >= 60 
+                ? <Text style={styles.sectionLength}>{item.length / 60}h {item.length % 60}m</Text>
+                : <Text style={styles.sectionLength}>{item.length % 60}m</Text>
+                }
               </View>
            ))
           }
 
         </View>
 
-      </View>
+      </ScrollView>
     )
   }
 
@@ -93,7 +101,8 @@ const styles = StyleSheet.create({
       marginTop: 40,
     },
     image: {
-      width: '80%'
+      width: '80%',
+      height: 300,
     },
     imageContainer: {
       alignItems: 'center'
@@ -133,6 +142,7 @@ const styles = StyleSheet.create({
       height: 40,
       borderRadius: 30,
       marginTop: 10,
+      marginBottom: 10,
       alignItems: 'center',
       justifyContent: 'center', 
     },
@@ -141,8 +151,11 @@ const styles = StyleSheet.create({
       fontSize: 12,
       marginTop: 5,
     },
-    sectionContianer:{
-      marginTop: 15
+    sectionContainer:{
+      marginTop: 20,
+      borderBottomColor: 'white',
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      paddingBottom: 20,
     },
     sectionTitle: {
       color: 'white',

@@ -8,8 +8,8 @@ export default function Mindfulness() {
     const colors = useTheme().colors;
 
     const videoCards = [
-      {title: "20-minute guided meditation", author: "Nama Ste", img: require('../assets/calebCommunity.jpg'), time: "20 min", stars: "4.7"},
-      {title: "10-minute affirmation therapy", author: "Caleb Saks", img: require('../assets/affirmationTherapy.jpeg'), time: "10 min", stars: "4.9"},
+      {title: "Guided meditation", author: "Nama Ste", img: require('../assets/calebCommunity.jpg'), time: "20 min", stars: "4.7"},
+      {title: "Affirmation therapy", author: "Caleb Saks", img: require('../assets/affirmationTherapy.jpeg'), time: "10 min", stars: "4.9"},
     ]
 
     const renderTabBar = props => (
