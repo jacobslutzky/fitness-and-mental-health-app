@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Landing from './Landing';
 import Main from './Main';
 import Register from './Register';
+import Login from './Login';
 import FitnessFavorites from './FitnessFavorites';
 import FitnessWorkouts from './FitnessWorkouts';
 import FitnessYoga from './FitnessYoga';
@@ -15,10 +16,12 @@ import { AuthLink, createAuthLink } from "aws-appsync-auth-link"
 import awsconfig from '../Users/zachbreger/Desktop/gymind/gymind-app/src /aws-exports.js'
 Amplify.configure(awsconfig);
 
- const Stack = createStackNavigator();
+
+const Stack = createStackNavigator();
 
 
  const MyTheme = {
+
 
 
   colors: {
@@ -30,7 +33,6 @@ Amplify.configure(awsconfig);
     notification: 'rgb(255, 69, 58)',
   },
 };
-
 /*
 const awsGraphqlFetch = async(uri, options) => {
   const token = (await Auth.currentSession()).getIdToken().getJwtToken()
@@ -38,6 +40,7 @@ const awsGraphqlFetch = async(uri, options) => {
   return fetch(uri, options);
 };
 */
+
 
 const awsLink = new AuthLink({
   url: awsconfig.aws_appsync_graphqlEndpoint,
@@ -62,11 +65,6 @@ const link = ApolloLink.from([
   httpLink
 ])
 
-/*
-  link: awsLink.concat(new HttpLink({ 
-    uri: "https://dd26zmboqvgp5mx4eg4amtzpny.appsync-api.us-east-1.amazonaws.com/graphql",
-  })),
-*/
 
 const client = new ApolloClient({
   link: link,
@@ -96,5 +94,6 @@ export default function App() {
       </NavigationContainer>
     </ApolloProvider>
     
- );
+
+  );
  }
