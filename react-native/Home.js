@@ -114,7 +114,7 @@ export default function Home({navigation}){
       <SearchBar
         placeholder="Search"
         onChangeText={updateSearch}
-        containerStyle={{backgroundColor: 'black'}}
+        containerStyle={{backgroundColor: '#101214', borderBottomColor: 'transparent', borderTopColor: 'transparent'}}
         inputContainerStyle={styles.searchBar}
         value={search}
         round={true}
@@ -238,6 +238,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginTop: 30,
     marginBottom: 10,
+    backgroundColor: "#101214",
   },
   filterContainer : {
     paddingLeft: 20,

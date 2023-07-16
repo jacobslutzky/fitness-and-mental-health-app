@@ -52,18 +52,18 @@ const styles = StyleSheet.create({
         height: "35%",
         bottom: 0,
         position: 'absolute',
-        backgroundColor: '#707071',
+        backgroundColor: '#a3956f',
         width: "100%",
         borderRadius: 10,
       },
       cardTitle : {
-        color: '#CFB87C',
+        color: 'white',
         fontSize: 20,
         marginLeft: 10,
         marginTop: 20
       },
       cardAuthor : {
-        color: '#CFB87C',
+        color: 'white',
         fontSize: 15,
         marginLeft: 10,
         marginTop: 5,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: "#707071"
+        backgroundColor: "#a3956f"
       },
       cardHeartContainer : {
         position: 'absolute',
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         borderRadius: 90,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: "#707071"
+        backgroundColor: "#a3956f"
       },
       cardStarsContainer : {
         position: 'absolute',
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 20,
-        backgroundColor: "#707071"
+        backgroundColor: "#a3956f"
       },
       cardTimeText : {
         color: 'white',

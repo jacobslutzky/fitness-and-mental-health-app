@@ -30,7 +30,7 @@ export default function Main() {
              
           },
 
-          tabBarStyle: {backgroundColor: colors.backgroundColor},
+          tabBarStyle: {backgroundColor: colors.backgroundColor, opacity: .9},
           sceneContainerStyle: {height: '100%', flex: 1},
           tabBarIcon: ({color, size }) => {
             let icon;
@@ -59,9 +59,8 @@ export default function Main() {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Mindfulness" component={Mindfulness} />
       <Tab.Screen name="Fitness" component={SelectWorkoutProgram} />
-      <Tab.Screen name="Community" component={Community} />
-
       <Tab.Screen name="Profile" component={Profile} />
+      
     
     </Tab.Navigator>
     

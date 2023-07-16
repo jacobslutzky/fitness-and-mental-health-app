@@ -22,7 +22,7 @@ export default function Register({navigation}){
       lastName: lastName,
       email: email,
       password: password,
-      profilePicture: ""
+      profilePicture: 'buffalo.png',
     }
     if(email && firstName && lastName && email && password == confirmPassword){
       global.userId = email

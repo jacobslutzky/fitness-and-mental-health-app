@@ -26,6 +26,7 @@ export default function Profile() {
     variables: { id: global.userId}
   }); 
 
+
   
 
   const Leaders = () => (
@@ -55,7 +56,8 @@ export default function Profile() {
             <Ionicons name="ios-settings-sharp" size={25} color="white" />
           </TouchableOpacity>
           */}
-          <Image style={styles.profilePic} source={require('../assets/buffalo.png')} />
+          {data && data.getUser.profilePicture == "sailorMich.png" ? <Image style={styles.profilePic} source={require(`../assets/sailorMich.png`)} /> 
+          :<Image style={styles.profilePic} source={require('../assets/buffalo.png')} /> }
           {/*
           <TouchableOpacity>
             <FontAwesome5 name="user-plus" size={25} color="white" />

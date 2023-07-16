@@ -93,6 +93,8 @@ export default function App() {
             <Stack.Screen name = "FitnessWorkouts" component={FitnessWorkouts}/>
             <Stack.Screen name = "FitnessYoga" component={FitnessYoga}/>
             <Stack.Screen name = "FitnessFavorites" component={FitnessFavorites}/>
+            <Stack.Screen name = "VideoPlay" component={VideoPlay}/>
+            <Stack.Screen name = "VideoOverview" component={VideoOverview}/>
             <Stack.Screen name = "WorkoutProgramInfo" component={WorkoutProgramInfo} options={{ title: "Program Information",
               headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
             }}/>
