@@ -26,7 +26,6 @@ export default function PreviewSplit({route, navigation}){
 
     const toggleList = (split) => {
         split.isExpanded = !split.isExpanded
-        
         setSplitByWeek(splitsByWeek)
       };
 
@@ -56,7 +55,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: "column",
         padding: 20,
-        
     },
     headerContainer: {
         alignItems: 'center',

@@ -9,13 +9,12 @@ import { Svg, Defs, LinearGradient, Stop, Rect } from "react-native-svg";
 
 export default function SelectWorkoutProgram({navigation}){
     const colors = useTheme().colors;
-    
-    
+
+
     const navigateToWorkoutInfo = (title) => {
         navigation.navigate("WorkoutProgramInfo", { title })
       }
 
-      
 
       const communityCards = [
         {title: "CALEB SAKS OLYMPIA PREP 2023 OFF SEASON", subtitle: "Accountability is key", img: require('../assets/quickWorkouts1.jpeg')},
@@ -25,13 +24,13 @@ export default function SelectWorkoutProgram({navigation}){
         {title: "HIGH INTENSITY INTERVAL TRAINING", subtitle: "Accountability is key", img: require('../assets/quickWorkouts1.jpeg')},
         {title: "4 DAY UPPER/LOWER SPLIT", subtitle: "Accountability is key", img: require('../assets/quickWorkouts2.jpeg')},
       ]
-      
 
-    
+
+
 
     return(
     <View style={styles.container}>
-    
+
         <Text style={[styles.header, {color: colors.text}]}>Select Your Program</Text>
 
         <ScrollView >
@@ -42,7 +41,6 @@ export default function SelectWorkoutProgram({navigation}){
               {
                   <View style={styles.communityCardContents}>
                       <Image style = {styles.cardImages} source={item.img} />
-                      
                       <Svg height="100%" width="100%" style={ StyleSheet.absoluteFillObject }>
                         <Defs>
                             <LinearGradient id="grad" x1="0%" y1="0%" x2="75%" y2="0%">
@@ -53,12 +51,12 @@ export default function SelectWorkoutProgram({navigation}){
                         <Rect width="100%" height="100%" fill="url(#grad)"/>
                       </Svg>
                     </View>
-               
-            
+
+
               }
                 <View style={styles.cardMain}>
                     <Text style={[styles.title, styles.textRight, {color: colors.primary}]}>{item.title}</Text>
-                    
+
                 </View>
             </TouchableOpacity>
           </View>
@@ -76,7 +74,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
         justifyCoontent: 'center',
         alignIterms: 'center'
-      
       },
     button: {
       width: '25%',
@@ -89,7 +86,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         backgroundColor: 'black'
       },
-      
       header : {
         fontSize: 40,
         marginBottom: 20,
@@ -99,7 +95,6 @@ const styles = StyleSheet.create({
       scene: {
         flex: 1,
       },
-      
       cardBottom : {
         height: "35%",
         bottom: 0,
@@ -109,8 +104,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
       },
       title : {
-        
-         
+
+
          color: 'white',
          fontWeight: 700,
          fontSize: 30,
@@ -135,7 +130,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'flex-start'
-        
       },
       communityCard : {
         height: 150,
@@ -147,16 +141,15 @@ const styles = StyleSheet.create({
       cardImages : {
         width: "80%",
         height: "100%"
-    
+
       },
-     
+
       cardMain : {
-        
+
         width: "100%",
         position: 'absolute',
         right: 0,
         height: '100%',
-        
         justifyContent: 'center'
       },
       communityCardContents : {
@@ -164,12 +157,8 @@ const styles = StyleSheet.create({
         height: 150,
       },
       textRight : {
-        
+
         marginRight: 20,
         justifyContent: "center"
       }
     });
-     
-      
-
-  

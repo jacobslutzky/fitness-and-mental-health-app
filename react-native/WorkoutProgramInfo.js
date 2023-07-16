@@ -9,7 +9,6 @@ import VideoCard from './components/VideoCard';
 export default function WorkoutProgramInfo({route, navigation}){
     colors = useTheme().colors
     const video = {title: "10-minute morning yoga", author: "Caleb Saks", img: require('../assets/fitnessYoga1.jpg'), time: "20 min", stars: "4.7"}
-   
     const navigateToPreviewSplit = () => {
         navigation.navigate("PreviewSplit")
       }
@@ -37,7 +36,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: "column",
         padding: 20,
-        
     },
     headerContainer: {
         alignItems: 'center',
