@@ -1,14 +1,19 @@
-import { StyleSheet, ScrollView, Text, View } from 'react-native';
+import { StyleSheet, ScrollView, Text, View, TouchableOpacity } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import VideoCard from './components/VideoCard';
-
+import { useQuery, gql, useMutation } from "@apollo/client";
+import * as mutations from "../src/graphql/mutations";
+import * as queries from "../src/graphql/queries";
 
 export default function Mindfulness() {
+  const { data, loading, error } = useQuery(gql`${queries.getMeditationEntry}`, {
+    variables: { id: '80fcf9db-3a48-4b35-8ae4-9e2167d4312b'}
+  });
     const colors = useTheme().colors;
 
     const videoCards = [
-      {title: "Guided meditation", author: "Nama Ste", img: require('../assets/calebCommunity.jpg'), time: "20 min", stars: "4.7"},
+      {title: "Affirmation therapy", author: "Caleb Saks", img: require('../assets/affirmationTherapy.jpeg'), time: "10 min", stars: "4.9"},
       {title: "Affirmation therapy", author: "Caleb Saks", img: require('../assets/affirmationTherapy.jpeg'), time: "10 min", stars: "4.9"},
     ]
 
@@ -42,7 +47,17 @@ export default function Mindfulness() {
         <View style={styles.headerContainer}>
           <Text style={[styles.header, {color: colors.text}]}>Mindfulness</Text>
         </View>
-
+        <ScrollView contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}} style={styles.cardsContainer}>
+        {loading && (
+                <View>
+                    <Text style={{color: 'white'}}>Loading...</Text>
+                </View>
+            )}
+      {data && videoCards.map((item, index) => (
+        <VideoCard item={item} index={index} />
+      ))}
+      </ScrollView>
+        {/*
         <TabView
         navigationState={state}
         renderScene={SceneMap({
@@ -56,7 +71,7 @@ export default function Mindfulness() {
         sceneContainerStyle={{height: '100%', flex: 1}}
         renderTabBar={renderTabBar}
         />
-
+      */}
       </View>
     )
   }

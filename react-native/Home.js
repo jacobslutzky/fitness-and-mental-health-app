@@ -5,19 +5,57 @@ import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import { MaterialIcons } from '@expo/vector-icons';
 import { SearchBar } from 'react-native-elements';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useQuery, gql, useMutation } from "@apollo/client";
+import * as mutations from "../src/graphql/mutations";
+import * as queries from "../src/graphql/queries";
+
+
 
 
 export default function Home({navigation}){
-
-  const colors = useTheme().colors;
   
+  const [mutateFunction, { data, loading, error }] = useMutation(gql`${mutations.createDailyTask}`);
+  const { data2, loading2, error2 } = useQuery(gql`${queries.getDailyTask}`);
+
+  
+  if (loading) console.log('Submitting...');
+  if (error) console.log(`Submission error! ${error.message}`);
+
+  const input = {
+    label: "TestLabel",
+    screen: "TestScreen",
+    icon: "TestIcon"
+  }
+
+  /*
+  mutateFunction({ variables : {input : input} }).then(function(response){
+      console.log(response.json());
+      console.log("dub")
+    }
+    ).catch(function(e){
+      console.log()
+      console.log(JSON.stringify(e));
+      if (e.graphQLErrors) {
+        // reduce to get message
+        _.reduce(
+           e.graphQLErrors,
+           (res, err) => [...res, error.message],
+           []
+        );
+    }
+    });
+
+    */
+
+  
+  
+
+  const colors = useTheme().colors;  
   
   const taskLabels = [
-    {label: "Complete Today's Workout", screen: "Fitness", brainColor: "#3787D5"},
-    {label: "Post Shower Meditation", screen: "Mindfulness", brainColor: "#F5AB26"},
-    {label: "Share Results with Friend", screen: "Community", brainColor: "#BC64FD"},
-    {label: "Post Workout Yoga", screen: "Mindfulness", brainColor: "#3787D5"},
-    {label: "Therapy Check-in", screen: "Mindfulness", brainColor: "#F5AB26"}
+    {label: "Complete Today's Workout", screen: "Fitness", iconType: "lifting", iconColor: "#3787D5"},
+    {label: "Complete Today's Meditation", screen: "Mindfulness", iconType: "brain", iconColor: "#F5AB26"},
   ]
 
 
@@ -28,6 +66,7 @@ export default function Home({navigation}){
   const [search, setSearch] = useState("")
 
   const handlePress = ( item, index ) => {
+    mutateFunction({ variables : {input : input} })
     isPressed[index] = !isPressed[index]
     console.log(index, isPressed[index])
     setIsPressed([...isPressed])
@@ -99,8 +138,11 @@ export default function Home({navigation}){
           {(tasksSearched.map((item) => item.label)).includes(item.label) 
           ? <View style={(isPressed[index] && isAll) ? styles.taskButtonPressed : styles.taskButton} key={index} >
             <TouchableOpacity onPress={() => isPressed[index] == true ? null : handlePress(item, index)} style={styles.taskButtonContents}>
-              <View style={[styles.brainContainer, {backgroundColor: item.brainColor}]}>
-                <FontAwesome5 name="brain" size={24} color={"white"} />
+              <View style={[styles.brainContainer, {backgroundColor: item.iconColor}]}>
+                {(item.iconType == "brain")
+                ? <FontAwesome5 name="brain" size={24} color={"white"} />
+                : <MaterialCommunityIcons name="weight-lifter" size={24} color="white" />
+                }
               </View>
               <View style={{justifyContent: 'center'}}>
                 <Text style={[styles.buttonText, {color: colors.text}]}>{item.label}</Text>
@@ -122,9 +164,11 @@ export default function Home({navigation}){
     </View>
 
     {/* Plus Button */}
+    {/*
     <View style={styles.plusButtonContainer}>
       <AntDesign name="pluscircle" size={35} color="#CFB87B" />
     </View>
+        */}
 
    
      </ScrollView>

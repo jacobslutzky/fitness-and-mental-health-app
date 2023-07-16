@@ -36,11 +36,12 @@ export default function Fitness({navigation}) {
         </View>
 
         {/* Achievements */}
+        {/*
         <AchievementBubble achievementName={achievementName}
                           achievementProgress={achievementProgress}
                           achievementProgressText={achievementProgressText}/>
 
-
+        */}
           {/* Task List */}
         <View style={styles.tasks}>
           {taskLabels.map((item, index) => (
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: "column",
-      marginTop: 15
+      marginTop: 15,
     },
     taskButton: {
       textAlign: "center",

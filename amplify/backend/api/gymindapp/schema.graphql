@@ -5,18 +5,81 @@ input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONL
 type Blog @model {
   id: ID!
   name: String!
-  posts: [Post] @hasMany
+  posts: [Post!] @hasMany
 }
 
 type Post @model {
   id: ID!
   title: String!
   blog: Blog @belongsTo
-  comments: [Comment] @hasMany
+  comments: [Comment!] @hasMany
 }
 
 type Comment @model {
   id: ID!
   post: Post @belongsTo
   content: String!
+}
+
+"""
+Meditation queries 
+"""
+
+type MeditationSection @model {
+  id: ID!
+  meditation: MeditationEntry @belongsTo
+  title: String!
+  description: String!
+  time: Int!
+}
+
+type MeditationEntry @model {
+  id: ID!
+  meditationList: MeditationList @belongsTo
+  video: String!
+  author: String!
+  image: String!
+  sections: [MeditationSection] @hasMany
+}
+
+type MeditationList @model {
+  id: ID!
+  meditationEntries: [MeditationEntry!]! @hasMany
+}
+
+
+"""
+User queries 
+"""
+type DailyTask @model {
+  id: ID!
+  label: String!
+  screen: String!
+  icon: String!
+}
+
+type User @model {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  profilePicture: String
+  dailyTasks: [DailyTask]
+  meditationStats: UserMeditationStats
+}
+
+type UserList @model {
+  id: ID!
+  users: [User!]!
+}
+
+
+"""
+Meditation stats
+"""
+type UserMeditationStats @model {
+  id: ID!
+  mindfulMinutes: Int!
+  meditationStreak: Int!
 }

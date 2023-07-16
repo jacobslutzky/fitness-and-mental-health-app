@@ -9,6 +9,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
+
 export default function VideoOverview({ route, navigation }) {
   const colors = useTheme().colors;
   const { title, author, image } = route.params
@@ -18,7 +19,70 @@ export default function VideoOverview({ route, navigation }) {
     { title: "Ending", description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
   ]
   const [bookmarked, setBookmarked] = useState(false)
+  state = {
+    index: 0,
+    routes: [
+      { key: "first", title: "Session", sections: sections },
+      { key: "second", title: "Summary"},
+      { key: "third", title: "Teacher"}
+    ],
+  };
+  const renderTabBar = props => (
+    <TabBar
+      {...props}
+      style={{ backgroundColor: 'black' }}
+    />
+  );
+  const SessionsRoute = () => (
+        <View style={{flex:1}}>
+          {
+          sections.map((item, index) => (
+            <TouchableOpacity onPress={() => navigation.navigate("VideoPlay", {
+              title: title,
+              author: author,
+              image: image,
+              sections: sections,
+              section: sections[index],
+            })} style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>{item.title}</Text>
+              <Text style={styles.sectionDescription}>{item.description}</Text>
+              {item.length >= 60
+                ? <Text style={styles.sectionLength}>{item.length / 60}h {item.length % 60}m</Text>
+                : <Text style={styles.sectionLength}>{item.length % 60}m</Text>
+              }
+            </TouchableOpacity>
+          ))
+        }
+        </View>
+  );
+
+  const SummaryRoute = () => (
+    <View>
+      {/* Text */}
+      <View>
+        <Text style={{color:'white'}}>hi</Text>
+      </View>
+    </View>
+);
+
+
+const TeacherRoute = () => (
+  <View>
+    {/* Teacher Header */}
+    <View>
+      <Text></Text>
+    </View>
+
+    {/* Teacher Bio */}
+    <View>
+      <Text></Text>
+    </View>
+  </View>
+);
+
+
   return (
+    <>
     <ScrollView style={styles.container}>
 
       {/* Back arrow */}
@@ -50,7 +114,7 @@ export default function VideoOverview({ route, navigation }) {
         <Text style={styles.lengthText}>{sections.length} Sections · 2h 15m</Text>
 
         {/* Play Button */}
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <TouchableOpacity onPress={() => navigation.navigate("VideoPlay", {
             title: title,
             author: author,
@@ -60,35 +124,37 @@ export default function VideoOverview({ route, navigation }) {
           })} style={styles.playButton}>
             <FontAwesome name="play" size={16} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.opaqueButton} onPress={() => setBookmarked(!bookmarked)}>
-                            {bookmarked ? <Ionicons name="bookmark" size={24} color="white" />
-                            : <Ionicons name="bookmark-outline" size={24} color="white" /> }
-          </TouchableOpacity>
-        </View>
-
-        {/* Section Container */}
-        {
-          sections.map((item, index) => (
-            <TouchableOpacity onPress={() => navigation.navigate("VideoPlay", {
-              title: title,
-              author: author,
-              image: image,
-              sections: sections,
-              section: sections[index],
-            })} style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>{item.title}</Text>
-              <Text style={styles.sectionDescription}>{item.description}</Text>
-              {item.length >= 60
-                ? <Text style={styles.sectionLength}>{item.length / 60}h {item.length % 60}m</Text>
-                : <Text style={styles.sectionLength}>{item.length % 60}m</Text>
-              }
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity style={styles.opaqueButton}>
+              <Feather name="share" size={24} color="white" />
             </TouchableOpacity>
-          ))
-        }
-
+            <TouchableOpacity style={[styles.opaqueButton, {marginHorizontal: 10}]} onPress={() => setBookmarked(!bookmarked)}>
+              {bookmarked ? <Ionicons name="bookmark" size={24} color="white" />
+                : <Ionicons name="bookmark-outline" size={24} color="white" />}
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.opaqueButton}>
+              <AntDesign name="arrowdown" size={24} color="white" />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-
+      
+      <TabView
+          navigationState={state}
+          renderScene={SceneMap({
+            first: SessionsRoute,
+            second: SummaryRoute,
+            third: TeacherRoute,
+          })}
+          onIndexChange={index => state.index = index}
+          initialLayout={{}}
+          style={[styles.tabsContainer, {height: 150 * sections.length }]}
+          sceneContainerStyle={{height: '100%', flex: 1}}
+          renderTabBar={renderTabBar}
+          />
     </ScrollView>
+
+          </>
   )
 }
 
@@ -97,6 +163,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 20,
+    height: 1000
   },
   tabsContainer: {
     marginTop: 10,
@@ -128,7 +195,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 6,
     justifyContent: 'center',
-    marginTop: 30, 
+    marginTop: 30,
     marginLeft: 10
   },
   headerContainer: {
@@ -196,7 +263,7 @@ const styles = StyleSheet.create({
   },
   opaqueButton: {
     marginTop: 20,
-    backgroundColor: 'rgba(220,220,220, 0.2)',
+    backgroundColor: 'rgba(220,220,220, 0.1)',
     borderRadius: 90,
     height: 40,
     width: 40,

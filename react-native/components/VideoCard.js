@@ -57,13 +57,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
       },
       cardTitle : {
-        color: 'white',
+        color: '#CFB87C',
         fontSize: 20,
         marginLeft: 10,
         marginTop: 20
       },
       cardAuthor : {
-        color: 'white',
+        color: '#CFB87C',
         fontSize: 15,
         marginLeft: 10,
         marginTop: 5,

@@ -1,4 +1,25 @@
 {
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-gymindapp-dev-115940-authRole",
+      "UnauthRoleArn": "arn:aws:iam::140531166314:role/amplify-gymindapp-dev-115940-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::140531166314:role/amplify-gymindapp-dev-115940-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-gymindapp-dev-115940-deployment",
+      "UnauthRoleName": "amplify-gymindapp-dev-115940-unauthRole",
+      "StackName": "amplify-gymindapp-dev-115940",
+      "StackId": "arn:aws:cloudformation:us-east-1:140531166314:stack/amplify-gymindapp-dev-115940/b9935750-c993-11ed-9f0c-124f6ca9daa7",
+      "AmplifyAppId": "d2f2h7ebk4cluy"
+    },
+    "categories": {
+      "api": {
+        "gymindapp": {}
+      },
+      "auth": {
+        "gymindapp5417cbae": {}
+      }
+    }
+  },
   "staging": {
     "awscloudformation": {
       "AuthRoleName": "amplify-gymindapp-staging-154651-authRole",
@@ -23,24 +44,6 @@
       "StackName": "amplify-gymindapp-test-115246",
       "StackId": "arn:aws:cloudformation:us-east-1:140531166314:stack/amplify-gymindapp-test-115246/c2d94320-c992-11ed-8e3f-0a8450f38057",
       "AmplifyAppId": "d2f2h7ebk4cluy"
-    }
-  },
-  "dev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-gymindapp-dev-115940-authRole",
-      "UnauthRoleArn": "arn:aws:iam::140531166314:role/amplify-gymindapp-dev-115940-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::140531166314:role/amplify-gymindapp-dev-115940-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-gymindapp-dev-115940-deployment",
-      "UnauthRoleName": "amplify-gymindapp-dev-115940-unauthRole",
-      "StackName": "amplify-gymindapp-dev-115940",
-      "StackId": "arn:aws:cloudformation:us-east-1:140531166314:stack/amplify-gymindapp-dev-115940/b9935750-c993-11ed-9f0c-124f6ca9daa7",
-      "AmplifyAppId": "d2f2h7ebk4cluy"
-    },
-    "categories": {
-      "api": {
-        "gymindapp": {}
-      }
     }
   },
   "prod": {

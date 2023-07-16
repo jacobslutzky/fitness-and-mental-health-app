@@ -2,7 +2,9 @@ import { StyleSheet, ScrollView, Image, TouchableOpacity, Text, View } from 'rea
 import { useTheme } from '@react-navigation/native';
 import { Ionicons, FontAwesome5, Entypo } from '@expo/vector-icons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useQuery, gql, useMutation } from "@apollo/client";
+import * as queries from "../src/graphql/queries";
 
 export default function Profile() {
   const colors = useTheme().colors;
@@ -20,6 +22,11 @@ export default function Profile() {
 
   ]
 
+  const { data, loading, error } = useQuery(gql`${queries.getUser}`, {
+    variables: { id: global.userId}
+  }); 
+
+  
 
   const Leaders = () => (
     <View style={styles.leaderboardContainer}>
@@ -43,16 +50,23 @@ export default function Profile() {
       <View style={styles.container}>
 
         <View style={styles.top}>
+          {/*
           <TouchableOpacity>
             <Ionicons name="ios-settings-sharp" size={25} color="white" />
           </TouchableOpacity>
-          <Image style={styles.profilePic} source={require('../assets/caleb.jpeg')} />
+          */}
+          <Image style={styles.profilePic} source={require('../assets/buffalo.png')} />
+          {/*
           <TouchableOpacity>
             <FontAwesome5 name="user-plus" size={25} color="white" />
           </TouchableOpacity>
+          */}
         </View>
-        <Text style={[styles.name, { color: colors.primary }]}>Caleb Saks</Text>
-        <Text style={[styles.accountName, { color: colors.text }]}>@mr.meathead23</Text>
+        {data ? <><Text style={[styles.name, { color: colors.primary }]}>{data.getUser.firstName} {data.getUser.lastName}</Text>
+          <Text style={[styles.accountName, { color: colors.text }]}>{data.getUser.email}</Text></>
+        :  <Text style={[styles.name, { color: colors.primary }]}></Text>}
+        
+        {/*
         <View style={styles.followerContainer}>
           <View style={styles.followers}>
             <Text style={[styles.followerCount, { color: colors.text }]}>15</Text>
@@ -63,24 +77,28 @@ export default function Profile() {
             <Text style={[styles.followerCount, { color: colors.text }]}>Following</Text>
           </View>
         </View>
-        <Text style={[styles.sectionName, { color: colors.text }]} >My statistics</Text>
+        */}
+        <Text style={[styles.sectionName, { color: colors.text, marginTop: 50, textAlign: 'center' }]} >My Statistics</Text>
         <View style={styles.statsContainer}>
           <View style={styles.stat}>
-            <Entypo name="bar-graph" color="white" size={25} />
-            <Text style={{ color: colors.text }}>149</Text>
-            <Text style={styles.statsText}>Workouts{"\n"}total</Text>
+          <FontAwesome5 name="brain" size={25} color={"white"} />
+            <Text style={{ color: colors.text }}>0</Text>
+            <Text style={styles.statsText}>Mindful{"\n"}Minutes</Text>
           </View>
           <View style={styles.stat}>
             <FontAwesome5 name="fire" size={25} color="white" />
-            <Text style={{ color: colors.text }}>18900</Text>
-            <Text style={styles.statsText}>Calories{"\n"}burnt</Text>
+            <Text style={{ color: colors.text }}>0</Text>
+            <Text style={styles.statsText}>Workouts{"\n"}Completed</Text>
           </View>
+          
           <View style={styles.stat}>
-            <FontAwesome5 name="coins" size={25} color="white" />
-            <Text style={{ color: colors.text }}>850</Text>
-            <Text style={styles.statsText}>Points{"\n"}Collected</Text>
+          <MaterialCommunityIcons name="meditation" size={25} color="white" />
+            <Text style={{ color: colors.text }}>0</Text>
+            <Text style={styles.statsText}>Meditation{"\n"}Streak</Text>
           </View>
+        
         </View>
+        {/*
         <View style={styles.leaderboardHeader}>
           <Text style={[styles.sectionName, { color: colors.text }]}>Leaderboard</Text>
         </View>
@@ -96,14 +114,16 @@ export default function Profile() {
             <Tab.Screen name="Month" component={Leaders} />
           </Tab.Navigator>
         </View>
+        
         <Text style={[styles.sectionName, { color: colors.text }]}>Achievements</Text>
+        
         <View style={styles.achievementBubbleContainer}>
           {achievements.map((achievement, index) => (
 
             <View style={styles.achievementBubble} key={index}>
               <Text style={styles.achievementName}>You've done 3 workouts this week!</Text>
               <Text style={styles.achievementProgressText}>75% of your weekly goal is complete.</Text>
-              {/* Progress Bar */}
+              
               <View style={styles.progressBarContainer}>
                 <View style={styles.progressBarOuter}>
                   <View style={styles.progressBarInner}>
@@ -115,6 +135,7 @@ export default function Profile() {
 
           ))}
         </View>
+        */}
       </View>
     </ScrollView>
 
@@ -126,28 +147,22 @@ export default function Profile() {
 
 const styles = StyleSheet.create({
   container: {
-
     flexDirection: 'column',
     gap: 20,
-    flex: 1,
-
-
-
-
+    flex: 1
   },
   top: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     marginTop: 60,
     alignItems: 'center',
-    marginHorizontal: 20
+    marginHorizontal: 20,
+    marginTop: 125
   },
   profilePic: {
-    height: 80,
-    width: 80,
+    height: 160,
+    width: 160,
     resizeMode: "contain",
-
-    borderRadius: 120,
   },
   name: {
     fontSize: 23,

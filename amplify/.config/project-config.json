@@ -8,10 +8,10 @@
   "javascript": {
     "framework": "react-native",
     "config": {
-      "SourceDir": "src",
+      "SourceDir": "/Users/zachbreger/Desktop/gymind/gymind-app/src ",
       "DistributionDir": "/",
-      "BuildCommand": "npm run-script build",
-      "StartCommand": "npm run-script start"
+      "BuildCommand": "node build",
+      "StartCommand": "npx expo"
     }
   }
 }
