@@ -8,11 +8,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import SelectWorkoutProgram from './SelectWorkoutProgram';
-<<<<<<< HEAD
-
-
-=======
->>>>>>> a91edee (Added backend, register and login handling)
 
 const Tab = createBottomTabNavigator();
 
@@ -66,7 +61,6 @@ export default function Main() {
       <Tab.Screen name="Fitness" component={SelectWorkoutProgram} />
       <Tab.Screen name="Community" component={Community} />
 
-      <Tab.Screen name="Fitness" component={Fitness} />
       <Tab.Screen name="Profile" component={Profile} />
     
     </Tab.Navigator>
