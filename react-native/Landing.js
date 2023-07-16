@@ -6,7 +6,7 @@ import { Colors } from './constants/Colors';
 export default function Login({navigation}) {
     const colors = useTheme().colors
     const handleLogin = () => {
-        navigation.navigate("Main")
+        navigation.navigate("Login")
       }
       const handleRegister = () => {
         navigation.navigate("Register")
