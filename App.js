@@ -9,7 +9,9 @@ import FitnessYoga from './react-native/FitnessYoga';
 import WorkoutProgramInfo from './react-native/WorkoutProgramInfo'
 import { NavigationContainer } from '@react-navigation/native';
 import { Colors } from './react-native/constants/Colors';
-import PreviewSplit from './react-native/PreviewSplit'
+import PreviewSplit from './react-native/PreviewSplit';
+import VideoOverview from './react-native/VideoOverview';
+import VideoPlay from './react-native/VideoPlay';
 
 const Stack = createStackNavigator();
 
@@ -51,6 +53,8 @@ export default function App() {
         <Stack.Screen name = "PreviewSplit" component={PreviewSplit} options={{ title: "Preview Split",
           headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
         }}/>
+        <Stack.Screen name = "VideoOverview" component={VideoOverview}/>
+        <Stack.Screen name ="VideoPlay" component={VideoPlay}/>
       </Stack.Navigator>
     </NavigationContainer>
     
