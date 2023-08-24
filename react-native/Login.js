@@ -11,7 +11,8 @@ export default function Login({navigation}){
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { data, loading, error, refetch } = useQuery(gql`${queries.getUser}`, {
-    variables: { id: email}
+    variables: { id: email},
+    enabled: false
   }); 
 
   const handleRegister = () => {

@@ -14,9 +14,17 @@ export default function VideoOverview({ route, navigation }) {
   const colors = useTheme().colors;
   const { title, author, image } = route.params
   const sections = [
-    { title: "Introduction", description: "This is a description placeholder that I made long to take multiple lines.", length: 120 },
-    { title: "Body", description: "This is a description placeholder that I made long to take multiple lines.", length: 10 },
-    { title: "Ending", description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Allowing-Yourself-to-Rest-in-Being.mp4", title: "Introduction", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 120 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Don't-Look-For-Anything-Else-mg.mp3", title: "Body", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 10 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Ever-Present-Presence.mp4", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Letting-Go.mp4", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Letting-the-Moment-Be.mp3", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/No-Matter-You're-Thinking-You-Are.mp3", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Relaxing-All-Effort.mp4", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Relaxing-with-What-Is.mp4", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Simply-Notice-Thought.mp3", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/The-Mode-of-Just-Being.mp4", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/The-River-of-Experience.mp4", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 }
   ]
   const [bookmarked, setBookmarked] = useState(false)
   state = {
@@ -37,7 +45,8 @@ export default function VideoOverview({ route, navigation }) {
         <View style={{flex:1}}>
           {
           sections.map((item, index) => (
-            <TouchableOpacity onPress={() => navigation.navigate("VideoPlay", {
+            <TouchableOpacity key={index} onPress={() => navigation.navigate("VideoPlay", {
+              url: sections[index].url,
               title: title,
               author: author,
               image: image,
@@ -116,6 +125,7 @@ const TeacherRoute = () => (
         {/* Play Button */}
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <TouchableOpacity onPress={() => navigation.navigate("VideoPlay", {
+            url: sections[0].url,
             title: title,
             author: author,
             image: image,
@@ -149,7 +159,7 @@ const TeacherRoute = () => (
           onIndexChange={index => state.index = index}
           initialLayout={{}}
           style={[styles.tabsContainer, {height: 150 * sections.length }]}
-          sceneContainerStyle={{height: '100%', flex: 1}}
+          sceneContainerStyle={{height: '100%', flex: 1, width: '90%', alignItems: 'center'}}
           renderTabBar={renderTabBar}
           />
     </ScrollView>

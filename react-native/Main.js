@@ -58,7 +58,7 @@ export default function Main() {
         
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Mindfulness" component={Mindfulness} />
-      <Tab.Screen name="Fitness" component={SelectWorkoutProgram} />
+      <Tab.Screen name="Fitness" component={Fitness} />
       <Tab.Screen name="Profile" component={Profile} />
       
     

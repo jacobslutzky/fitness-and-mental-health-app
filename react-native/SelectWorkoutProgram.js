@@ -4,6 +4,10 @@ import { useTheme } from '@react-navigation/native';
 import { TabBar } from 'react-native-tab-view';
 import VideoCard from './components/VideoCard';
 import { Svg, Defs, LinearGradient, Stop, Rect } from "react-native-svg";
+import { useQuery, gql, useMutation } from "@apollo/client";
+import * as queries from "../src/graphql/queries";
+import * as mutations from "../src/graphql/mutations";
+import { useApolloClient } from '@apollo/client';
 
 
 
@@ -11,21 +15,27 @@ export default function SelectWorkoutProgram({navigation}){
     const colors = useTheme().colors;
 
 
-    const navigateToWorkoutInfo = (title) => {
-        navigation.navigate("WorkoutProgramInfo", { title })
+
+    const navigateToWorkoutInfo = (title, titleToNameMap) => {
+
+        navigation.navigate("WorkoutProgramInfo", { title : title, titleToNameMap: titleToNameMap})
       }
 
 
-      const communityCards = [
-        {title: "CALEB SAKS OLYMPIA PREP 2023 OFF SEASON", subtitle: "Accountability is key", img: require('../assets/quickWorkouts1.jpeg')},
-        {title: "THE PERFECT PUSH PULL LEGS ROUTINE", subtitle: "Accountability is key", img: require('../assets/quickWorkouts2.jpeg')},
-        {title: "THAT 90'S LOOK ARMS AND QUADS SPECIALIZATION", subtitle: "Accountability is key", img: require('../assets/calebCommunity.jpg')},
-        {title: "CLASSIC ARNOLD SPLIT", subtitle: "Accountability is key", img: require('../assets/calebCommunity2.jpg')},
-        {title: "HIGH INTENSITY INTERVAL TRAINING", subtitle: "Accountability is key", img: require('../assets/quickWorkouts1.jpeg')},
-        {title: "4 DAY UPPER/LOWER SPLIT", subtitle: "Accountability is key", img: require('../assets/quickWorkouts2.jpeg')},
-      ]
+      const { data, loading, error, refetch } = useQuery(gql`${queries.listPrograms}`)
+      
+      let communityCards
+      if(data){
+        console.log(data.listPrograms.items)
+         communityCards = data.listPrograms.items.map((program) => { console.log(program.title); return {title: program.id, img: require('../assets/quickWorkouts1.jpeg')}})
+      }
 
-
+      const titleToNameMap = { "womensintermediate" : "Women Intermediate",
+                          "menslvl3PPL": "Men Level 3 PPLUL",
+                          "menslvl2UL": "Men Level 2 UL",
+                        "mensfullbody": "Men Full Body",
+                      "mensPPL": "Men PPL",
+                    "womensbeginner": "Women Beginner"}
 
 
     return(
@@ -35,9 +45,9 @@ export default function SelectWorkoutProgram({navigation}){
 
         <ScrollView >
             <View style={styles.cardsContainer}>
-            {communityCards.map((item, index) => (
+            {communityCards ? communityCards.map((item, index) => (
           <View style={styles.communityCard} key={index} >
-            <TouchableOpacity onPress={() => navigateToWorkoutInfo(item.title)}>
+            <TouchableOpacity onPress={() => navigateToWorkoutInfo(item.title, titleToNameMap)}>
               {
                   <View style={styles.communityCardContents}>
                       <Image style = {styles.cardImages} source={item.img} />
@@ -55,12 +65,14 @@ export default function SelectWorkoutProgram({navigation}){
 
               }
                 <View style={styles.cardMain}>
-                    <Text style={[styles.title, styles.textRight, {color: colors.primary}]}>{item.title}</Text>
+                    <Text style={[styles.title, styles.textRight, {color: colors.primary}]}>{titleToNameMap[item.title]}</Text>
 
                 </View>
             </TouchableOpacity>
           </View>
-        ))}
+        ))
+        : <View></View>
+        }
         </View>
         </ScrollView>
 

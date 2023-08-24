@@ -8,59 +8,95 @@ import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import AchievementBubble from './components/AchievementBubble';
+import SelectWorkoutProgram from './SelectWorkoutProgram';
+import WorkoutProgramInfo from './WorkoutProgramInfo';
+import PreviewSplit from './PreviewSplit';
+import CurrentProgram from './CurrentProgram';
+import DuringWorkout from './DuringWorkout';
+import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client';
+import { useQuery, gql, useMutation } from "@apollo/client";
+import * as queries from "../src/graphql/queries";
+
+const Stack = createStackNavigator();
+
+export default function Fitness({route, navigation}) {
+        colors = useTheme().colors
 
 
-export default function Fitness({navigation}) {
-    const colors = useTheme().colors;
+        return (
+      
+          <Stack.Navigator cardStyle= {{height: "100%"}} screenOptions={{headerShown: false, headerStyle: {
+             backgroundColor: colors.background
+          }, headerBackTitle: "Back"
+          }}> 
+          <Stack.Screen name = "SelectWorkoutProgram" component={SelectWorkoutProgram} />
+          <Stack.Screen name = "CurrentProgram" component={CurrentProgram}/>
+              <Stack.Screen name = "WorkoutProgramInfo" component={WorkoutProgramInfo} options={{ title: "",
+                headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
+              }}/>
+              <Stack.Screen name = "PreviewSplit" component={PreviewSplit} options={{ title: "Preview Split",
+                headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
+              }}/>
+              <Stack.Screen name = "DuringWorkout" component={DuringWorkout} options={{ title: "",
+                headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
+              }}/>
+            </Stack.Navigator>
+         
+          
+          
+        );
+      }
+  
+    // const colors = useTheme().colors;
 
-    const handlePress = ( item ) => {
-      navigation.navigate(item.screen);
-    }
+    // const handlePress = ( item ) => {
+    //   navigation.navigate(item.screen);
+    // }
 
 
-    const taskLabels = [
-      {label: "Workouts", screen: "FitnessWorkouts"},
-      {label: "Yoga", screen: "FitnessYoga"},
-      {label: "Favorites", screen: "FitnessFavorites"},
-    ]
+    // const taskLabels = [
+    //   {label: "Workouts", screen: "FitnessWorkouts"},
+    //   {label: "Yoga", screen: "FitnessYoga"},
+    //   {label: "Favorites", screen: "FitnessFavorites"},
+    // ]
 
-    const achievementName = "You've done 3 workouts this week!"
-    const achievementProgressText = "75% of your weekly goal is complete"
-    const achievementProgress = 75
+    // const achievementName = "You've done 3 workouts this week!"
+    // const achievementProgressText = "75% of your weekly goal is complete"
+    // const achievementProgress = 75
 
-    return(
-      <ScrollView style={styles.container}>
-        {/* Header */}
-        <View style={styles.headerContainer}>
-          <Text style={[styles.header, {color: colors.text}]}>Fitness</Text>
-        </View>
+    // return(
+    //   <ScrollView style={styles.container}>
+    //     {/* Header */}
+    //     <View style={styles.headerContainer}>
+    //       <Text style={[styles.header, {color: colors.text}]}>Fitness</Text>
+    //     </View>
 
-        {/* Achievements */}
-        {/*
-        <AchievementBubble achievementName={achievementName}
-                          achievementProgress={achievementProgress}
-                          achievementProgressText={achievementProgressText}/>
+    //     {/* Achievements */}
+    //     <AchievementBubble achievementName={achievementName}
+    //                       achievementProgress={achievementProgress}
+    //                       achievementProgressText={achievementProgressText}/>
 
-        */}
-          {/* Task List */}
-        <View style={styles.tasks}>
-          {taskLabels.map((item, index) => (
-            <View style={styles.taskButton} key={index} >
-              <TouchableOpacity onPress={() => handlePress(item)} style={styles.taskButtonContents}>
-                <View style={{justifyContent: 'center'}}>
-                  <Text style={[styles.buttonText, {color: colors.text}]}>{item.label}</Text>
-                </View>
-                <View style={styles.cardArrowContainer}>
-                    <MaterialIcons name="keyboard-arrow-right" size={24} color="white" />
-                </View>
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
 
-      </ScrollView>
-    )
-  }
+    //       {/* Task List */}
+    //     <View style={styles.tasks}>
+    //       {taskLabels.map((item, index) => (
+    //         <View style={styles.taskButton} key={index} >
+    //           <TouchableOpacity onPress={() => handlePress(item)} style={styles.taskButtonContents}>
+    //             <View style={{justifyContent: 'center'}}>
+    //               <Text style={[styles.buttonText, {color: colors.text}]}>{item.label}</Text>
+    //             </View>
+    //             <View style={styles.cardArrowContainer}>
+    //                 <MaterialIcons name="keyboard-arrow-right" size={24} color="white" />
+    //             </View>
+    //           </TouchableOpacity>
+    //         </View>
+    //       ))}
+    //     </View>
+
+    //   </ScrollView>
+    // )
+
+  //}
 
 const styles = StyleSheet.create({
   
@@ -249,3 +285,4 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   });
+

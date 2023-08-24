@@ -13,6 +13,8 @@ export default function Register({navigation}){
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [createUser, { data, loading, error }] = useMutation(gql`${mutations.createUser}`);
+  const [createUserStats, { data : dataCreateStats, loading : loadingCreateStats, error : errorCreateStats}] = useMutation(gql`${mutations.createUserStats}`);
+
   if (loading) console.log('Submitting...');
   if (error) console.log(`Submission error! ${error.message}`);
   const handleRegister = () => {
@@ -29,6 +31,14 @@ export default function Register({navigation}){
       createUser({ variables : {input : input} })
       navigation.navigate("Main")
     }
+    const statsInput = {
+      id: `stats-${global.userId}`,
+      mindfulMinutes: 0,
+      meditationStreak: 0,
+      workoutsCompleted: 0
+    }
+
+    createUserStats({ variables : {input : statsInput} })
   };
 
   return (

@@ -16,6 +16,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink } fro
 import { Amplify, Auth } from 'aws-amplify';
 import { AuthLink, createAuthLink } from "aws-appsync-auth-link"
 import awsconfig from '../Users/zachbreger/Desktop/gymind/gymind-app/src /aws-exports.js'
+import { onError } from "@apollo/client/link/error";
 Amplify.configure(awsconfig);
 
 
@@ -43,6 +44,16 @@ const awsGraphqlFetch = async(uri, options) => {
 };
 */
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+      ),
+    );
+
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
 
 const awsLink = new AuthLink({
   url: awsconfig.aws_appsync_graphqlEndpoint,
@@ -63,6 +74,7 @@ const awsLink = new AuthLink({
 });
 
 const link = ApolloLink.from([
+  errorLink,
   awsLink,
   httpLink
 ])
@@ -70,9 +82,44 @@ const link = ApolloLink.from([
 
 const client = new ApolloClient({
   link: link,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    typePolicies: {
+      Exercise: {
+        keyFields: false
+      },
+      Workout: {
+        keyFields: false,
+        fields: {
+          exercises: { // Non-normalized Author object within Book
+            merge(existing, incoming, { mergeObjects }) {
+              return existing;
+            },
+          },
+        },
+      },
+      ProgramWeek: {
+        keyFields: false,
+        fields: {
+          workouts: { // Non-normalized Author object within Book
+            merge(existing, incoming, { mergeObjects }) {
+              return existing;
+            },
+          },
+        },
+      },
+      Program: {
+        
+      },
+      User : {
+        keyField: ["id"]
+      },
+      ExerciseLog : {
+        keyField: ["id"]
+      }
+    },
+  })
 });
-
+client.resetStore() 
 export default function App() {
   
   return (
@@ -108,3 +155,4 @@ export default function App() {
 
   );
  }
+

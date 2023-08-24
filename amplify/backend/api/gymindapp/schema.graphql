@@ -35,16 +35,10 @@ type MeditationSection @model {
 
 type MeditationEntry @model {
   id: ID!
-  meditationList: MeditationList @belongsTo
   video: String!
   author: String!
   image: String!
   sections: [MeditationSection] @hasMany
-}
-
-type MeditationList @model {
-  id: ID!
-  meditationEntries: [MeditationEntry!]! @hasMany
 }
 
 
@@ -65,21 +59,96 @@ type User @model {
   email: String!
   password: String!
   profilePicture: String
-  dailyTasks: [DailyTask]
-  meditationStats: UserMeditationStats
+  dailyTasks: [DailyTask] @hasMany
+  userStats: UserStats @hasOne
+  exerciseLogs: [ExerciseLog] @hasMany
+  currentProgram: String
 }
 
-type UserList @model {
-  id: ID!
-  users: [User!]!
-}
 
 
 """
 Meditation stats
 """
-type UserMeditationStats @model {
+type UserStats @model {
   id: ID!
-  mindfulMinutes: Int!
-  meditationStreak: Int!
+  user: User @belongsTo
+  mindfulMinutes: Int
+  meditationStreak: Int
+  workoutsCompleted: Int
+}
+
+"""
+Workout queries 
+"""
+
+type ExerciseEntry @model {
+  id: ID!
+  repsCompleted: Int
+  weight: Float
+  dateCompleted: String
+  workout: String
+  programWeek: String
+  program: String
+}
+
+type ExerciseLog @model {
+  id: ID!
+  user: User @belongsTo
+  exercise: String!
+  entries: [ExerciseEntry] @hasMany
+  entryLabels: [String]
+}
+
+type Exercise @model {
+  id: ID!
+  workout: Workout @belongsTo
+  name: String!
+  sets: Int!
+  RIR: String!
+  restMinutes: Float!
+  repRange: String!
+  exerciseNum: Int!
+}
+
+type Workout @model {
+  id: ID!
+  programWeek: ProgramWeek @belongsTo
+  workoutNumber: Int!
+  title: String!
+  status: String!
+  exercises: [Exercise!]! @hasMany
+  exerciseLabels: [String]
+}
+
+type ProgramWeek @model {
+  id: ID!
+  program: Program @belongsTo
+  weekNumber: Int!
+  workouts: [Workout!]! @hasMany
+  workoutLabels: [String]
+}
+
+type Program @model {
+  id: ID!
+  author: String!
+  image: String!
+  title: String!
+  introVideo: String!
+  weeks: [ProgramWeek!]! @hasMany
+}
+
+"""
+General Stats
+
+usersMeditating: list of users
+timesMeditating: list of times upon listening
+meditationEntryListenMinutes: list of minutes listened entries
+  Form: {entry}::{minutes}
+"""
+type GeneralStats @model {
+  id: ID!
+  usersMeditating: [String]
+  timesMeditating: [String]
+  meditationEntryListenMinutes: [String]
 }

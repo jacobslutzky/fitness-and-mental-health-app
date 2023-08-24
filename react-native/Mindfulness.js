@@ -54,7 +54,7 @@ export default function Mindfulness() {
                 </View>
             )}
       {data && videoCards.map((item, index) => (
-        <VideoCard item={item} index={index} />
+        <VideoCard key={item + index} item={item} index={index} />
       ))}
       </ScrollView>
         {/*

@@ -5,8 +5,9 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useQuery, gql, useMutation } from "@apollo/client";
 import * as queries from "../src/graphql/queries";
+import { Colors } from './constants/Colors';
 
-export default function Profile() {
+export default function Profile({navigation}) {
   const colors = useTheme().colors;
   const Tab = createMaterialTopTabNavigator();
   const leaders = [
@@ -25,6 +26,14 @@ export default function Profile() {
   const { data, loading, error } = useQuery(gql`${queries.getUser}`, {
     variables: { id: global.userId}
   }); 
+
+  const { data : dataGetStats, loading : loadingGetStats, error : errorGetStats } = useQuery(gql`${queries.getUserStats}`, {
+    variables: { id: `stats-${global.userId}`}
+}); 
+
+  const navigateToLogin = () => {
+    navigation.navigate("Login")
+  }
 
 
   
@@ -84,22 +93,26 @@ export default function Profile() {
         <View style={styles.statsContainer}>
           <View style={styles.stat}>
           <FontAwesome5 name="brain" size={25} color={"white"} />
-            <Text style={{ color: colors.text }}>0</Text>
+            <Text style={{ color: colors.text }}>{dataGetStats && dataGetStats.getUserStats ? dataGetStats.getUserStats.mindfulMinutes : 0}</Text>
             <Text style={styles.statsText}>Mindful{"\n"}Minutes</Text>
           </View>
           <View style={styles.stat}>
             <FontAwesome5 name="fire" size={25} color="white" />
-            <Text style={{ color: colors.text }}>0</Text>
+            <Text style={{ color: colors.text }}>{dataGetStats && dataGetStats.getUserStats ? dataGetStats.getUserStats.workoutsCompleted : 0}</Text>
             <Text style={styles.statsText}>Workouts{"\n"}Completed</Text>
           </View>
           
           <View style={styles.stat}>
           <MaterialCommunityIcons name="meditation" size={25} color="white" />
-            <Text style={{ color: colors.text }}>0</Text>
+            <Text style={{ color: colors.text }}>{dataGetStats && dataGetStats.getUserStats ? dataGetStats.getUserStats.meditationStreak : 0}</Text>
             <Text style={styles.statsText}>Meditation{"\n"}Streak</Text>
           </View>
-        
         </View>
+        <View style={styles.signoutContainer}>
+            <TouchableOpacity style={styles.bottomButton} onPress={() => navigateToLogin()} >
+                    <Text style={styles.buttonText} > Sign Out </Text>
+            </TouchableOpacity>
+          </View>
         {/*
         <View style={styles.leaderboardHeader}>
           <Text style={[styles.sectionName, { color: colors.text }]}>Leaderboard</Text>
@@ -307,5 +320,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: 'auto'
   },
+  bottomButton: {
+    width: "40%",
+    height: 50,
+    backgroundColor: Colors.primary,
+    borderRadius: 6,
+    justifyContent: 'center',
+    textAlign: 'center',
+    alignItems: 'center'
+  },
+  signoutContainer : {
+    marginTop: 50,
+    justifyContent: "center",
+    alignItems: 'center'
+  }
 
 });
