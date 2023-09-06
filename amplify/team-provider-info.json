@@ -58,5 +58,26 @@
       "StackId": "arn:aws:cloudformation:us-east-1:140531166314:stack/amplify-gymindapp-prod-120055/e5ec0860-c993-11ed-b88a-0a417ec1938b",
       "AmplifyAppId": "d2f2h7ebk4cluy"
     }
+  },
+  "transfer": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-gymindapp-transfer-152726-authRole",
+      "UnauthRoleArn": "arn:aws:iam::156097976504:role/amplify-gymindapp-transfer-152726-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::156097976504:role/amplify-gymindapp-transfer-152726-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-gymindapp-transfer-152726-deployment",
+      "UnauthRoleName": "amplify-gymindapp-transfer-152726-unauthRole",
+      "StackName": "amplify-gymindapp-transfer-152726",
+      "StackId": "arn:aws:cloudformation:us-east-2:156097976504:stack/amplify-gymindapp-transfer-152726/3f98c680-4c22-11ee-9420-0a2f3bc86441",
+      "AmplifyAppId": "d236lv25cvdkie"
+    },
+    "categories": {
+      "auth": {
+        "gymindapp5417cbae": {}
+      },
+      "api": {
+        "gymindapp": {}
+      }
+    }
   }
 }
