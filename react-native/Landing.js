@@ -1,12 +1,12 @@
 import { useTheme } from '@react-navigation/native';
-import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Colors } from './constants/Colors';
 
 
 export default function Login({navigation}) {
     const colors = useTheme().colors
     const handleLogin = () => {
-        navigation.navigate("Main")
+        navigation.navigate("Login")
       }
       const handleRegister = () => {
         navigation.navigate("Register")
@@ -15,7 +15,6 @@ export default function Login({navigation}) {
         <View style={styles.container}>
          <Image style = {styles.buffalo} source={require('../assets/buffalo.png')} />
          <Text style = {[styles.gymind, {color:colors.text}]}>GYMIND</Text>
-          <Text style={styles.title}>Login</Text>
           <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
@@ -24,10 +23,6 @@ export default function Login({navigation}) {
           </TouchableOpacity>
         </View>
       );
-
-    
-  
-  
   
   }
   const styles = StyleSheet.create({
@@ -77,12 +72,12 @@ export default function Login({navigation}) {
     },
     gymind: {
         fontSize: 40,
-        
+        marginBottom: 40
     },
     register: {
       alignSelf: "center",
 
-      paddingTop: 100,
+      paddingTop: 50,
       
       fontSize: 20
     }

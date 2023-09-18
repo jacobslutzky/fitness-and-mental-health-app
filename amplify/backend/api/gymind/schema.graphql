@@ -1,0 +1,154 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+type Blog @model {
+  id: ID!
+  name: String!
+  posts: [Post!] @hasMany
+}
+
+type Post @model {
+  id: ID!
+  title: String!
+  blog: Blog @belongsTo
+  comments: [Comment!] @hasMany
+}
+
+type Comment @model {
+  id: ID!
+  post: Post @belongsTo
+  content: String!
+}
+
+"""
+Meditation queries 
+"""
+
+type MeditationSection @model {
+  id: ID!
+  meditation: MeditationEntry @belongsTo
+  title: String!
+  description: String!
+  time: Int!
+}
+
+type MeditationEntry @model {
+  id: ID!
+  video: String!
+  author: String!
+  image: String!
+  sections: [MeditationSection] @hasMany
+}
+
+
+"""
+User queries 
+"""
+type DailyTask @model {
+  id: ID!
+  label: String!
+  screen: String!
+  icon: String!
+}
+
+type User @model {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  profilePicture: String
+  dailyTasks: [DailyTask] @hasMany
+  userStats: UserStats @hasOne
+  exerciseLogs: [ExerciseLog] @hasMany
+  currentProgram: String
+}
+
+
+
+"""
+Meditation stats
+"""
+type UserStats @model {
+  id: ID!
+  user: User @belongsTo
+  mindfulMinutes: Int
+  meditationStreak: Int
+  workoutsCompleted: Int
+}
+
+"""
+Workout queries 
+"""
+
+type ExerciseEntry @model {
+  id: ID!
+  repsCompleted: Int
+  weight: Float
+  dateCompleted: String
+  workout: String
+  programWeek: String
+  program: String
+}
+
+type ExerciseLog @model {
+  id: ID!
+  user: User @belongsTo
+  exercise: String!
+  entries: [ExerciseEntry] @hasMany
+  entryLabels: [String]
+}
+
+type Exercise @model {
+  id: ID!
+  workout: Workout @belongsTo
+  name: String!
+  sets: Int!
+  RIR: String!
+  restMinutes: Float!
+  repRange: String!
+  exerciseNum: Int!
+}
+
+type Workout @model {
+  id: ID!
+  programWeek: ProgramWeek @belongsTo
+  workoutNumber: Int!
+  title: String!
+  status: String!
+  exercises: [Exercise!]! @hasMany
+  exerciseLabels: [String]
+}
+
+type ProgramWeek @model {
+  id: ID!
+  program: Program @belongsTo
+  weekNumber: Int!
+  workouts: [Workout!]! @hasMany
+  workoutLabels: [String]
+}
+
+type Program @model {
+  id: ID!
+  author: String!
+  image: String!
+  title: String!
+  introVideo: String!
+  weeks: [ProgramWeek!]! @hasMany
+}
+
+"""
+General Stats
+
+usersMeditating: list of users
+timesMeditating: list of times upon listening
+meditationEntryListenMinutes: list of minutes listened entries
+  Form: {entry}::{minutes}
+"""
+type GeneralStats @model {
+  id: ID!
+  usersMeditating: [String]
+  timesMeditating: [String]
+  meditationEntryListenMinutes: [String]
+}

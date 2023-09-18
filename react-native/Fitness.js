@@ -1,4 +1,4 @@
-import { StyleSheet, Image, ImageBackground, TouchableOpacity, Text, View, TextBase } from 'react-native';
+import { ScrollView, StyleSheet, Image, ImageBackground, TouchableOpacity, Text, View, TextBase } from 'react-native';
 import { NavigationContainer, useTheme } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Colors } from './constants/Colors';
@@ -6,181 +6,97 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { AntDesign } from '@expo/vector-icons'; 
 import { FontAwesome } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import AchievementBubble from './components/AchievementBubble';
+import SelectWorkoutProgram from './SelectWorkoutProgram';
+import WorkoutProgramInfo from './WorkoutProgramInfo';
+import PreviewSplit from './PreviewSplit';
+import CurrentProgram from './CurrentProgram';
+import DuringWorkout from './DuringWorkout';
+import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client';
+import { useQuery, gql, useMutation } from "@apollo/client";
+import * as queries from "../src/graphql/queries";
+
+const Stack = createStackNavigator();
+
+export default function Fitness({route, navigation}) {
+        colors = useTheme().colors
 
 
-export default function Fitness({navigation}) {
-    const colors = useTheme().colors;
-    const Tab = createMaterialTopTabNavigator();
-    const Stack = createStackNavigator();
-
-   
-    const MyTheme = {
-
-      colors: {
-        primary: Colors.primary,
-        background: Colors.background,
-        text: Colors.text,
-        card: 'rgb(255, 255, 255)',
-        border: 'rgb(199, 199, 204)',
-        notification: 'rgb(255, 69, 58)',
-      },
-    };
-
-    const communityCards = [
-      {title: "20-minute guided meditation", author: "Nama Ste", img: require('../assets/calebCommunity.jpg'), time: "20 min", stars: "4.7"},
-      {title: "10-minute affirmation therapy", author: "Caleb Saks", img: require('../assets/calebCommunity2.jpg'), time: "10 min", stars: "4.9"},
-    ]
-
-    const renderTabBar = props => (
-      <TabBar
-        {...props}
-        style={{ backgroundColor: 'black' }}
-      />
-    );
-    
-    const FirstRoute = () => (
-      <View style={styles.cardsContainer}>
-      {communityCards.map((item, index) => (
-        <View style={[styles.communityCard]} key={index} >
-          <ImageBackground source = {item.img}>
-          <TouchableOpacity style={{position: 'relative', height: "100%"}} onPress={() => handlePress(item)}>
-            <View style={styles.cardTimeContainer}>
-              <Text style={styles.cardTimeText}>{item.time}</Text>
-            </View>
-            <View style={styles.cardHeartContainer}>
-              <AntDesign name="heart" size={13} color="white" />
-            </View>
-            <View style={styles.cardStarsContainer}>
-              <FontAwesome name="star" size={15} color="white" style = {{marginLeft: 10}}/>
-              <Text style={styles.cardStarsText}>{item.stars}</Text>
-            </View>
-            <View style={styles.cardBottom}>
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardAuthor}>{item.author}</Text>
-            </View>
-          </TouchableOpacity>
-          </ImageBackground>
-        </View>
-      ))}
-      </View>
-    );
-    const SecondRoute = () => (
-      <View style={styles.cardsContainer}>
-      {communityCards.map((item, index) => (
-        <View style={[styles.communityCard]} key={index} >
-          <ImageBackground source = {item.img}>
-          <TouchableOpacity style={{position: 'relative', height: "100%"}} onPress={() => handlePress(item)}>
-            <View style={styles.cardTimeContainer}>
-              <Text style={styles.cardTimeText}>{item.time}</Text>
-            </View>
-            <View style={styles.cardHeartContainer}>
-              <AntDesign name="heart" size={13} color="white" />
-            </View>
-            <View style={styles.cardStarsContainer}>
-              <FontAwesome name="star" size={15} color="white" style = {{marginLeft: 10}}/>
-              <Text style={styles.cardStarsText}>{item.stars}</Text>
-            </View>
-            <View style={styles.cardBottom}>
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardAuthor}>{item.author}</Text>
-            </View>
-          </TouchableOpacity>
-          </ImageBackground>
-        </View>
-      ))}
-      </View>
-    );
-    const ThirdRoute = () => (
-      <View style={styles.cardsContainer}>
-      {communityCards.map((item, index) => (
-        <View style={[styles.communityCard]} key={index} >
-          <ImageBackground source = {item.img}>
-          <TouchableOpacity style={{position: 'relative', height: "100%"}} onPress={() => handlePress(item)}>
-            <View style={styles.cardTimeContainer}>
-              <Text style={styles.cardTimeText}>{item.time}</Text>
-            </View>
-            <View style={styles.cardHeartContainer}>
-              <AntDesign name="heart" size={13} color="white" />
-            </View>
-            <View style={styles.cardStarsContainer}>
-              <FontAwesome name="star" size={15} color="white" style = {{marginLeft: 10}}/>
-              <Text style={styles.cardStarsText}>{item.stars}</Text>
-            </View>
-            <View style={styles.cardBottom}>
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardAuthor}>{item.author}</Text>
-            </View>
-          </TouchableOpacity>
-          </ImageBackground>
-        </View>
-      ))}
-      </View>
-    );
-    state = {
-      index: 0,
-      routes: [
-        { key: 'first', title: 'Workouts' },
-        { key: 'second', title: 'Yoga' },
-        { key: 'third', title: 'Favorites' },
-      ],
-    };
-
-
-    const navigateToWorkouts = () => {
-      navigation.navigate("FitnessWorkouts")
-    }
-
-    const navigateToYoga = () => {
-      navigation.navigate("FitnessYoga")
-    }
-
-    const navigateToFavorites = () => {
-      navigation.navigate("FitnessFavorites")
-    }
-
-
-    return(
-      <View style={styles.container}>
-        {/* Header */}
-        <View style={styles.headerContainer}>
-          <Text style={[styles.header, {color: colors.text}]}>Fitness</Text>
-        </View>
-
-        {/* Achievements */}
-        <View style={styles.achievementBubbleContainer}>
-          <View style={styles.achievementBubble}>
-            <Text style={styles.achievementName}>You've done 3 workouts this week!</Text>
-            <Text style={styles.achievementProgressText}>75% of your weekly goal is complete.</Text>
-
-            {/* Progress Bar */}
-            <View style={styles.progressBarContainer}>
-              <View style={styles.progressBarOuter}>
-                <View style={styles.progressBarInner}>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.redirectContainer}>
-        <TouchableOpacity style={styles.button} onPress={navigateToWorkouts}>
-            <Text style={styles.buttonText}>Workouts</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={navigateToYoga}>
-            <Text style={styles.buttonText}>Yoga</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={navigateToFavorites}>
-            <Text style={styles.buttonText}>Favorites</Text>
-          </TouchableOpacity>
-        </View>
-
-      </View>
-    )
-    
+        return (
+      
+          <Stack.Navigator cardStyle= {{height: "100%"}} screenOptions={{headerShown: false, headerStyle: {
+             backgroundColor: colors.background
+          }, headerBackTitle: "Back"
+          }}> 
+          <Stack.Screen name = "SelectWorkoutProgram" component={SelectWorkoutProgram} />
+          <Stack.Screen name = "CurrentProgram" component={CurrentProgram}/>
+              <Stack.Screen name = "WorkoutProgramInfo" component={WorkoutProgramInfo} options={{ title: "",
+                headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
+              }}/>
+              <Stack.Screen name = "PreviewSplit" component={PreviewSplit} options={{ title: "Preview Split",
+                headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
+              }}/>
+              <Stack.Screen name = "DuringWorkout" component={DuringWorkout} options={{ title: "",
+                headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
+              }}/>
+            </Stack.Navigator>
+         
+          
+          
+        );
+      }
   
-  
-  
-  }
+    // const colors = useTheme().colors;
+
+    // const handlePress = ( item ) => {
+    //   navigation.navigate(item.screen);
+    // }
+
+
+    // const taskLabels = [
+    //   {label: "Workouts", screen: "FitnessWorkouts"},
+    //   {label: "Yoga", screen: "FitnessYoga"},
+    //   {label: "Favorites", screen: "FitnessFavorites"},
+    // ]
+
+    // const achievementName = "You've done 3 workouts this week!"
+    // const achievementProgressText = "75% of your weekly goal is complete"
+    // const achievementProgress = 75
+
+    // return(
+    //   <ScrollView style={styles.container}>
+    //     {/* Header */}
+    //     <View style={styles.headerContainer}>
+    //       <Text style={[styles.header, {color: colors.text}]}>Fitness</Text>
+    //     </View>
+
+    //     {/* Achievements */}
+    //     <AchievementBubble achievementName={achievementName}
+    //                       achievementProgress={achievementProgress}
+    //                       achievementProgressText={achievementProgressText}/>
+
+
+    //       {/* Task List */}
+    //     <View style={styles.tasks}>
+    //       {taskLabels.map((item, index) => (
+    //         <View style={styles.taskButton} key={index} >
+    //           <TouchableOpacity onPress={() => handlePress(item)} style={styles.taskButtonContents}>
+    //             <View style={{justifyContent: 'center'}}>
+    //               <Text style={[styles.buttonText, {color: colors.text}]}>{item.label}</Text>
+    //             </View>
+    //             <View style={styles.cardArrowContainer}>
+    //                 <MaterialIcons name="keyboard-arrow-right" size={24} color="white" />
+    //             </View>
+    //           </TouchableOpacity>
+    //         </View>
+    //       ))}
+    //     </View>
+
+    //   </ScrollView>
+    // )
+
+  //}
 
 const styles = StyleSheet.create({
   
@@ -188,7 +104,7 @@ const styles = StyleSheet.create({
       flex: 1,
       marginTop: 20,
       justifyCoontent: 'center',
-      alignIterms: 'center'
+      alignIterms: 'center',
     },
     tabsContainer: {
       marginTop: 10,
@@ -283,7 +199,6 @@ const styles = StyleSheet.create({
       height: 125,
       width: "95%",
       borderRadius: 20,
-      alignItems: 'left',
       justifyContent: 'center',
     },
     achievementBubbleContainer : {
@@ -320,18 +235,54 @@ const styles = StyleSheet.create({
       paddingTop: 15
     },
     button: {
-      width: "25%",
-      height: 50,
+      width: "95%",
+      height: 100,
       backgroundColor: Colors.primary,
-      borderRadius: 6,
+      borderRadius: 15,
       justifyContent: 'center',
       alignItems: 'center',
       margin: 10
     },
     redirectContainer : {
-      flexDirection: 'row',
+      flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      marginTop: 50
-    }
+      marginTop: 0
+    },
+    buttonText : {
+      fontSize: 40
+    },
+    tasks: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: "column",
+      marginTop: 15,
+    },
+    taskButton: {
+      textAlign: "center",
+      justifyContent: "center",
+      backgroundColor: "#4c4c4c",
+      height: 90,
+      width: '95%',
+      borderRadius: 20,
+      marginVertical: 15,
+    },
+    buttonText : {
+      marginLeft: 15,
+      fontSize: 25,
+      textAlign: 'center',
+      
+    },
+  cardArrowContainer : {
+    height: 40,
+    width: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 'auto'
+  },
+
+  taskButtonContents : {
+    flexDirection: 'row',
+  },
   });
+

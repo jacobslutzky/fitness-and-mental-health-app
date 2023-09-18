@@ -1,15 +1,44 @@
 import React, { useState } from 'react';
 import { View, Image, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { useTheme } from '@react-navigation/native';
+import { useQuery, gql, useMutation } from "@apollo/client";
+import * as mutations from "../src/graphql/mutations";
+import * as queries from "../src/graphql/queries";
 
 export default function Register({navigation}){
   colors = useTheme().colors;
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [createUser, { data, loading, error }] = useMutation(gql`${mutations.createUser}`);
+  const [createUserStats, { data : dataCreateStats, loading : loadingCreateStats, error : errorCreateStats}] = useMutation(gql`${mutations.createUserStats}`);
 
+  if (loading) console.log('Submitting...');
+  if (error) console.log(`Submission error! ${error.message}`);
   const handleRegister = () => {
-    navigation.navigate("Main")
+    const input = {
+      id: email,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      profilePicture: 'buffalo.png',
+    }
+    if(email && firstName && lastName && email && password == confirmPassword){
+      global.userId = email
+      createUser({ variables : {input : input} })
+      navigation.navigate("Main")
+    }
+    const statsInput = {
+      id: `stats-${global.userId}`,
+      mindfulMinutes: 0,
+      meditationStreak: 0,
+      workoutsCompleted: 0
+    }
+
+    createUserStats({ variables : {input : statsInput} })
   };
 
   return (
@@ -20,20 +49,21 @@ export default function Register({navigation}){
       <TextInput
         style={styles.nameInput}
         placeholder="First Name"
-        value={name}
-        onChangeText={setName}
+        value={firstName}
+        onChangeText={setFirstName}
       />
       <TextInput
         style={styles.nameInput}
         placeholder="Last Name"
-        value={name}
-        onChangeText={setName}
+        value={lastName}
+        onChangeText={setLastName}
       />
       </View>
       <TextInput
         style={styles.input}
         placeholder="Email"
         value={email}
+        autoCapitalize='none'
         onChangeText={setEmail}
         keyboardType="email-address"
       />
@@ -41,14 +71,16 @@ export default function Register({navigation}){
         style={styles.input}
         placeholder="Password"
         value={password}
+        autoCapitalize='none'
         onChangeText={setPassword}
         secureTextEntry
       />
       <TextInput
         style={styles.input}
         placeholder="Repeat Password"
-        value={password}
-        onChangeText={setPassword}
+        value={confirmPassword}
+        autoCapitalize='none'
+        onChangeText={setConfirmPassword}
         secureTextEntry
       />
       <TouchableOpacity style={[styles.button, {backgroundColor:colors.primary}]} onPress={handleRegister}>

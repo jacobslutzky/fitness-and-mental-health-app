@@ -2,7 +2,7 @@
 export const Colors = {
     primary: '#CFB87C',
     secondary: '#white',
-    background: 'black',
+    background: '#101214',
     text: 'white',
     disabled: '#CCCCCC',
   };

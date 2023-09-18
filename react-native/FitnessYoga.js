@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
-import { StyleSheet, Image, ImageBackground, TouchableOpacity, Text, View, TextBase } from 'react-native';
-import { NavigationContainer, useTheme } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Colors } from './constants/Colors';
-import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import { ScrollView, StyleSheet, TouchableOpacity, Text, View } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Ionicons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons'; 
-import { FontAwesome } from '@expo/vector-icons';
+import VideoCard from './components/VideoCard';
+
 
 export default function FitnessYoga({navigation}){
     const colors = useTheme().colors;
@@ -28,30 +25,11 @@ export default function FitnessYoga({navigation}){
       ]
       
       const FirstRoute = () => (
-        <View style={styles.cardsContainer}>
+        <ScrollView contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}} style={styles.cardsContainer}>
         {communityCards.map((item, index) => (
-          <View style={[styles.communityCard]} key={index} >
-            <ImageBackground source = {item.img}>
-            <TouchableOpacity style={{position: 'relative', height: "100%"}} onPress={() => handlePress(item)}>
-              <View style={styles.cardTimeContainer}>
-                <Text style={styles.cardTimeText}>{item.time}</Text>
-              </View>
-              <View style={styles.cardHeartContainer}>
-                <AntDesign name="heart" size={13} color="white" />
-              </View>
-              <View style={styles.cardStarsContainer}>
-                <FontAwesome name="star" size={15} color="white" style = {{marginLeft: 10}}/>
-                <Text style={styles.cardStarsText}>{item.stars}</Text>
-              </View>
-              <View style={styles.cardBottom}>
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.cardAuthor}>{item.author}</Text>
-              </View>
-            </TouchableOpacity>
-            </ImageBackground>
-          </View>
+          <VideoCard item={item} index={index} />
         ))}
-        </View>
+        </ScrollView>
       );
 
       state = {
@@ -103,7 +81,7 @@ const styles = StyleSheet.create({
         alignIterms: 'center'
       },
     button: {
-      width: 40,
+      width: '35%',
       height: 40,
       borderRadius: 6,
       justifyContent: 'center',
@@ -120,16 +98,12 @@ const styles = StyleSheet.create({
       header : {
         fontSize: 40,
         fontWeight: 'bold',
-        position: 'absolute',
-        right: '40%',
         marginTop: 50
       },
       scene: {
         flex: 1,
       },
       cardsContainer : {
-        alignItems: 'center',
-        justifyContent: 'center',
         marginTop: 40,
       },
       communityCard : {
