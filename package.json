@@ -18,7 +18,7 @@
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
     "amazon-cognito-identity-js": "^6.2.0",
-    "aws-amplify": "^5.3.4",
+    "aws-amplify": "^5.3.11",
     "aws-amplify-react": "^5.1.43",
     "aws-appsync-auth-link": "^3.0.7",
     "babel-plugin-transform-async-to-generator": "^6.24.1",

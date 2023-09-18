@@ -1,17 +1,17 @@
 {
-  "providers": [
-    "awscloudformation"
-  ],
-  "projectName": "gymindapp",
+  "projectName": "Gymind",
   "version": "3.1",
   "frontend": "javascript",
   "javascript": {
     "framework": "react-native",
     "config": {
-      "SourceDir": "/Users/zachbreger/Desktop/gymind/gymind-app/src ",
+      "SourceDir": "src",
       "DistributionDir": "/",
-      "BuildCommand": "node build",
-      "StartCommand": "npx expo"
+      "BuildCommand": "npm run-script build",
+      "StartCommand": "npm run-script start"
     }
-  }
+  },
+  "providers": [
+    "awscloudformation"
+  ]
 }
