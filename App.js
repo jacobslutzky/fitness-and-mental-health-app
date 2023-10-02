@@ -17,9 +17,10 @@ import { Amplify, Auth } from 'aws-amplify';
 import { AuthLink, createAuthLink } from "aws-appsync-auth-link"
 import awsmobile from './src/aws-exports.js'
 import { onError } from "@apollo/client/link/error";
+import { Ionicons } from '@expo/vector-icons';
+
 
 Amplify.configure(awsmobile);
-
 
 const Stack = createStackNavigator();
 
@@ -123,20 +124,22 @@ const client = new ApolloClient({
 client.resetStore() 
 export default function App() {
   
-  return (
+  return ( 
     <ApolloProvider client={client}>
       <NavigationContainer theme = {MyTheme}>
         <Stack.Navigator cardStyle= {{height: "100%"}} screenOptions={{headerShown: false, headerStyle: {
           backgroundColor: MyTheme.colors.background
-        }, headerBackTitle: "Back"
+        }, headerBackTitle: "Back",headerBackImage: () => (
+          <Ionicons name="arrow-back" size={24} marginLeft={"10%"} color={Colors.primary}/>
+        ),
         }}> 
             <Stack.Screen name="Landing" component={Landing} />
             <Stack.Screen name="Main" component={Main} />
             <Stack.Screen name = "Register" component={Register} options={{
-              headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back", title: ""
+              headerShown:true,  headerShadowVisible: false, title: ""
             }}/>
             <Stack.Screen name = "Login" component={Login} options={{
-              headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back",  title: ""
+              headerShown:true,  headerShadowVisible: false,  title: "",
             }}/>
             <Stack.Screen name = "FitnessWorkouts" component={FitnessWorkouts}/>
             <Stack.Screen name = "FitnessYoga" component={FitnessYoga}/>

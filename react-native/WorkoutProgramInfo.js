@@ -64,61 +64,45 @@ export default function WorkoutProgramInfo({route, navigation}){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: "column",
-        marginHorizontal: 10,
-        marginTop: 20
-        
+        paddingHorizontal: 20, // Add horizontal padding for better alignment
+        paddingTop: 20, // Add top padding to create space
+        backgroundColor: Colors.background,
+        gap: 30
     },
-    headerContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-      programName: {
+    programName: {
         color: "white",
         alignSelf: "center",
-        fontSize: 30,
+        fontSize: 35,
         fontWeight: 'bold',
-        paddingVertical: 30,
-        textAlign: "center"
-    
-    },
-    button: {
-      width: "50%",
-      marginHorizontal: 20,
-      height: 50,
-      backgroundColor: Colors.primary,
-      borderRadius: 6,
-      justifyContent: 'center',
-      marginVertical: 5
-    },
-    buttonText: {
-        fontSize: 15,
-        alignSelf: "center"
-    },
-    description: {
-        color: "white",
-        alignSelf: "center",
-        fontSize: 18,
-        marginBottom: 10
-    },
-    buttonContainer: {
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-        marginHorizontal : 20, 
-        marginVertical: 20
+        textAlign: "center",
     },
     imageContainer: {
-        textAlign: 'center',
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
         height: 200,
-        marginBottom: 30
     },
-    image : {
-        width: "80%",
-        height: "100%"
-    }
-})
+    image: {
+        width: "100%",
+        height: "100%",
+    },
+    description: {
+        color: "white",
+        fontSize: 18,
+    },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    button: {
+        width: "45%", // Adjust the width for better alignment
+        height: 50,
+        backgroundColor: Colors.primary,
+        borderRadius: 6,
+        justifyContent: 'center',
+    },
+    buttonText: {
+        fontSize: 15,
+        alignSelf: "center",
+    },
+});

@@ -212,7 +212,7 @@ const Exercise = (props) => {
         <View>
         <Text style={{color: colors.text}}>{data ? data.getExercise.name : ""}</Text>
         
-        <Text style={{color: "grey"}}>{data ? data.getExercise.sets : ""} sets x 5-7,8-10</Text>
+        <Text style={{color: "grey"}}>{data ? data.getExercise.sets : ""} sets x 5-7, 8-10 reps</Text>
         {Array(data ? data.getExercise.sets : 10).fill().map((item, index) => (
             <Set key={index} index={index} updateReps={updateReps} updateWeights={updateWeights} handleSubmit={handleSubmit} colors={colors} lastEntries={lastEntries} exercise={data.getExercise.name}/>
         ))}

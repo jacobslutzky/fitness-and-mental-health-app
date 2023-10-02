@@ -32,7 +32,7 @@ export default function Profile({navigation}) {
 }); 
 
   const navigateToLogin = () => {
-    navigation.navigate("Login")
+    navigation.popToTop()
   }
 
 
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10
+    marginTop: 10,
   },
   stat: {
     flexDirection: "column",

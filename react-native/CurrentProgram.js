@@ -121,7 +121,7 @@ export default function CurrentProgram({ navigation, route }) {
                 <View style={{ flexDirection: "column", marginTop: 20 }}>
                     {
                         dataR ? dataR.getProgramWeek.workoutLabels.map((workout, index) => (
-                            <Workout key={workout} dataR={dataR} title={title} workout={workout} togglePopup={togglePopup} workoutBeingPreviewed={workoutBeingPreviewed} index={index}></Workout>
+                            <Workout key={workout} dataR={dataR} title={title} workout={workout} togglePopup={togglePopup} workoutBeingPreviewed={workoutBeingPreviewed} index={index+1}></Workout>
                         ))
                         : <View></View>
                     }

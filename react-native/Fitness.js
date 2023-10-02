@@ -16,6 +16,7 @@ import DuringWorkout from './DuringWorkout';
 import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client';
 import { useQuery, gql, useMutation } from "@apollo/client";
 import * as queries from "../src/graphql/queries";
+import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createStackNavigator();
 
@@ -26,9 +27,11 @@ export default function Fitness({route, navigation}) {
         return (
       
           <Stack.Navigator cardStyle= {{height: "100%"}} screenOptions={{headerShown: false, headerStyle: {
-             backgroundColor: colors.background
-          }, headerBackTitle: "Back"
-          }}> 
+            backgroundColor: colors.background
+          }, headerBackTitle: "Back",headerBackImage: () => (
+            <Ionicons name="arrow-back" size={24} marginLeft={"10%"} color={colors.primary}/>
+          ),
+          }}>
           <Stack.Screen name = "SelectWorkoutProgram" component={SelectWorkoutProgram} />
           <Stack.Screen name = "CurrentProgram" component={CurrentProgram}/>
               <Stack.Screen name = "WorkoutProgramInfo" component={WorkoutProgramInfo} options={{ title: "",

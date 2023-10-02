@@ -99,10 +99,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'black'
       },
       header : {
-        fontSize: 40,
+        fontSize: 35,
         marginBottom: 20,
         fontWeight: 'bold',
-        textAlign: "center"
+        textAlign: "center",
+        width: "90%",
+        alignSelf:"center"
       },
       scene: {
         flex: 1,
@@ -119,7 +121,7 @@ const styles = StyleSheet.create({
 
 
          color: 'white',
-         fontWeight: 700,
+         fontWeight: 500,
          fontSize: 30,
          letterSpacing: 0,
         //lineHeight: 60,
