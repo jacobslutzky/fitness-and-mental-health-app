@@ -6,6 +6,7 @@ import { useQuery, gql, useMutation } from "@apollo/client";
 import * as queries from "../src/graphql/queries";
 import * as mutations from "../src/graphql/mutations";
 import { useIsFocused } from '@react-navigation/native'
+import { AntDesign } from '@expo/vector-icons';
 
 
 /*
@@ -18,74 +19,13 @@ import { useIsFocused } from '@react-navigation/native'
 }
 */
 
-const Set = (props) => {
-    //make so if last entry is current date don't use
-
-
-    const index = props.index + 1
-    const updateReps = props.updateReps
-    const updateWeights = props.updateWeights
-    const handleSubmit = props.handleSubmit
-    const colors = props.colors
-
-    const key = index - 1
-    const date = new Date()
-    const month = date.getMonth() + 1
-    const day = date.getDate()
-    const keyDate = props.lastEntries[key] ? props.lastEntries[key].split("::")[2] : ""
-    const lastEntryWasToday = `${month}/${day}` !== keyDate 
-    
-
-    const { data, loading, error, refetch } = useQuery(gql`${queries.getExerciseEntry}`, {
-        variables: { id: props.lastEntries[key]},
-        enabled: props.lastEntries
-    });
-
-    useEffect(() => {
-        refetch()
-        if(props.exercise == "Leg Press"){
-            console.log(props.exercise)
-            console.log(props.lastEntries)
-            for(const entry in props.lastEntries){
-                console.log(entry)
-            }
-        }
-    }, [props]);
-
-
-    return(
-        <View key={index} style={{flexDirection: "row", justifyContent: "space-between",  alignItems:"center", marginVertical:10}}>
-        <View style={{flexDirection: "row",  alignItems:"center"}}>
-        <Text style={{color: colors.text}}>Set {index}</Text>
-        <TextInput
-        style={[styles.input, {color:colors.text, marginLeft: 10}]}
-        placeholder=""
-        keyboardType="numeric"
-        textAlign='center'
-        onChangeText= {text => updateReps(index, text)} />
-        <Text style={{color: "grey"}}>x</Text>
-        <TextInput
-        style={[styles.input, {color:colors.text}]}
-        placeholder=""
-        keyboardType="numeric"
-        textAlign='center'
-        onChangeText= {text => updateWeights(index, text)}
-        onSubmitEditing = {() => handleSubmit(index - 1)} />
-        <Text style={{color: "grey"}}>lbs</Text>
-        </View>
-        { data && data.getExerciseEntry && lastEntryWasToday
-           ? <Text style={{color: "grey"}}>{data.getExerciseEntry.repsCompleted} x {data.getExerciseEntry.weight} lbs</Text> 
-            : <Text style={{color: "grey"}}>0 x 0 lbs</Text> }
-        </View>
-    )
-}
-
 const Exercise = (props) => {
     const colors = useTheme().colors;
     const title = props.title
     const label = props.label
     const workout = props.workout
     const weekNumber = props.weekNumber
+    const navigation = props.navigation
     const [createLogEntry, { data : dataLogEntry, loading : loadingLogEntry, error : errorLogEntry}] = useMutation(gql`${mutations.createExerciseEntry}`);
     const [updateLogEntry, { data : dataLogEntryUpdate, loading : loadingLogEntryUpdate, error : errorLogEntryUpdate}] = useMutation(gql`${mutations.updateExerciseEntry}`);
 
@@ -204,24 +144,39 @@ const Exercise = (props) => {
         }
     }
 
+    const navigateToExerciseScreen = () => {        
+        navigation.navigate("ExerciseDuringWorkout", {label: data ? data.getExercise.name : "", weekNumber: weekNumber, workout: workout, title: title})
+    }
+
     return(
         
-        <View style={{justifyContent: "center", marginHorizontal: 30, borderBottomColor: '#CFB87C', borderBottomWidth: 2, paddingVertical: 15}}>
+        <View style={{justifyContent: "center", marginHorizontal: 30, borderBottomColor: '#CFB87C', borderBottomWidth: 2, paddingVertical: 10}}>
         {!data ? <View><Text>Loading</Text></View>
-        :
-        <View>
-        <Text style={{color: colors.text}}>{data ? data.getExercise.name : ""}</Text>
-        
-        <Text style={{color: "grey"}}>{data ? data.getExercise.sets : ""} sets x 5-7,8-10</Text>
-        {Array(data ? data.getExercise.sets : 10).fill().map((item, index) => (
-            <Set key={index} index={index} updateReps={updateReps} updateWeights={updateWeights} handleSubmit={handleSubmit} colors={colors} lastEntries={lastEntries} exercise={data.getExercise.name}/>
-        ))}
-        </View>
-        }
+            :
+            <View>
+                <View style={styles.exerciseHeader}>
+                    <View style={styles.exerciseHeaderText}>
+                        <Text style={{color: colors.text, fontSize: 16, marginBottom: 5}}>{data ? data.getExercise.name : ""}</Text>
+                        <Text style={{color: "grey"}}>{data ? data.getExercise.sets : ""} sets x 5-7,8-10</Text>
+                    </View>
+                    <TouchableOpacity style={styles.expandExerciseButtonContainer} onPress={() => navigateToExerciseScreen()}>
+                        <AntDesign name="right" size={20} color="white" />
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+            }
         </View>
         
     )
 }
+
+/*
+                {Array(data ? data.getExercise.sets : 10).fill().map((item, index) => (
+                    <Set key={index} index={index} updateReps={updateReps} updateWeights={updateWeights} handleSubmit={handleSubmit} colors={colors} lastEntries={lastEntries} exercise={data.getExercise.name}/>
+                ))}
+                */
+
 
 export default function DuringWorkout({navigation, route}){
     const colors = useTheme().colors;
@@ -281,7 +236,7 @@ export default function DuringWorkout({navigation, route}){
             </View>
             <ScrollView style={{marginBottom: 150}}>
             {exerciseLabels.map((exercise, index) => (
-                <Exercise key={index} label={exercise} title={title} workout={workout} weekNumber={weekNumber} isFocused={isFocused}/>
+                <Exercise key={index} label={exercise} title={title} workout={workout} weekNumber={weekNumber} isFocused={isFocused} navigation={navigation}/>
             ))}
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.bottomButton} onPress={() => navigateToSelectProgram()} >
@@ -329,5 +284,24 @@ const styles = StyleSheet.create({
     buttonContainer : {
         alignItems: 'center',
         marginTop: 20
+    },
+    exerciseHeader : {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    expandExerciseButtonContainer : {
+        alignItems: 'end',
+        width: "40%",
+        justifyContent: 'center',
+        marginLeft: 15
+    },
+    exerciseHeaderText: {
+        width: "90%",
+    },
+    expandExerciseButton: {
+        height: 50,
+        backgroundColor: Colors.primary,
+        borderRadius: 6,
+        justifyContent: 'center',
     }
 })

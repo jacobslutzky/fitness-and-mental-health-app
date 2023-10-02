@@ -100,7 +100,7 @@ export default function CurrentProgram({ navigation, route }) {
 
 
     return (
-        <View style={StyleSheet.absoluteFill}>
+        <View>
             {/* Header */}
             <ScrollView horizontal={true}>
                 <View style={styles.buttonsContainer}>
@@ -116,7 +116,7 @@ export default function CurrentProgram({ navigation, route }) {
                     }
                 </View>
             </ScrollView>
-            <ScrollView style={{marginTop: 10}}>
+            <ScrollView style={{marginTop: 40}}>
                 <Text style={styles.programHeader}>{titleToNameMap[title]}</Text>
                 <View style={{ flexDirection: "column", marginTop: 20 }}>
                     {
@@ -127,7 +127,7 @@ export default function CurrentProgram({ navigation, route }) {
                     }
                 </View>
             </ScrollView>
-            <View style={{ flexDirection: "row", justifyContent: "space-evenly", marginVertical: 15 }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-evenly", marginTop: 50}}>
                 <TouchableOpacity style={styles.bottomButton} onPress={() => navigatedToWorkout()} >
                     <Text style={styles.buttonText} > Start Workout </Text>
                 </TouchableOpacity>
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     },
     programHeader:
     {
-        fontSize: 20,
+        fontSize: 30,
         fontWeight: 'bold',
         color: "white",
         marginHorizontal: 20,
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: "#191B1C",
         borderRadius: 20, 
-        marginVertical: 10
+        marginVertical: 20
     },
     cardNumber: {
         height: 40,
