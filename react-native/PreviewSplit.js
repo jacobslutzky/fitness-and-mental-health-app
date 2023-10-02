@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
       },
       workoutText: {
         fontSize: 15,
-        fontWeight: 'bold',
+   
         color: Colors.primary,
         
       },

@@ -45,6 +45,7 @@ export default function Login({navigation}) {
         alignSelf: "center",
         
     },
+
     title: {
       fontSize: 24,
       marginBottom: 24,
@@ -72,13 +73,13 @@ export default function Login({navigation}) {
     },
     gymind: {
         fontSize: 40,
-        marginBottom: 40
+        marginBottom: 40,
+        fontWeight: "bold",
     },
     register: {
       alignSelf: "center",
-
+      fontWeight: "bold",
       paddingTop: 50,
-      
       fontSize: 20
     }
   });
