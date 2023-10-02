@@ -13,6 +13,7 @@ import WorkoutProgramInfo from './WorkoutProgramInfo';
 import PreviewSplit from './PreviewSplit';
 import CurrentProgram from './CurrentProgram';
 import DuringWorkout from './DuringWorkout';
+import ExerciseDuringWorkout from './ExerciseDuringWorkout';
 import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client';
 import { useQuery, gql, useMutation } from "@apollo/client";
 import * as queries from "../src/graphql/queries";
@@ -43,6 +44,9 @@ export default function Fitness({route, navigation}) {
               <Stack.Screen name = "DuringWorkout" component={DuringWorkout} options={{ title: "",
                 headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
               }}/>
+            <Stack.Screen name = "ExerciseDuringWorkout" component={ExerciseDuringWorkout} options={{
+              headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back",  title: ""
+            }}/>
             </Stack.Navigator>
          
           
