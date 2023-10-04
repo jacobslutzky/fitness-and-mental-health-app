@@ -25,7 +25,7 @@ export default function Login({navigation}){
     refetch()
     while(loading){}
     console.log(data, loading, error)
-    if(data.getUser && data.getUser.password == password){
+    if(data && data.getUser && data.getUser.password == password){
         navigation.navigate("Main")
     }
   };

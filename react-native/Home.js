@@ -1248,19 +1248,21 @@ export default function Home({navigation}){
   exerciseNum
   workoutExercisesId
   */
-
-  const [createProgramWeek, { data : dataPw, loading : loadingPw, error: errorPw }] = useMutation(gql`${mutations.createProgramWeek}`);
-  const [createProgram, { data : dataP, loading : loadingP, error: errorP }] = useMutation(gql`${mutations.createProgram}`);
-  const [createWorkout, { data : dataW, loading : loadingW, error: errorW }] = useMutation(gql`${mutations.createWorkout}`);
-  const [createExercise, { data : dataE, loading : loadingE, error: errorE }] = useMutation(gql`${mutations.createExercise}`);
-
-/*
+ /*
   const titleToNameMap = { "womensintermediate" : "Women Intermediate",
                           "menslvl3PPL": "Men Level 3 PPLUL",
                           "menslvl2UL": "Men Level 2 UL",
                         "mensfullbody": "Men Full Body",
                       "mensPPL": "Men PPL"}
                       */
+
+ /*
+
+  const [createProgramWeek, { data : dataPw, loading : loadingPw, error: errorPw }] = useMutation(gql`${mutations.createProgramWeek}`);
+  const [createProgram, { data : dataP, loading : loadingP, error: errorP }] = useMutation(gql`${mutations.createProgram}`);
+  const [createWorkout, { data : dataW, loading : loadingW, error: errorW }] = useMutation(gql`${mutations.createWorkout}`);
+  const [createExercise, { data : dataE, loading : loadingE, error: errorE }] = useMutation(gql`${mutations.createExercise}`);
+
 
   const addWorkout = () => {
     //Create program 
@@ -1317,14 +1319,7 @@ export default function Home({navigation}){
     }
     
     //Create Workouts
-    /*
-    id
-    workoutNumber
-    title
-    status
-    exerciseLabels
-    programWeekWorkoutsId
-    */
+
 
     let workoutsToExerciseLabels = {}
 
@@ -1394,6 +1389,8 @@ export default function Home({navigation}){
       })
     })
   }
+
+  */
 
 
 
