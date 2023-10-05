@@ -28,7 +28,7 @@ const Workout = (props) => {
     return(
     <View key={workout} style={styles.card}>
         <View style={styles.cardNumber}>
-            <Text>{props.index}</Text>
+            <Text style={{fontWeight: 'bold'}}>{props.index}</Text>
         </View>
         <View style={styles.cardInnerContent}>
             <View style={styles.cardHeader}>
@@ -138,8 +138,6 @@ export default function CurrentProgram({ navigation, route }) {
             {dataWorkout ? <WorkoutPreviewPopUp isVisible={isModalVisible} workout={workoutBeingPreviewed} togglePopup={togglePopup} title={title} weekNumber={dataR && dataR.getProgramWeek ? dataR.getProgramWeek.weekNumber : 0}/>
             : <View></View>}
         </View>
-
-
     )
 }
 
@@ -205,8 +203,9 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     buttonText: {
-        fontSize: 12,
-        alignSelf: "center"
+        fontSize: 13,
+        alignSelf: "center",
+        fontWeight: 'bold'
     },
     image: {
         width: 150,

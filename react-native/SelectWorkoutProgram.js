@@ -36,12 +36,12 @@ export default function SelectWorkoutProgram({ navigation }) {
   }, [data]);
 
   const titleToNameMap = {
-    "womensintermediate": "Women Intermediate",
-    "menslvl3PPL": "Men Level 3 PPLUL",
-    "menslvl2UL": "Men Level 2 UL",
-    "mensfullbody": "Men Full Body",
-    "mensPPL": "Men PPL",
-    "womensbeginner": "Women Beginner"
+    "womensintermediate": "Womens Intermediate",
+    "menslvl3PPL": "Mens Level 3 PPLUL",
+    "menslvl2UL": "Mens Level 2 UL",
+    "mensfullbody": "Mens Full Body",
+    "mensPPL": "Mens PPL",
+    "womensbeginner": "Womens Beginner"
   }
 
   const [tasksFiltered, setTasksFiltered] = useState(communityCards);
@@ -71,11 +71,14 @@ export default function SelectWorkoutProgram({ navigation }) {
   const updateSearch = (text) => {
     console.log("tasks filtered ", tasksSearched)
     if(!tasksFiltered) return;
+
     const updatedData = tasksFiltered.filter((item) => {
       const item_data = `${item.title.toUpperCase()})`;
-      const text_data = text.toUpperCase();
+      const text_data = text.toUpperCase().split(" ").join('');
+      console.log(text_data)
       return item_data.indexOf(text_data) > -1;
     });
+    
     setTasksSearched(updatedData)
     
     setSearch(text)
@@ -136,7 +139,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black'
   },
   header: {
-    fontSize: 35,
+    fontSize: 30,
     marginBottom: 20,
     fontWeight: 'bold',
     textAlign: "center",
@@ -159,7 +162,7 @@ const styles = StyleSheet.create({
 
     color: 'white',
     fontWeight: 500,
-    fontSize: 30,
+    fontSize: 25,
     letterSpacing: 0,
     //lineHeight: 60,
     width: "70%",

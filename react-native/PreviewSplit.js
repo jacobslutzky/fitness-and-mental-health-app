@@ -21,8 +21,9 @@ const Week = (props) => {
     variables: { id: title != "womenintermediate4xweek" ? `${title}::${index}` : `week${index}-${title}`}
   }); 
 
-  return(
-    <View>
+  /*
+
+      <View>
     <TouchableOpacity onPress={() => setToggle(props.toggle.map((tog, ind) => index - 1 == ind ? !tog : tog))}  style={[styles.header, props.toggle[index - 1] ? {borderBottomWidth: 2} : {borderBottomWidth: 0}]}>
     <Text style={styles.headerText}>Week {data && data.getProgramWeek ? data.getProgramWeek.weekNumber : ""}</Text>
     </TouchableOpacity>
@@ -37,6 +38,34 @@ const Week = (props) => {
       }
         </View>
     </Collapsible>
+    </View>
+
+  */
+
+  return(
+    <View>
+    <TouchableOpacity style={styles.cardContainer} onPress={() => setToggle(props.toggle.map((tog, ind) => index - 1 == ind ? !tog : tog))}>
+      <View style={[styles.card, props.toggle[index - 1] ? styles.defaultBackground : styles.primaryBackground]}>
+        <View style={styles.cardTextContainer}>
+          <Text style={styles.cardWeekText}>WEEK {data && data.getProgramWeek ? data.getProgramWeek.weekNumber : ""}</Text>
+        </View>
+        <View style={styles.cardDifficultyContainer}>
+          <Text style={styles.cardGoldText}>NUMBER OF WORKOUTS:</Text>
+          <Text style={styles.cardWhiteText}> {data && data.getProgramWeek ? data.getProgramWeek.workoutLabels.length : "" }</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+      <Collapsible collapsed={props.toggle[index - 1]} style={styles.dropdown}>
+        <View style={styles.dropdownContent}>
+          {data && data.getProgramWeek && data.getProgramWeek.workoutLabels ? data.getProgramWeek.workoutLabels.map((exercise,index) => (
+            <View style={styles.workoutContainer} key={index}>
+              <Text style={styles.workoutText}>{exercise}</Text>
+             </View>
+            ))
+            : <View></View>
+          }
+        </View>
+      </Collapsible>
     </View>
   )
 }
@@ -65,7 +94,7 @@ export default function PreviewSplit({route, navigation}){
       
     return (
       <View style={{flex: 1}}>
-        <ScrollView >
+        <ScrollView style={{marginTop: 30}}>
         {Array(8).fill().map((split, index) => (
           <Week index={index + 1} title={title} toggle={toggle} setToggle={setToggle} key={index}/>
         ))}
@@ -105,21 +134,32 @@ const styles = StyleSheet.create({
         textAlign: 'center'
       },
       workoutText: {
-        fontSize: 15,
-   
+        fontSize: 16,
+        fontWeight: 'bold',
         color: Colors.primary,
-        
+        marginBottom: 20
       },
     dropdown: {
+      alignItems: 'center'
       },
       dropdownContent: {
         textAlign: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderColor: Colors.primary,
+        borderWidth: 1,
+        borderRadius: 15,
+        width: '80%',
+        marginBottom: 40
       },
       workoutContainer: {
         flexDirection: 'row',
         marginLeft: 8,
         marginVertical: 10,
+        borderBottomColor: Colors.primary,
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        width: '40%',
+        justifyContent: 'center'
       },
       button: {
         width: "50%",
@@ -130,11 +170,52 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginTop: 10,
         alignSelf: "center",
-      
-
       },
       buttonText: {
           fontSize: 15,
           alignSelf: "center"
       },
+      cardContainer : {
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
+      card : {
+        width: '80%',
+        height: 75,
+        borderWidth: 1,
+        borderColor: Colors.primary,
+        borderRadius: 15,
+        marginBottom: 40,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
+      cardWeekText : {
+        color: 'white',
+        fontSize: 20,
+        marginLeft: 20,
+        marginRight: 10,
+        fontWeight: 'bold',
+      },
+      cardDifficultyContainer : {
+        marginRight: 10,
+        paddingRight: 10,
+        flexDirection: 'row'
+      },
+      cardGoldText : {
+        color: Colors.primary,
+        fontSize: 12
+      },
+      cardTextContainer: {
+        borderRightColor: Colors.primary,
+        borderRightWidth: 1.5,
+        marginRight: 10
+      },
+      cardWhiteText: {
+        color: 'white',
+        fontSize: 12
+      },
+      primaryBackground: {
+        borderWidth: 3
+      }
 });

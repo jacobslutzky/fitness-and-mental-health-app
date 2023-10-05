@@ -5,10 +5,11 @@ import { TabBar } from 'react-native-tab-view';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from './constants/Colors';
 import VideoCard from './components/VideoCard';
-import {LinearGradient} from "react-native-linear-gradient"
+import { Svg, Defs, LinearGradient, Stop, Rect } from "react-native-svg";
 import { useQuery, gql, useMutation } from "@apollo/client";
 import * as queries from "../src/graphql/queries";
 import * as mutations from "../src/graphql/mutations";
+import { AntDesign } from '@expo/vector-icons';
 
 
 export default function WorkoutProgramInfo({route, navigation}){
@@ -20,15 +21,6 @@ export default function WorkoutProgramInfo({route, navigation}){
       }); 
       const workout = route.params.title
       console.log(workout)
-      /*
-
-      const [createProgramWeek, { data2, loading2, error2 }]= useMutation(gql`${mutations.createProgramWeek}`); 
-
-      const input = {
-        "weekNumber": 1,
-        "programWeeksId": "MenPPL"-
-       }
-       */
     
       
     const navigateToPreviewSplit = () => {
@@ -41,31 +33,36 @@ export default function WorkoutProgramInfo({route, navigation}){
     }
 
     return (
-        <ScrollView>
-            <ImageBackground
-                style={{width : '100%', height: 280}}
-                source={{uri : '../assets/quickWorkouts1.jpeg'}}>
-                <LinearGradient 
-                    colors={['#00000000', '#000000']} 
-                    style={{height : '100%', width : '100%'}}>
-                    <View style={styles.container}>
-                        <Text style={styles.programName}>{titleToNameMap[route.params.title]}</Text>
-                        <View style={styles.imageContainer}>
-                        </View>
-                        <Text style={styles.description}>This 6 day push/pull/legs workout routine split is a high volume, rest-pause system designed for intermediate lifters looking to gain muscle and strength. </Text>
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.button} onPress={() => navigateToPreviewSplit()} >
-                                    <Text style={styles.buttonText}  > Preview Split</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.button} onPress={() => navigateToProgram()}>
-                                    <Text style={styles.buttonText}>Select Program</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </LinearGradient>
-
-            </ImageBackground>
-        </ScrollView> 
+                        <ImageBackground resizeMode={'cover'} style={styles.container} source={require('../assets/boulderWeightRoom.webp')} imageStyle={{opacity: .2}}>
+                            <View style={styles.titleContainer}>
+                            <Text style={styles.programName}>{titleToNameMap[route.params.title].toUpperCase()}</Text>
+                            </View>
+                            <View style={{alignItems: 'center'}}>
+                            <ImageBackground source={'../assets/affirmationTherapy.jpeg'} style={styles.imageContainer}> 
+                                    <AntDesign name="playcircleo" size={40} color="white" />
+                            </ImageBackground>
+                            </View>
+                            <View style={styles.descriptionContainer}>
+                            <Text style={styles.description}>This 6 day push/pull/legs workout routine split is a high volume, rest-pause system designed for intermediate lifters looking to gain muscle and strength. </Text>
+                            </View>
+                            <View style={styles.buttonContainer}>
+                                <TouchableOpacity style={styles.button} onPress={() => navigateToPreviewSplit()} >
+                                        <Text style={styles.buttonText}> PREVIEW SPLIT</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.button} onPress={() => navigateToProgram()}>
+                                        <Text style={styles.buttonText}>SELECT PROGRAM</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <Svg height="100%" width="100%" style={ StyleSheet.absoluteFillObject }>
+                                <Defs>
+                                    <LinearGradient id="grad" x1="0%" y1="40%" x2="0%" y2="100%">
+                                        <Stop offset="0" stopOpacity="0.2" stopColor={'black' }/>
+                                        <Stop offset="1" stopOpacity="1" stopColor={ "black" }/>
+                                    </LinearGradient>
+                                </Defs>
+                                <Rect width="100%" height="100%" fill="url(#grad)"/>
+                            </Svg>
+                        </ImageBackground>
         )
 }
 
@@ -73,24 +70,25 @@ export default function WorkoutProgramInfo({route, navigation}){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 20, // Add horizontal padding for better alignment
-        paddingTop: 20, // Add top padding to create space
-        backgroundColor: Colors.background,
-        gap: 30
+        gap: 30,
+        height: '100%',
+        width: '100%'
     },
     programName: {
         color: "white",
         alignSelf: "center",
-        fontSize: 35,
+        fontSize: 30,
         fontWeight: 'bold',
         textAlign: "center",
     },
     imageContainer: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: '100%',
+        width: '90%',
         height: 200,
-        backgroundColor: 'green'
+        borderRadius: 15,
+        borderColor: Colors.primary,
+        borderWidth: 1,
     },
     image: {
         width: "100%",
@@ -99,20 +97,34 @@ const styles = StyleSheet.create({
     description: {
         color: "white",
         fontSize: 18,
+        marginTop: 20
     },
     buttonContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
+        marginTop: 30,
+        zIndex: 100,
+        marginHorizontal: 20
     },
     button: {
         width: "45%", // Adjust the width for better alignment
         height: 50,
         backgroundColor: Colors.primary,
-        borderRadius: 6,
-        justifyContent: 'center',
+        borderRadius: 20,
+        justifyContent: 'center'
     },
     buttonText: {
         fontSize: 15,
         alignSelf: "center",
+        fontWeight: 'bold'
     },
+    descriptionContainer : {
+        marginHorizontal: 20,
+        zIndex: 20
+    },
+    titleContainer: {
+        width: '100%',
+        backgroundColor: '#101214',
+        paddingVertical: 30
+    }
 });
