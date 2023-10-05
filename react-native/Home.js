@@ -1498,30 +1498,17 @@ export default function Home({ navigation }) {
                 />
             </View>
 
-            {/* Filter Buttons */}
-            <View style={styles.filterContainer}>
-                <TouchableOpacity
-                    onPress={() => {
-                        handleFilter("all");
-                        addWorkout();
-                    }}
-                    style={[
-                        styles.allButton,
-                        { backgroundColor: isAll ? "#CFB87B" : "#1A1A1A" },
-                    ]}>
-                    <Text style={{ color: "white", fontSize: 16 }}>All</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => handleFilter("not completed")}
-                    style={[
-                        styles.notCompletedButton,
-                        { backgroundColor: isAll ? "#1A1A1A" : "#CFB87B" },
-                    ]}>
-                    <Text style={{ color: "white", fontSize: 16 }}>
-                        Not Completed
-                    </Text>
-                </TouchableOpacity>
-            </View>
+      {/* Filter Buttons */}
+      <View style={styles.filterContainer}>
+        <TouchableOpacity onPress={() => {
+          handleFilter('all')
+        }} style = {[styles.allButton, {backgroundColor : isAll ? "#CFB87B" : "#1A1A1A"}]}>
+          <Text style={{color:'white', fontSize: 16}}>All</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleFilter('not completed')} style = {[styles.notCompletedButton, {backgroundColor : isAll ? "#1A1A1A" : "#CFB87B"}]}>
+          <Text style={{color:'white', fontSize: 16}}>Not Completed</Text>
+        </TouchableOpacity>
+      </View>
 
             {/* Task List */}
             <View style={styles.tasks}>
