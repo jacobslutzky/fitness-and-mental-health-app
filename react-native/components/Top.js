@@ -3,7 +3,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function Top({ navigation }) {
     return (
-        <View style={{ alignItems: "center", marginHorizontal: 10 }}>
+        <View style={styles.container}>
             <View style={styles.top}>
                 <TouchableOpacity
                     onPress={() => navigation.navigate("Home")}
@@ -21,7 +21,15 @@ export default function Top({ navigation }) {
                     }}>
                     <Text style={styles.text}>Total Points:</Text>
                     <View style={{ flexDirection: "row", gap: 12 }}>
-                        <FontAwesome5 name="coins" size={18} color="white" />
+                        <Image
+                            source={require("../../assets/coin.webp")}
+                            style={styles.coin}
+                        />
+                        <Image
+                            source={require("../../assets/buff_icon.webp")}
+                            style={styles.overlayImage}
+                        />
+
                         <Text style={styles.points}>850</Text>
                     </View>
                 </View>
@@ -40,11 +48,14 @@ export default function Top({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        alignItems: "center",
+        marginHorizontal: 10,
+    },
     top: {
         flexDirection: "row",
         justifyContent: "space-between",
         marginTop: 20,
-
         width: "95%",
     },
     points: {
@@ -64,12 +75,27 @@ const styles = StyleSheet.create({
         marginRight: 0,
         marginTop: 30,
         borderRadius: 125,
+        borderWidth: 3,
+        borderColor: "#dbbc72",
     },
     text: {
         color: "white",
         fontSize: 18,
         textAlign: "center",
         marginTop: 30,
-        fontStyle: "italic",
+    },
+    coin: {
+        height: 18,
+        width: 18,
+        marginTop: 4,
+        marginRight: -7.5,
+    },
+    overlayImage: {
+        position: "absolute",
+        top: "60%",
+        left: "11%",
+        transform: [{ translateX: -9 }, { translateY: -9 }], // Center the overlay image
+        height: 14,
+        width: 14,
     },
 });
