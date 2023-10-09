@@ -17,6 +17,11 @@ export default function SelectWorkoutProgram({ navigation }) {
 
 
 
+  const navigateToCreateWorkout = () => {
+
+    navigation.navigate("CreateWorkout")
+  }
+
   const navigateToWorkoutInfo = (title, titleToNameMap) => {
 
     navigation.navigate("WorkoutProgramInfo", { title: title, titleToNameMap: titleToNameMap })
@@ -104,6 +109,11 @@ export default function SelectWorkoutProgram({ navigation }) {
 
       <ScrollView style={{marginHorizontal: 20}}>
         <View style={styles.cardsContainer}>
+          <ImageBackground source={'./assets/quickWorkouts1.jpeg'} style={styles.communityCard} imageStyle={{opacity: 0.2}}>
+                <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToCreateWorkout()}>
+                  <Text style={styles.cardText}>CREATE A PROGRAM</Text>
+                </TouchableOpacity>
+          </ImageBackground>
           {tasksSearched ? tasksSearched.map((item, index) => (
               <ImageBackground source={item.img} style={styles.communityCard} key = {index} imageStyle={{opacity: 0.2}}>
                 <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToWorkoutInfo(item.title, titleToNameMap)}>
