@@ -12,8 +12,10 @@ import { Colors } from './constants/Colors';
 import { SearchBar } from 'react-native-elements';
 
 
-export default function SelectWorkoutProgram({ navigation }) {
+export default function SelectWorkoutProgram({ route, navigation }) {
   const colors = useTheme().colors;
+
+  const newProgram = route.params ? route.params.newProgram : null
 
 
 
@@ -41,18 +43,29 @@ export default function SelectWorkoutProgram({ navigation }) {
   }, [data]);
 
   const titleToNameMap = {
-    "womensintermediate": "Womens Intermediate",
-    "menslvl3PPL": "Mens Level 3 PPLUL",
-    "menslvl2UL": "Mens Level 2 UL",
-    "mensfullbody": "Mens Full Body",
-    "mensPPL": "Mens PPL",
-    "womensbeginner": "Womens Beginner"
+    "womensintermediateglute": "Women’s Intermediate to Advanced Glute Focused ",
+    "menslvl3PPL": "Men’s Intermediate 2.0 Push, Pull, Legs, Upper, Lower",
+    "menslvl2UL": "Men’s Intermediate Upper, Lower",
+    "mensfullbody": "Men's Full Body",
+    "mensPPL": "Men’s Advanced PPL",
+    "womensbeginner": "Women’s Beginner Foundation",
+    "womenintermediate": "Women’s Intermediate Foundation ",
   }
 
   const [tasksFiltered, setTasksFiltered] = useState(communityCards);
   const [tasksSearched, setTasksSearched] = useState(communityCards)
   const [isAll, setIsAll] = useState(true)
   const [search, setSearch] = useState("")
+
+  useEffect(() => {
+    if(newProgram){
+      console.log("hi")
+      let testProgram = tasksFiltered[0]
+      testProgram.title = newProgram
+      setTasksFiltered(tasksFiltered => [...tasksFiltered, testProgram])
+      setTasksSearched(tasksSearched => [...tasksSearched, testProgram])
+    }
+  }, [newProgram])
 
   const handleFilter = ( command ) => {
     if(command == 'all'){
@@ -117,7 +130,7 @@ export default function SelectWorkoutProgram({ navigation }) {
           {tasksSearched ? tasksSearched.map((item, index) => (
               <ImageBackground source={item.img} style={styles.communityCard} key = {index} imageStyle={{opacity: 0.2}}>
                 <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToWorkoutInfo(item.title, titleToNameMap)}>
-                  <Text style={styles.cardText}>{titleToNameMap[item.title].toUpperCase()}</Text>
+                  <Text style={styles.cardText}>{titleToNameMap[item.title] ? titleToNameMap[item.title].toUpperCase() : item.title.toUpperCase()}</Text>
                 </TouchableOpacity>
               </ImageBackground>
           ))
@@ -254,6 +267,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#101214",
   },
   cardTouchable: {
-    width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center'
+    width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', textAlign: 'center'
   }
 });

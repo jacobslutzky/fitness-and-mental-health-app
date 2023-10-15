@@ -270,7 +270,6 @@ const styles = StyleSheet.create({
         marginVertical: 40
     },
     bottomButton: {
-
         width: "40%",
         height: 50,
         backgroundColor: Colors.primary,

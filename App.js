@@ -18,7 +18,8 @@ import { AuthLink, createAuthLink } from "aws-appsync-auth-link"
 import awsmobile from './src/aws-exports.js'
 import { onError } from "@apollo/client/link/error";
 import { Ionicons } from '@expo/vector-icons';
-
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
 
 Amplify.configure(awsmobile);
 

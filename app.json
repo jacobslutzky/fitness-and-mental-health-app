@@ -16,16 +16,22 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "bundle"
+      "bundleIdentifier": "com.caleb.gymind"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.calebs12.gymind_app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e9dfc5f7-30c7-44ad-bb52-1513815542c3"
+      }
     }
   }
 }

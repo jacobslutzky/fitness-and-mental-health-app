@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, ScrollView, StyleSheet, TouchableOpacity, Text, View, Image, TextInput } from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, Text, View, TextInput } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { TabBar } from 'react-native-tab-view';
 import { Colors } from './constants/Colors';
@@ -39,7 +39,7 @@ const Exercise = (props) => {
     return (
         <View style={styles.exerciseCard}>
             {/* Exercise Icon */}
-            <View style={styles.exerciseIcon}></View>
+            <Image source={require("../assets/workoutBackground.png")} style={styles.exerciseIcon}></Image>
 
             {/* Exercise Text Container */}
             <View style={styles.exerciseTextContainer}>
@@ -128,11 +128,17 @@ export default function CreateWorkout({route, navigation}){
     const [weekToChange, setWeekToChange] = useState(-1)
     const [workout, setWorkout] = useState("")
     const [isModalVisible, setModalVisible] = useState(false);
+    const [title, setTitle] = useState("")
 
     const applySetWorkout = (workout, weekNumber) => {
         setWorkout(workout)
         setWeekToChange(weekNumber)
     }
+
+    const navigateToSelectProgram = () => {
+
+        navigation.navigate("SelectWorkoutProgram", {newProgram: title})
+      }
 
 
     const togglePopup = () => {
@@ -163,6 +169,7 @@ export default function CreateWorkout({route, navigation}){
             <View style={styles.programTitleFieldContainer}>
                 <TextInput
                     style={styles.programTitleField}
+                    onChangeText={setTitle}
                     placeholder="My great workout program..."
                     keyboardType="numeric" 
                     placeholderTextColor="rgba(255, 255, 255, 0.4)"/>
@@ -237,7 +244,7 @@ export default function CreateWorkout({route, navigation}){
 
             {/* Continue Button */}
             <View style={styles.continueContainer}>
-                <TouchableOpacity style={styles.continueButton} onPress={() => setSection(3)}>
+                <TouchableOpacity style={styles.continueButton} onPress={() => navigateToSelectProgram()}>
                     <Text style={{color: 'white'}}>Continue</Text>
                 </TouchableOpacity>
             </View>
@@ -432,8 +439,7 @@ const styles = StyleSheet.create({
     exerciseIcon : {
         height: '70%',
         width: '15%',
-        backgroundColor: 'grey',
-        opacity: '0.3',
+        opacity: '0.8',
         borderRadius: 10
     },
     exerciseTextContainer : {

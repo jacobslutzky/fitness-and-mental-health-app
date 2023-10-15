@@ -14,17 +14,17 @@ export default function VideoOverview({ route, navigation }) {
   const colors = useTheme().colors;
   const { title, author, image } = route.params
   const sections = [
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Allowing-Yourself-to-Rest-in-Being.mp4", title: "Introduction", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 120 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Don't-Look-For-Anything-Else-mg.mp3", title: "Body", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 10 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Ever-Present-Presence.mp4", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Letting-Go.mp4", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Letting-the-Moment-Be.mp3", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/No-Matter-You're-Thinking-You-Are.mp3", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Relaxing-All-Effort.mp4", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Relaxing-with-What-Is.mp4", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Simply-Notice-Thought.mp3", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/The-Mode-of-Just-Being.mp4", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/The-River-of-Experience.mp4", title: "Ending", author: author, image: image, description: "This is a description placeholder that I made long to take multiple lines.", length: 5 }
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Allowing-Yourself-to-Rest-in-Being.mp4", title: "Allowing Yourself to Rest in Being", description: "Allow everything about your experience to simply be.", length: 120 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Don't-Look-For-Anything-Else-mg.mp3", title: "Don’t Look for Anything Else", author: author, image: image, description: "Be with things exactly as they are.", length: 10 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Ever-Present-Presence.mp4", title: "Ever Present Presence", author: author, image: image, description: "Connect with the undeniable awareness that is with us in each and every moment.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Letting-Go.mp4", title: "Letting Go", author: author, image: image, description: "Explore the present moment with gentleness, openness, and curiosity." , length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Letting-the-Moment-Be.mp3", title: "Letting the Moment Be", author: author, image: image, description: "For the next few moments, see what it is like to simply experience whatever is being experienced.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/No-Matter-You're-Thinking-You-Are.mp3", title: "No Matter Your Thinking, You are", author: author, image: image, description: "Draw upon the ever-present essence of each moment.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Relaxing-All-Effort.mp4", title: "Relaxing All Effort", author: author, image: image, description: "We are constantly trying to make our experience different than it naturally is. Take a moment to simply relax into the present.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Relaxing-with-What-Is.mp4", title: "Relaxing With What Is", author: author, image: image, description: "Discover what it means to you when you finally let experience be as it is.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Simply-Notice-Thought.mp3", title: "Simply Noticing Thought", author: author, image: image, description: "Become aware of what happens to your thoughts when you notice them.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/The-Mode-of-Just-Being.mp4", title: "The River of Experience", author: author, image: image, description: "Allow your everyday experience to flow like water.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/The-River-of-Experience.mp4", title: "The Mode of Just Being", author: author, image: image, description: "Notice what happens to your mind when you practice just being here now.", length: 5 }
   ]
   const [bookmarked, setBookmarked] = useState(false)
   state = {
@@ -42,7 +42,7 @@ export default function VideoOverview({ route, navigation }) {
     />
   );
   const SessionsRoute = () => (
-        <View style={{flex:1}}>
+        <View style={{flex:1, marginHorizontal: 20, textAlign: 'center'}}>
           {
           sections.map((item, index) => (
             <TouchableOpacity key={index} onPress={() => navigation.navigate("VideoPlay", {
@@ -66,27 +66,18 @@ export default function VideoOverview({ route, navigation }) {
   );
 
   const SummaryRoute = () => (
-    <View>
-      {/* Text */}
-      <View>
-        <Text style={{color:'white'}}>hi</Text>
+      <View style={{textAlign: 'center', marginHorizontal: 30, marginTop: 10}}>
+        <Text style={{color:'white'}}>Explore what happens when you learn to relax into the present moment.</Text>
       </View>
-    </View>
 );
 
 
 const TeacherRoute = () => (
-  <View>
-    {/* Teacher Header */}
-    <View>
-      <Text></Text>
-    </View>
+<View style={{textAlign: 'center', marginHorizontal: 30, marginTop: 10}}>
+  <Text style={{color:'white'}}><Text>John Astin is a renowned meditation instructor, musician, and psychology professor. He has penned four insightful books that delve into the intricacies of human experience: *Too Intimate for Words* (2005), *This Is Always Enough* (2008), *Searching for Rain in a Monsoon* (2012), and *This Extraordinary Moment* (2018). In addition to his literary contributions, he is a gifted singer, songwriter, and has released seven albums filled with original contemplative-spiritual tracks.
 
-    {/* Teacher Bio */}
-    <View>
-      <Text></Text>
-    </View>
-  </View>
+With a Ph.D. in health psychology, John is a respected figure in the realm of mind-body medicine on a global scale. His research emphasizes the role of meditative and contemplative practices in both psychology and health care. Currently, he is an adjunct professor in the clinical/counseling psychology departments of Santa Clara and Notre Dame de Namur Universities.</Text></Text>
+</View>
 );
 
 
@@ -114,10 +105,7 @@ const TeacherRoute = () => (
         {/* Author */}
         <Text style={styles.authorText}>{author}</Text>
 
-        {/* Description */}
-        <Text style={styles.descriptionText}>This is a description placeholder that I made long to
-          take multiple lines.
-        </Text>
+
 
         {/* Length */}
         <Text style={styles.lengthText}>{sections.length} Sections · 2h 15m</Text>
@@ -134,6 +122,7 @@ const TeacherRoute = () => (
           })} style={styles.playButton}>
             <FontAwesome name="play" size={16} color="white" />
           </TouchableOpacity>
+          {/*
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity style={styles.opaqueButton}>
               <Feather name="share" size={24} color="white" />
@@ -146,6 +135,7 @@ const TeacherRoute = () => (
               <AntDesign name="arrowdown" size={24} color="white" />
             </TouchableOpacity>
           </View>
+        */}
         </View>
       </View>
       
@@ -159,7 +149,7 @@ const TeacherRoute = () => (
           onIndexChange={index => state.index = index}
           initialLayout={{}}
           style={[styles.tabsContainer, {height: 150 * sections.length }]}
-          sceneContainerStyle={{height: '100%', flex: 1, width: '90%', alignItems: 'center'}}
+          sceneContainerStyle={{height: '100%', flex: 1, width: '100%', alignItems: 'center'}}
           renderTabBar={renderTabBar}
           />
     </ScrollView>

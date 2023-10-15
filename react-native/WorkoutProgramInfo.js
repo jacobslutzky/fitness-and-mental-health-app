@@ -22,6 +22,15 @@ export default function WorkoutProgramInfo({route, navigation}){
       const workout = route.params.title
       console.log(workout)
     
+    const titleToSummariesMap = {
+        "womensintermediateglute": "This is an intermediate to advanced four day a week program designed for female identified students. Feel free to change the workouts around to fit your schedule.",
+        "menslvl3PPL": "This is an intermediate to advanced five day a week program designed for male identified students. Feel free to change the workouts around to fit your schedule.",
+        "menslvl2UL": "This is an intermediate four day a week program designed for male identified students. Feel free to change the workouts around to fit your schedule.",
+        "mensfullbody": "This is a beginner three day a week program designed for male identified students. Feel free to change the workouts around to fit your schedule.",
+        "mensPPL": "This is an advanced six day a week program designed for male identified students. Feel free to change the workouts around to fit your schedule.",
+        "womensbeginner": "This is a beginner three day a week program designed for female identified students. Feel free to change the workouts around to fit your schedule.",
+        "womenintermediate": "This is an intermediate four day a week program designed for female identified students. Feel free to change the workouts around to fit your schedule.",
+      }
       
     const navigateToPreviewSplit = () => {
         navigation.navigate("PreviewSplit", {title: workout, titleToNameMap: titleToNameMap})
@@ -43,7 +52,7 @@ export default function WorkoutProgramInfo({route, navigation}){
                             </ImageBackground>
                             </View>
                             <View style={styles.descriptionContainer}>
-                            <Text style={styles.description}>This 6 day push/pull/legs workout routine split is a high volume, rest-pause system designed for intermediate lifters looking to gain muscle and strength. </Text>
+                            <Text style={styles.description}>{titleToSummariesMap[route.params.title]}</Text>
                             </View>
                             <View style={styles.buttonContainer}>
                                 <TouchableOpacity style={styles.button} onPress={() => navigateToPreviewSplit()} >
