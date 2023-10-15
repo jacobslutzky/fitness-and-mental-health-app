@@ -6,7 +6,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "prebuild": "node ./generate-easignore.js && eas prebuild"
+    "build": "node ./generate-easignore.js && eas build"
   },
   "dependencies": {
     "@apollo/client": "^3.7.17",
