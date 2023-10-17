@@ -4,6 +4,8 @@ import { useTheme } from '@react-navigation/native';
 import { useQuery, gql, useMutation } from "@apollo/client";
 import * as mutations from "../src/graphql/mutations";
 import * as queries from "../src/graphql/queries";
+import { Auth } from 'aws-amplify';
+
 
 export default function Register({navigation}){
   colors = useTheme().colors;
@@ -31,6 +33,7 @@ export default function Register({navigation}){
       password: password,
       profilePicture: 'buffalo.png',
     }
+    //signUp()
     if(email && firstName && lastName && email && password == confirmPassword){
       global.userId = email
       createUser({ variables : {input : input} })
@@ -45,6 +48,20 @@ export default function Register({navigation}){
 
     createUserStats({ variables : {input : statsInput} })
   };
+
+/*
+  async function signUp() {
+      console.log(email)
+      const { user } = await Auth.signUp({
+        username: email,
+        password: password,
+        attributes: {
+          email
+        },
+      });
+      console.log(user);
+  }
+  */
 
   return (
     <View style={styles.container}>

@@ -100,7 +100,7 @@ export default function CurrentProgram({ navigation, route }) {
 
 
     return (
-        <View>
+        <ScrollView>
             {/* Header */}
             <ScrollView horizontal={true}>
                 <View style={styles.buttonsContainer}>
@@ -137,7 +137,7 @@ export default function CurrentProgram({ navigation, route }) {
             </View>
             {dataWorkout ? <WorkoutPreviewPopUp isVisible={isModalVisible} workout={workoutBeingPreviewed} togglePopup={togglePopup} title={title} weekNumber={dataR && dataR.getProgramWeek ? dataR.getProgramWeek.weekNumber : 0}/>
             : <View></View>}
-        </View>
+        </ScrollView>
     )
 }
 

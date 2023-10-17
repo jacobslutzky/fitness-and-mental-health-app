@@ -6,13 +6,21 @@ import { Colors } from './constants/Colors';
 export default function Login({navigation}) {
     const colors = useTheme().colors
     const handleLogin = () => {
-        navigation.navigate("Login")
-      }
-      const handleRegister = () => {
-        navigation.navigate("Register")
+        navigation.navigate("Main")
       }
     return (
         <View style={styles.container}>
+         <Image style = {styles.buffalo} source={require('../assets/buffalo.png')} />
+         <Text style = {[styles.gymind, {color:colors.text}]}>GYMIND</Text>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Welcome</Text>
+          </TouchableOpacity>
+        </View>
+      );
+  }
+
+  /*
+          <View style={styles.container}>
          <Image style = {styles.buffalo} source={require('../assets/buffalo.png')} />
          <Text style = {[styles.gymind, {color:colors.text}]}>GYMIND</Text>
           <TouchableOpacity style={styles.button} onPress={handleLogin}>
@@ -22,9 +30,7 @@ export default function Login({navigation}) {
             <Text style={[styles.register, {color:colors.primary}]}>Create a new account</Text>
           </TouchableOpacity>
         </View>
-      );
-  
-  }
+  */
   const styles = StyleSheet.create({
     container: {
       flex: 1,

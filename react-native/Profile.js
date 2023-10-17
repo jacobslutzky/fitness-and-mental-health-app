@@ -6,6 +6,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useQuery, gql, useMutation } from "@apollo/client";
 import * as queries from "../src/graphql/queries";
 import { Colors } from './constants/Colors';
+import { useAuthenticator } from '@aws-amplify/ui-react-native';
+import { useRef, useEffect } from 'react';
 
 export default function Profile({navigation}) {
   const colors = useTheme().colors;
@@ -35,8 +37,13 @@ export default function Profile({navigation}) {
     navigation.popToTop()
   }
 
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
 
-  
+
+  useEffect(() => {
+    console.log(user)
+    console.log(user.attributes.email)
+  })
 
   const Leaders = () => (
     <View style={styles.leaderboardContainer}>
@@ -65,16 +72,10 @@ export default function Profile({navigation}) {
             <Ionicons name="ios-settings-sharp" size={25} color="white" />
           </TouchableOpacity>
           */}
-          {data && data.getUser.profilePicture == "sailorMich.png" ? <Image style={styles.profilePic} source={require(`../assets/sailorMich.png`)} /> 
-          :<Image style={styles.profilePic} source={require('../assets/buffalo.png')} /> }
-          {/*
-          <TouchableOpacity>
-            <FontAwesome5 name="user-plus" size={25} color="white" />
-          </TouchableOpacity>
-          */}
+          <Image style={styles.profilePic} source={require('../assets/buffalo.png')} />
         </View>
-        {data ? <><Text style={[styles.name, { color: colors.primary }]}>{data.getUser.firstName} {data.getUser.lastName}</Text>
-          <Text style={[styles.accountName, { color: colors.text }]}>{data.getUser.email}</Text></>
+        {user ? <><Text style={[styles.name, { color: colors.primary }]}>{user.attributes.name}</Text>
+          <Text style={[styles.accountName, { color: colors.text }]}>{user.attributes.email}</Text></>
         :  <Text style={[styles.name, { color: colors.primary }]}></Text>}
         
         {/*
@@ -109,7 +110,7 @@ export default function Profile({navigation}) {
           </View>
         </View>
         <View style={styles.signoutContainer}>
-            <TouchableOpacity style={styles.bottomButton} onPress={() => navigateToLogin()} >
+            <TouchableOpacity style={styles.bottomButton} onPress={() => signOut()} >
                     <Text style={styles.buttonText} > Sign Out </Text>
             </TouchableOpacity>
           </View>

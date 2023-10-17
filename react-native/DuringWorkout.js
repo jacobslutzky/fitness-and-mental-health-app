@@ -208,9 +208,9 @@ export default function DuringWorkout({navigation, route}){
     const navigateToSelectProgram = () => {
         const statsInput = {
             id: `stats-${global.userId}`,
-            mindfulMinutes: dataGetStats.getUserStats.mindfulMinutes,
-            meditationStreak: dataGetStats.getUserStats.meditationStreak,
-            workoutsCompleted: dataGetStats.getUserStats.workoutsCompleted + 1
+            mindfulMinutes: dataGetStats.getUserStats ? dataGetStats.getUserStats.mindfulMinutes : 0,
+            meditationStreak: dataGetStats.getUserStats ? dataGetStats.getUserStats.meditationStreak : 0,
+            workoutsCompleted: dataGetStats.getUserStats ? dataGetStats.getUserStats.workoutsCompleted + 1 : 1,
         }
 
         updateUserStats({ variables : {input : statsInput} })

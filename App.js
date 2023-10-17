@@ -1,4 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import Home from './react-native/Home';
 import Landing from './react-native/Landing';
 import Main from './react-native/Main';
 import Register from './react-native/Register';
@@ -19,6 +20,7 @@ import awsmobile from './src/aws-exports.js'
 import { onError } from "@apollo/client/link/error";
 import { Ionicons } from '@expo/vector-icons';
 import { LogBox } from 'react-native';
+import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react-native';
 LogBox.ignoreAllLogs();
 
 Amplify.configure(awsmobile);
@@ -123,9 +125,16 @@ const client = new ApolloClient({
   })
 });
 client.resetStore() 
-export default function App() {
+function App() {
   
   return ( 
+    <Authenticator.Provider>
+      <Authenticator signUpAttributes={[
+          "email",
+          "name",
+          "phone_number",
+          "updated_at"
+        ]}>
     <ApolloProvider client={client}>
       <NavigationContainer theme = {MyTheme}>
         <Stack.Navigator cardStyle= {{height: "100%"}} screenOptions={{headerShown: false, headerStyle: {
@@ -156,8 +165,8 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
     </ApolloProvider>
-    
-
+    </Authenticator>
+    </Authenticator.Provider>
   );
  }
-
+ export default App;

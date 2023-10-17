@@ -42,6 +42,7 @@ export default function WorkoutProgramInfo({route, navigation}){
     }
 
     return (
+            <ScrollView>
                         <ImageBackground resizeMode={'cover'} style={styles.container} source={require('../assets/boulderWeightRoom.webp')} imageStyle={{opacity: .2}}>
                             <View style={styles.titleContainer}>
                             <Text style={styles.programName}>{titleToNameMap[route.params.title].toUpperCase()}</Text>
@@ -72,6 +73,7 @@ export default function WorkoutProgramInfo({route, navigation}){
                                 <Rect width="100%" height="100%" fill="url(#grad)"/>
                             </Svg>
                         </ImageBackground>
+                        </ScrollView>
         )
 }
 
