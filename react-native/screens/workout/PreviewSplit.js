@@ -3,12 +3,12 @@ import { ScrollView, StyleSheet, TouchableOpacity, Text, View, Image } from 'rea
 import { useTheme } from '@react-navigation/native';
 import { TabBar } from 'react-native-tab-view';
 import { Ionicons } from '@expo/vector-icons';
-import { Colors } from './constants/Colors';
-import VideoCard from './components/VideoCard';
+import { Colors } from '../../constants/Colors';
+import VideoCard from '../../components/VideoCard';
 import Collapsible from 'react-native-collapsible';
 import { useQuery, gql, useMutation } from "@apollo/client";
-import * as queries from "../src/graphql/queries";
-import * as mutations from "../src/graphql/mutations";
+import * as queries from "../../../src/graphql/queries";
+import * as mutations from "../../../src/graphql/mutations";
 
 const Week = (props) => {
   const colors = useTheme().colors;

@@ -3,14 +3,14 @@ import { useState, React, useEffect } from 'react';
 
 import { useTheme } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import VideoCard from './components/VideoCard';
-import { Colors } from './constants/Colors';
+import VideoCard from '../../components/VideoCard';
+import { Colors } from '../../constants/Colors';
 import { useQuery, gql, useMutation } from "@apollo/client";
-import * as queries from "../src/graphql/queries";
-import * as mutations from "../src/graphql/mutations";
+import * as queries from "../../../src/graphql/queries";
+import * as mutations from "../../../src/graphql/mutations";
 import { useApolloClient } from '@apollo/client';
 import { ZoomIn } from 'react-native-reanimated';
-import WorkoutPreviewPopUp from './components/WorkoutPreviewPopUp';
+import WorkoutPreviewPopUp from '../../components/WorkoutPreviewPopUp';
 
 
 const Workout = (props) => {
@@ -116,7 +116,7 @@ export default function CurrentProgram({ navigation, route }) {
                     }
                 </View>
             </ScrollView>
-            <ScrollView style={{marginTop: 40}}>
+            <ScrollView style={{marginTop: 40, height: "70%"}}>
                 <Text style={styles.programHeader}>{titleToNameMap[title]}</Text>
                 <View style={{ flexDirection: "column", marginTop: 20 }}>
                     {
@@ -127,14 +127,15 @@ export default function CurrentProgram({ navigation, route }) {
                     }
                 </View>
             </ScrollView>
-            <View style={{ flexDirection: "row", justifyContent: "space-evenly", marginTop: 50}}>
+            <View style={{ flexDirection: "row", justifyContent: "space-evenly", marginTop: 20, }}>
                 <TouchableOpacity style={styles.bottomButton} onPress={() => navigatedToWorkout()} >
-                    <Text style={styles.buttonText} > Start Workout </Text>
+                    <Text style={styles.buttonText} >Start Workout</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.bottomButton} onPress={() => navigateToSelectProgram()}>
                     <Text style={styles.buttonText}>Change Program</Text>
                 </TouchableOpacity>
             </View>
+            
             {dataWorkout ? <WorkoutPreviewPopUp isVisible={isModalVisible} workout={workoutBeingPreviewed} togglePopup={togglePopup} title={title} weekNumber={dataR && dataR.getProgramWeek ? dataR.getProgramWeek.weekNumber : 0}/>
             : <View></View>}
         </ScrollView>

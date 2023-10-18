@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, TouchableOpacity, Text, View } from 'react-nati
 import { useTheme } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Ionicons } from '@expo/vector-icons';
-import VideoCard from './components/VideoCard';
+import VideoCard from '../../components/VideoCard';
 
 export default function FitnessYoga({navigation}){
     const colors = useTheme().colors;

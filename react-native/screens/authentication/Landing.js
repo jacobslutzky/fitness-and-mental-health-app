@@ -1,6 +1,6 @@
 import { useTheme } from '@react-navigation/native';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { Colors } from './constants/Colors';
+import { Colors } from '../../constants/Colors';
 
 
 export default function Login({navigation}) {
@@ -10,7 +10,7 @@ export default function Login({navigation}) {
       }
     return (
         <View style={styles.container}>
-         <Image style = {styles.buffalo} source={require('../assets/buffalo.png')} />
+         <Image style = {styles.buffalo} source={require('../../../assets/buffalo.png')} />
          <Text style = {[styles.gymind, {color:colors.text}]}>GYMIND</Text>
           <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Welcome</Text>

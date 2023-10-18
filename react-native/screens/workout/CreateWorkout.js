@@ -2,17 +2,17 @@ import React from 'react';
 import { Image, ScrollView, StyleSheet, TouchableOpacity, Text, View, TextInput } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { TabBar } from 'react-native-tab-view';
-import { Colors } from './constants/Colors';
-import VideoCard from './components/VideoCard';
+import { Colors } from '../../constants/Colors';
+import VideoCard from '../../components/VideoCard';
 import { Svg, Defs, LinearGradient, Stop, Rect } from "react-native-svg";
 import { useQuery, gql, useMutation } from "@apollo/client";
-import * as queries from "../src/graphql/queries";
-import * as mutations from "../src/graphql/mutations";
+import * as queries from "../../../src/graphql/queries";
+import * as mutations from "../../../src/graphql/mutations";
 import { AntDesign } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
-import CreateWorkoutPopup from './components/CreateWorkoutPopup';
+import CreateWorkoutPopup from '../../components/CreateWorkoutPopup';
 
 const Exercise = (props) => {
     const [updateParent, setUpdateParent] = useState(false)
@@ -39,7 +39,7 @@ const Exercise = (props) => {
     return (
         <View style={styles.exerciseCard}>
             {/* Exercise Icon */}
-            <Image source={require("../assets/workoutBackground.png")} style={styles.exerciseIcon}></Image>
+            <Image source={require("../../../assets/workoutBackground.png")} style={styles.exerciseIcon}></Image>
 
             {/* Exercise Text Container */}
             <View style={styles.exerciseTextContainer}>

@@ -1,7 +1,7 @@
 import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import VideoCard from './components/VideoCard';
+import VideoCard from '../../components/VideoCard';
 import { useState, useEffect, useRef } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -10,8 +10,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import { useQuery, gql, useMutation } from "@apollo/client";
-import * as queries from "../src/graphql/queries";
-import * as mutations from "../src/graphql/mutations";
+import * as queries from "../../../src/graphql/queries";
+import * as mutations from "../../../src/graphql/mutations";
 
 
 export default function VideoPlay({ route, navigation }) {
@@ -184,14 +184,14 @@ how many minutes for each
         <ScrollView style={styles.container}>
 
             {/* Back arrow */}
-            <View style={styles.headerContainer}>
+            {/* <View style={styles.headerContainer}>
                 <TouchableOpacity style={styles.button} onPress={() => {
                     navigation.navigate("VideoOverview", {title: title, author: author, image: image})
                     sound.current.unloadAsync()
                 }}>
                     <Ionicons name="arrow-back" size={35} color="white" />
                 </TouchableOpacity>
-            </View>
+            </View> */}
 
             {/* Image */}
             <View style={styles.imageContainer}>

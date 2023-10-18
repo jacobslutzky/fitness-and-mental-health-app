@@ -1,13 +1,13 @@
-import Home from './Home'
-import Mindfulness from './Mindfulness';
-import Community from './Community';
-import Fitness from './Fitness';
-import Profile from './Profile';
-import Top from './components/Top';
+import Home from '../screens/home/Home'
+import Mindfulness from './MindfullnessPageNavigator';
+import Community from '../screens/unused/Community';
+import Fitness from './FitnessPageNavigator';
+import Profile from '../screens/profile/Profile';
+import Top from '../components/Top';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
-import SelectWorkoutProgram from './SelectWorkoutProgram';
+import SelectWorkoutProgram from '../screens/workout/SelectWorkoutProgram';
 
 const Tab = createBottomTabNavigator();
 

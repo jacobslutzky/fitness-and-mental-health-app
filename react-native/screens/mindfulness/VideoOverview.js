@@ -1,7 +1,7 @@
 import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import VideoCard from './components/VideoCard';
+//import VideoCard from './components/VideoCard';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
@@ -85,12 +85,12 @@ With a Ph.D. in health psychology, John is a respected figure in the realm of mi
     <>
     <ScrollView style={styles.container}>
 
-      {/* Back arrow */}
+      {/* Back arrow
       <View style={styles.headerContainer}>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Mindfulness")}>
           <Ionicons name="arrow-back" size={35} color="white" />
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       {/* Image */}
       <View style={styles.imageContainer}>

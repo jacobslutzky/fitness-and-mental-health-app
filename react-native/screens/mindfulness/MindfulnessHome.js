@@ -7,10 +7,10 @@ import {
 } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-import VideoCard from "./components/VideoCard";
+import VideoCard from "../../components/VideoCard";
 import { useQuery, gql, useMutation } from "@apollo/client";
-import * as mutations from "../src/graphql/mutations";
-import * as queries from "../src/graphql/queries";
+import * as mutations from "../../../src/graphql/mutations";
+import * as queries from "../../../src/graphql/queries";
 
 export default function Mindfulness() {
     const { data, loading, error } = useQuery(
@@ -27,7 +27,7 @@ export default function Mindfulness() {
         {
             title: "Extraordinary Moment",
             author: "John Astin",
-            img: require("../assets/extraordinary_moment.jpeg"),
+            img: require("../../../assets/extraordinary_moment.jpeg"),
             time: "10 min",
             stars: "4.9",
         },
