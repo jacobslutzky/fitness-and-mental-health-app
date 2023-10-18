@@ -13,6 +13,7 @@ const Week = (props) => {
     const [exercises, setExercises] = useState(0)
 
     const cardPress = () => {
+        console.log(props.weekNumber)
         props.togglePopup()
         props.setWorkout(props.workout, props.weekNumber)
     }

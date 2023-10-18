@@ -1,23 +1,15 @@
 import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'react-native';
-import { useTheme } from '@react-navigation/native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-//import VideoCard from './components/VideoCard';
-import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react'
-import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
 
 
 export default function VideoOverview({ route, navigation }) {
-  const colors = useTheme().colors;
   const { title, author, image } = route.params
   const sections = [
     { url: "https://d1eff9kpv3cdea.cloudfront.net/Allowing-Yourself-to-Rest-in-Being.mp4", title: "Allowing Yourself to Rest in Being", description: "Allow everything about your experience to simply be.", length: 120 },
     { url: "https://d1eff9kpv3cdea.cloudfront.net/Don't-Look-For-Anything-Else-mg.mp3", title: "Don’t Look for Anything Else", author: author, image: image, description: "Be with things exactly as they are.", length: 10 },
     { url: "https://d1eff9kpv3cdea.cloudfront.net/Ever-Present-Presence.mp4", title: "Ever Present Presence", author: author, image: image, description: "Connect with the undeniable awareness that is with us in each and every moment.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Letting-Go.mp4", title: "Letting Go", author: author, image: image, description: "Explore the present moment with gentleness, openness, and curiosity." , length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Letting-Go.mp4", title: "Letting Go", author: author, image: image, description: "Explore the present moment with gentleness, openness, and curiosity.", length: 5 },
     { url: "https://d1eff9kpv3cdea.cloudfront.net/Letting-the-Moment-Be.mp3", title: "Letting the Moment Be", author: author, image: image, description: "For the next few moments, see what it is like to simply experience whatever is being experienced.", length: 5 },
     { url: "https://d1eff9kpv3cdea.cloudfront.net/No-Matter-You're-Thinking-You-Are.mp3", title: "No Matter Your Thinking, You are", author: author, image: image, description: "Draw upon the ever-present essence of each moment.", length: 5 },
     { url: "https://d1eff9kpv3cdea.cloudfront.net/Relaxing-All-Effort.mp4", title: "Relaxing All Effort", author: author, image: image, description: "We are constantly trying to make our experience different than it naturally is. Take a moment to simply relax into the present.", length: 5 },
@@ -26,13 +18,12 @@ export default function VideoOverview({ route, navigation }) {
     { url: "https://d1eff9kpv3cdea.cloudfront.net/The-Mode-of-Just-Being.mp4", title: "The River of Experience", author: author, image: image, description: "Allow your everyday experience to flow like water.", length: 5 },
     { url: "https://d1eff9kpv3cdea.cloudfront.net/The-River-of-Experience.mp4", title: "The Mode of Just Being", author: author, image: image, description: "Notice what happens to your mind when you practice just being here now.", length: 5 }
   ]
-  const [bookmarked, setBookmarked] = useState(false)
   state = {
     index: 0,
     routes: [
       { key: "first", title: "Session", sections: sections },
-      { key: "second", title: "Summary"},
-      { key: "third", title: "Teacher"}
+      { key: "second", title: "Summary" },
+      { key: "third", title: "Teacher" }
     ],
   };
   const renderTabBar = props => (
@@ -42,104 +33,83 @@ export default function VideoOverview({ route, navigation }) {
     />
   );
   const SessionsRoute = () => (
-        <View style={{flex:1, marginHorizontal: 20, textAlign: 'center'}}>
-          {
-          sections.map((item, index) => (
-            <TouchableOpacity key={index} onPress={() => navigation.navigate("VideoPlay", {
-              url: sections[index].url,
-              title: title,
-              author: author,
-              image: image,
-              sections: sections,
-              section: sections[index],
-            })} style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>{item.title}</Text>
-              <Text style={styles.sectionDescription}>{item.description}</Text>
-              {item.length >= 60
-                ? <Text style={styles.sectionLength}>{item.length / 60}h {item.length % 60}m</Text>
-                : <Text style={styles.sectionLength}>{item.length % 60}m</Text>
-              }
-            </TouchableOpacity>
-          ))
-        }
-        </View>
-  );
-
-  const SummaryRoute = () => (
-      <View style={{textAlign: 'center', marginHorizontal: 30, marginTop: 10}}>
-        <Text style={{color:'white'}}>Explore what happens when you learn to relax into the present moment.</Text>
-      </View>
-);
-
-
-const TeacherRoute = () => (
-<View style={{textAlign: 'center', marginHorizontal: 30, marginTop: 10}}>
-  <Text style={{color:'white'}}><Text>John Astin is a renowned meditation instructor, musician, and psychology professor. He has penned four insightful books that delve into the intricacies of human experience: *Too Intimate for Words* (2005), *This Is Always Enough* (2008), *Searching for Rain in a Monsoon* (2012), and *This Extraordinary Moment* (2018). In addition to his literary contributions, he is a gifted singer, songwriter, and has released seven albums filled with original contemplative-spiritual tracks.
-
-With a Ph.D. in health psychology, John is a respected figure in the realm of mind-body medicine on a global scale. His research emphasizes the role of meditative and contemplative practices in both psychology and health care. Currently, he is an adjunct professor in the clinical/counseling psychology departments of Santa Clara and Notre Dame de Namur Universities.</Text></Text>
-</View>
-);
-
-
-  return (
-    <>
-    <ScrollView style={styles.container}>
-
-      {/* Back arrow
-      <View style={styles.headerContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Mindfulness")}>
-          <Ionicons name="arrow-back" size={35} color="white" />
-        </TouchableOpacity>
-      </View> */}
-
-      {/* Image */}
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={image} />
-      </View>
-
-
-      <View style={styles.textContainer}>
-        {/* Title */}
-        <Text style={styles.titleText}>{title}</Text>
-
-        {/* Author */}
-        <Text style={styles.authorText}>{author}</Text>
-
-
-
-        {/* Length */}
-        <Text style={styles.lengthText}>{sections.length} Sections · 2h 15m</Text>
-
-        {/* Play Button */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <TouchableOpacity onPress={() => navigation.navigate("VideoPlay", {
-            url: sections[0].url,
+    <View style={{ flex: 1, marginHorizontal: 20, textAlign: 'center' }}>
+      {
+        sections.map((item, index) => (
+          <TouchableOpacity key={index} onPress={() => navigation.navigate("VideoPlay", {
+            url: sections[index].url,
             title: title,
             author: author,
             image: image,
             sections: sections,
-            section: sections[0],
-          })} style={styles.playButton}>
-            <FontAwesome name="play" size={16} color="white" />
+            section: sections[index],
+          })} style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>{item.title}</Text>
+            <Text style={styles.sectionDescription}>{item.description}</Text>
+            {item.length >= 60
+              ? <Text style={styles.sectionLength}>{item.length / 60}h {item.length % 60}m</Text>
+              : <Text style={styles.sectionLength}>{item.length % 60}m</Text>
+            }
           </TouchableOpacity>
-          {/*
-          <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity style={styles.opaqueButton}>
-              <Feather name="share" size={24} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.opaqueButton, {marginHorizontal: 10}]} onPress={() => setBookmarked(!bookmarked)}>
-              {bookmarked ? <Ionicons name="bookmark" size={24} color="white" />
-                : <Ionicons name="bookmark-outline" size={24} color="white" />}
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.opaqueButton}>
-              <AntDesign name="arrowdown" size={24} color="white" />
+        ))
+      }
+    </View>
+  );
+
+  const SummaryRoute = () => (
+    <View style={{ textAlign: 'center', marginHorizontal: 30, marginTop: 10 }}>
+      <Text style={{ color: 'white' }}>Explore what happens when you learn to relax into the present moment.</Text>
+    </View>
+  );
+
+
+  const TeacherRoute = () => (
+    <View style={{ textAlign: 'center', marginHorizontal: 30, marginTop: 10 }}>
+      <Text style={{ color: 'white' }}><Text>John Astin is a renowned meditation instructor, musician, and psychology professor. He has penned four insightful books that delve into the intricacies of human experience: *Too Intimate for Words* (2005), *This Is Always Enough* (2008), *Searching for Rain in a Monsoon* (2012), and *This Extraordinary Moment* (2018). In addition to his literary contributions, he is a gifted singer, songwriter, and has released seven albums filled with original contemplative-spiritual tracks.
+
+        With a Ph.D. in health psychology, John is a respected figure in the realm of mind-body medicine on a global scale. His research emphasizes the role of meditative and contemplative practices in both psychology and health care. Currently, he is an adjunct professor in the clinical/counseling psychology departments of Santa Clara and Notre Dame de Namur Universities.</Text></Text>
+    </View>
+  );
+
+
+  return (
+    <>
+      <ScrollView style={styles.container}>
+
+        {/* Image */}
+        <View style={styles.imageContainer}>
+          <Image style={styles.image} source={image} />
+        </View>
+
+
+        <View style={styles.textContainer}>
+          {/* Title */}
+          <Text style={styles.titleText}>{title}</Text>
+
+          {/* Author */}
+          <Text style={styles.authorText}>{author}</Text>
+
+
+
+          {/* Length */}
+          <Text style={styles.lengthText}>{sections.length} Sections · 2h 15m</Text>
+
+          {/* Play Button */}
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <TouchableOpacity onPress={() => navigation.navigate("VideoPlay", {
+              url: sections[0].url,
+              title: title,
+              author: author,
+              image: image,
+              sections: sections,
+              section: sections[0],
+            })} style={styles.playButton}>
+              <FontAwesome name="play" size={16} color="white" />
             </TouchableOpacity>
           </View>
-        */}
         </View>
-      </View>
-      
-      <TabView
+
+        <TabView
           navigationState={state}
           renderScene={SceneMap({
             first: SessionsRoute,
@@ -148,13 +118,13 @@ With a Ph.D. in health psychology, John is a respected figure in the realm of mi
           })}
           onIndexChange={index => state.index = index}
           initialLayout={{}}
-          style={[styles.tabsContainer, {height: 150 * sections.length }]}
-          sceneContainerStyle={{height: '100%', flex: 1, width: '100%', alignItems: 'center'}}
+          style={[styles.tabsContainer, { height: 150 * sections.length }]}
+          sceneContainerStyle={{ height: '100%', flex: 1, width: '100%', alignItems: 'center' }}
           renderTabBar={renderTabBar}
-          />
-    </ScrollView>
+        />
+      </ScrollView>
 
-          </>
+    </>
   )
 }
 

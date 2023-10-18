@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, ScrollView, Text, View, Image, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { Colors } from '../../constants/Colors';
 import { useState, React, useEffect } from 'react';
@@ -8,9 +8,6 @@ import * as mutations from "../../../src/graphql/mutations";
 import { useIsFocused } from '@react-navigation/native'
 
 const Set = (props) => {
-    //make so if last entry is current date don't use
-
-
     const index = props.index + 1
     const updateReps = props.updateReps
     const updateWeights = props.updateWeights

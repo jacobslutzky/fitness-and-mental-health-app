@@ -2,18 +2,15 @@ import {
     StyleSheet,
     ScrollView,
     Text,
-    View,
-    TouchableOpacity,
+    View
 } from "react-native";
 import { useTheme } from "@react-navigation/native";
-import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import VideoCard from "../../components/VideoCard";
-import { useQuery, gql, useMutation } from "@apollo/client";
-import * as mutations from "../../../src/graphql/mutations";
+import { useQuery, gql } from "@apollo/client";
 import * as queries from "../../../src/graphql/queries";
 
 export default function Mindfulness() {
-    const { data, loading, error } = useQuery(
+    const { data, loading } = useQuery(
         gql`
             ${queries.getMeditationEntry}
         `,
@@ -32,23 +29,6 @@ export default function Mindfulness() {
             stars: "4.9",
         },
     ];
-
-    const renderTabBar = (props) => (
-        <TabBar {...props} style={{ backgroundColor: "black" }} />
-    );
-
-    const FirstRoute = () => (
-        <ScrollView
-            contentContainerStyle={{
-                alignItems: "center",
-                justifyContent: "center",
-            }}
-            style={styles.cardsContainer}>
-            {videoCards.map((item, index) => (
-                <VideoCard item={item} index={index} />
-            ))}
-        </ScrollView>
-    );
 
     state = {
         index: 0,
@@ -87,21 +67,6 @@ export default function Mindfulness() {
                         />
                     ))}
             </ScrollView>
-            {/*
-        <TabView
-        navigationState={state}
-        renderScene={SceneMap({
-          first: FirstRoute,
-          second: FirstRoute,
-          third: FirstRoute,
-        })}
-        onIndexChange={index => state.index = index}
-        initialLayout={{}}
-        style={styles.tabsContainer}
-        sceneContainerStyle={{height: '100%', flex: 1}}
-        renderTabBar={renderTabBar}
-        />
-      */}
         </View>
     );
 }
@@ -110,6 +75,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 20,
+        alignItems: 'center'
     },
     tabsContainer: {
         marginTop: 10,

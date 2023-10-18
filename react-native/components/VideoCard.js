@@ -40,7 +40,7 @@ export default function VideoCard( {item, index} ) {
 const styles = StyleSheet.create({
     communityCard : {
         height: 250,
-        width: 375,
+        width: 350,
         marginBottom: 30,
         borderRadius: 20,
         backgroundColor: "white",

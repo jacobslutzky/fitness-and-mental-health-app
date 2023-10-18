@@ -1,13 +1,8 @@
-import {React,useState, useEffect} from 'react';
-import { ImageBackground, ScrollView, StyleSheet, TouchableOpacity, Text, View, Image } from 'react-native';
+import { React, useState, useEffect } from 'react';
+import { ImageBackground, ScrollView, StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { TabBar } from 'react-native-tab-view';
-import VideoCard from '../../components/VideoCard';
-import { Svg, Defs, LinearGradient, Stop, Rect } from "react-native-svg";
-import { useQuery, gql, useMutation } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import * as queries from "../../../src/graphql/queries";
-import * as mutations from "../../../src/graphql/mutations";
-import { useApolloClient } from '@apollo/client';
 import { Colors } from '../../constants/Colors';
 import { SearchBar } from 'react-native-elements';
 
@@ -16,8 +11,6 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   const colors = useTheme().colors;
 
   const newProgram = route.params ? route.params.newProgram : null
-
-
 
   const navigateToCreateWorkout = () => {
 
@@ -28,7 +21,6 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
     navigation.navigate("WorkoutProgramInfo", { title: title, titleToNameMap: titleToNameMap })
   }
-
 
   const { data, loading, error, refetch } = useQuery(gql`${queries.listPrograms}`)
 
@@ -58,7 +50,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   const [search, setSearch] = useState("")
 
   useEffect(() => {
-    if(newProgram){
+    if (newProgram) {
       console.log("hi")
       let testProgram = tasksFiltered[0]
       testProgram.title = newProgram
@@ -67,28 +59,9 @@ export default function SelectWorkoutProgram({ route, navigation }) {
     }
   }, [newProgram])
 
-  const handleFilter = ( command ) => {
-    if(command == 'all'){
-      setTasksFiltered([...communityCards])
-      setTasksSearched([...communityCards])
-      setIsAll(true)
-    }
-    else if(command == 'not completed'){
-      communityCardsTemp = new Array();
-      for(let i = 0; i < communityCards.length; i++){
-        if(isPressed[i] == false){
-          communityCardsTemp.push(communityCards[i])
-        }
-      }
-      setTasksFiltered([...communityCardsTemp])
-      setTasksSearched([...communityCardsTemp])
-      setIsAll(false)
-    }
-  }
-
   const updateSearch = (text) => {
     console.log("tasks filtered ", tasksSearched)
-    if(!tasksFiltered) return;
+    if (!tasksFiltered) return;
 
     const updatedData = tasksFiltered.filter((item) => {
       const item_data = `${item.title.toUpperCase()})`;
@@ -96,9 +69,9 @@ export default function SelectWorkoutProgram({ route, navigation }) {
       console.log(text_data)
       return item_data.indexOf(text_data) > -1;
     });
-    
+
     setTasksSearched(updatedData)
-    
+
     setSearch(text)
   };
 
@@ -113,26 +86,26 @@ export default function SelectWorkoutProgram({ route, navigation }) {
         <SearchBar
           placeholder="Search"
           onChangeText={updateSearch}
-          containerStyle={{backgroundColor: '#101214', borderBottomColor: 'transparent', borderTopColor: 'transparent'}}
+          containerStyle={{ backgroundColor: '#101214', borderBottomColor: 'transparent', borderTopColor: 'transparent' }}
           inputContainerStyle={styles.searchBar}
           value={search}
           round={true}
         />
       </View>
 
-      <ScrollView style={{marginHorizontal: 20}}>
+      <ScrollView style={{ marginHorizontal: 20 }}>
         <View style={styles.cardsContainer}>
-          <ImageBackground source={'../../../assets/quickWorkouts1.jpeg'} style={styles.communityCard} imageStyle={{opacity: 0.2}}>
-                <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToCreateWorkout()}>
-                  <Text style={styles.cardText}>CREATE A PROGRAM</Text>
-                </TouchableOpacity>
+          <ImageBackground source={'../../../assets/quickWorkouts1.jpeg'} style={styles.communityCard} imageStyle={{ opacity: 0.2 }}>
+            <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToCreateWorkout()}>
+              <Text style={styles.cardText}>CREATE A PROGRAM</Text>
+            </TouchableOpacity>
           </ImageBackground>
           {tasksSearched ? tasksSearched.map((item, index) => (
-              <ImageBackground source={item.img} style={styles.communityCard} key = {index} imageStyle={{opacity: 0.2}}>
-                <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToWorkoutInfo(item.title, titleToNameMap)}>
-                  <Text style={styles.cardText}>{titleToNameMap[item.title] ? titleToNameMap[item.title].toUpperCase() : item.title.toUpperCase()}</Text>
-                </TouchableOpacity>
-              </ImageBackground>
+            <ImageBackground source={item.img} style={styles.communityCard} key={index} imageStyle={{ opacity: 0.2 }}>
+              <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToWorkoutInfo(item.title, titleToNameMap)}>
+                <Text style={styles.cardText}>{titleToNameMap[item.title] ? titleToNameMap[item.title].toUpperCase() : item.title.toUpperCase()}</Text>
+              </TouchableOpacity>
+            </ImageBackground>
           ))
             : <View></View>
           }
@@ -248,7 +221,7 @@ const styles = StyleSheet.create({
     width: '100%',
     opacity: 0.4
   },
-  searchBar : {
+  searchBar: {
     backgroundColor: "transparent",
     textAlign: "left",
     justifyContent: "center",

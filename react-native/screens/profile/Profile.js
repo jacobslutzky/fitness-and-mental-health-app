@@ -1,41 +1,26 @@
 import { StyleSheet, ScrollView, Image, TouchableOpacity, Text, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { Ionicons, FontAwesome5, Entypo } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useQuery, gql, useMutation } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import * as queries from "../../../src/graphql/queries";
 import { Colors } from '../../constants/Colors';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
-import { useRef, useEffect } from 'react';
+import { useEffect } from 'react';
 
-export default function Profile({navigation}) {
+export default function Profile({ navigation }) {
   const colors = useTheme().colors;
-  const Tab = createMaterialTopTabNavigator();
   const leaders = [
     { name: "Zach B.", rank: 1, points: 8000 },
     { name: "Joel G.", rank: 2, points: 1980 },
     { name: "Sally R.", rank: 3, points: 1670 },
     { name: "You", rank: 6, points: 850 },
   ]
-  const achievements = [
-    { name: "Workout Master", description: "Work out for 500 minutes!", progress: "360/500" },
-    { name: "Weekender", description: "Two workouts on the weekend!", progress: "1/2" },
-    { name: "Super heat", description: "Master 5 endurance workouts!", progress: "4/5" }
 
-  ]
-
-  const { data, loading, error } = useQuery(gql`${queries.getUser}`, {
-    variables: { id: global.userId}
-  }); 
-
-  const { data : dataGetStats, loading : loadingGetStats, error : errorGetStats } = useQuery(gql`${queries.getUserStats}`, {
-    variables: { id: `stats-${global.userId}`}
-}); 
-
-  const navigateToLogin = () => {
-    navigation.popToTop()
-  }
+  const { data: dataGetStats } = useQuery(gql`${queries.getUserStats}`, {
+    variables: { id: `stats-${global.userId}` }
+  });
 
   const { user, signOut } = useAuthenticator((context) => [context.user]);
 
@@ -76,8 +61,8 @@ export default function Profile({navigation}) {
         </View>
         {user ? <><Text style={[styles.name, { color: colors.primary }]}>{user.attributes.name}</Text>
           <Text style={[styles.accountName, { color: colors.text }]}>{user.attributes.email}</Text></>
-        :  <Text style={[styles.name, { color: colors.primary }]}></Text>}
-        
+          : <Text style={[styles.name, { color: colors.primary }]}></Text>}
+
         {/*
         <View style={styles.followerContainer}>
           <View style={styles.followers}>
@@ -93,7 +78,7 @@ export default function Profile({navigation}) {
         <Text style={[styles.sectionName, { color: colors.text, marginTop: 50, textAlign: 'center' }]} >My Statistics</Text>
         <View style={styles.statsContainer}>
           <View style={styles.stat}>
-          <FontAwesome5 name="brain" size={25} color={"white"} />
+            <FontAwesome5 name="brain" size={25} color={"white"} />
             <Text style={{ color: colors.text }}>{dataGetStats && dataGetStats.getUserStats ? dataGetStats.getUserStats.mindfulMinutes : 0}</Text>
             <Text style={styles.statsText}>Mindful{"\n"}Minutes</Text>
           </View>
@@ -102,18 +87,18 @@ export default function Profile({navigation}) {
             <Text style={{ color: colors.text }}>{dataGetStats && dataGetStats.getUserStats ? dataGetStats.getUserStats.workoutsCompleted : 0}</Text>
             <Text style={styles.statsText}>Workouts{"\n"}Completed</Text>
           </View>
-          
+
           <View style={styles.stat}>
-          <MaterialCommunityIcons name="meditation" size={25} color="white" />
+            <MaterialCommunityIcons name="meditation" size={25} color="white" />
             <Text style={{ color: colors.text }}>{dataGetStats && dataGetStats.getUserStats ? dataGetStats.getUserStats.meditationStreak : 0}</Text>
             <Text style={styles.statsText}>Meditation{"\n"}Streak</Text>
           </View>
         </View>
         <View style={styles.signoutContainer}>
-            <TouchableOpacity style={styles.bottomButton} onPress={() => signOut()} >
-                    <Text style={styles.buttonText} > Sign Out </Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity style={styles.bottomButton} onPress={() => signOut()} >
+            <Text style={styles.buttonText} > Sign Out </Text>
+          </TouchableOpacity>
+        </View>
         {/*
         <View style={styles.leaderboardHeader}>
           <Text style={[styles.sectionName, { color: colors.text }]}>Leaderboard</Text>
@@ -192,7 +177,7 @@ const styles = StyleSheet.create({
   followerContainer: {
     flexDirection: "row",
     alignSelf: "center",
-    marginTop: 10, 
+    marginTop: 10,
     marginBottom: 20
   },
   followers: {
@@ -314,7 +299,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 15
   },
-  cardArrowContainer : {
+  cardArrowContainer: {
     height: 40,
     width: 40,
     alignItems: 'center',
@@ -330,7 +315,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignItems: 'center'
   },
-  signoutContainer : {
+  signoutContainer: {
     marginTop: 50,
     justifyContent: "center",
     alignItems: 'center'

@@ -1,10 +1,7 @@
 import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import VideoCard from '../../components/VideoCard';
 import { useState, useEffect, useRef } from 'react'
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -14,72 +11,53 @@ import * as queries from "../../../src/graphql/queries";
 import * as mutations from "../../../src/graphql/mutations";
 
 
-export default function VideoPlay({ route, navigation }) {
+export default function VideoPlay({ route }) {
 
-    const { data : dataGetStats, loading : loadingGetStats, error : errorGetStats } = useQuery(gql`${queries.getUserStats}`, {
-        variables: { id: `stats-${global.userId}`}
-    }); 
+    const { data: dataGetStats } = useQuery(gql`${queries.getUserStats}`, {
+        variables: { id: `stats-${global.userId}` }
+    });
 
-    const [updateUserStats, { data : dataUpdateStats, loading : loadingUpdateStats, error : errorUpdateStats}] = useMutation(gql`${mutations.updateUserStats}`);
+    const [updateUserStats] = useMutation(gql`${mutations.updateUserStats}`);
 
-    const [updateGeneralStats, { data : dataUpdateStatsG, loading : loadingUpdateStatsG, error : errorUpdateStatsG}] = useMutation(gql`${mutations.updateGeneralStats}`);
-
-
-    /*
-how many people are meditating
-the times they meditate
-which meditations are played most
-how many minutes for each 
-
-*/
+    const [updateGeneralStats] = useMutation(gql`${mutations.updateGeneralStats}`);
 
 
-
-
-    const colors = useTheme().colors;
     const { url, title, author, image, sections, section } = route.params;
     const [currentTime, setCurrentTime] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false)
     const multipliers = [1.0, 1.25, 1.5, 2]
-    const [multiplierIndex, setMultiplierIndex]  = useState(0)
+    const [multiplierIndex, setMultiplierIndex] = useState(0)
     const [speedMultiplier, setSpeedMultiplier] = useState(multipliers[0])
     const [bookmarked, setBookmarked] = useState(false)
-    const [hasPlayed, setHasPlayed] = useState(false)
     const [length, setLength] = useState(section.length)
-    const [finished, setFinished] = useState(false)
     const [pointsAdded, setPointsAdded] = useState(false)
 
-
-    function str_pad_left(string, pad, length) {
-        return (new Array(length + 1).join(pad) + string).slice(-length);
-    }
-    
 
     useEffect(() => {
         if (isPlaying) {
             const id = setInterval(() => {
                 setCurrentTime((oldTime) => {
-                    if(oldTime > length - 20 && !pointsAdded){
-                            const statsInput = {
-                                id: `stats-${global.userId}`,
-                                mindfulMinutes: dataGetStats.getUserStats.mindfulMinutes + Math.floor(length / 60),
-                                meditationStreak: dataGetStats.getUserStats.meditationStreak + 1,
-                                workoutsCompleted: dataGetStats.getUserStats.workoutsCompleted
-                            }
-                    
-                            updateUserStats({ variables : {input : statsInput} })
+                    if (oldTime > length - 20 && !pointsAdded) {
+                        const statsInput = {
+                            id: `stats-${global.userId}`,
+                            mindfulMinutes: dataGetStats.getUserStats.mindfulMinutes + Math.floor(length / 60),
+                            meditationStreak: dataGetStats.getUserStats.meditationStreak + 1,
+                            workoutsCompleted: dataGetStats.getUserStats.workoutsCompleted
+                        }
 
-                            const today = new Date();
-                            const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                            const generalStatsInput = {
-                                id: `gymind-master-user-stats`,
-                                usersMeditating: [global.userId],
-                                timesMeditating: time,
-                                meditationEntryListenMinutes: ['' + (length / 60)]
-                            }
+                        updateUserStats({ variables: { input: statsInput } })
+
+                        const today = new Date();
+                        const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                        const generalStatsInput = {
+                            id: `gymind-master-user-stats`,
+                            usersMeditating: [global.userId],
+                            timesMeditating: time,
+                            meditationEntryListenMinutes: ['' + (length / 60)]
+                        }
 
 
-                            updateGeneralStats({ variables : {input : generalStatsInput} })
+                        updateGeneralStats({ variables: { input: generalStatsInput } })
                         setPointsAdded(true)
                     }
                     if (oldTime >= length) {
@@ -96,36 +74,31 @@ how many minutes for each
 
     }, [isPlaying, speedMultiplier]);
 
-
-
     const sound = useRef(new Audio.Sound());
 
-
-    const [pauseSound, setPauseSound] = useState(false)
-
-    const ResumeAudio = async ()=>{
-        try{
-          const result = await sound.current.getStatusAsync();
-          if(result.isLoaded){
-            if(result.isPlaying === false){
-              sound.current.playAsync();
+    const ResumeAudio = async () => {
+        try {
+            const result = await sound.current.getStatusAsync();
+            if (result.isLoaded) {
+                if (result.isPlaying === false) {
+                    sound.current.playAsync();
+                }
             }
-          }
-        }catch(e){
-          console.log('error while playing the audio',e)
+        } catch (e) {
+            console.log('error while playing the audio', e)
         }
     };
 
-    const PauseAudio = async() =>{
-        try{
-          const result = await sound.current.getStatusAsync();
-          if(result.isLoaded){
-            if(result.isPlaying === true){
-              sound.current.pauseAsync();
+    const PauseAudio = async () => {
+        try {
+            const result = await sound.current.getStatusAsync();
+            if (result.isLoaded) {
+                if (result.isPlaying === true) {
+                    sound.current.pauseAsync();
+                }
             }
-          }
-        }catch(e){
-          console.log("error while pausing the audio",e)
+        } catch (e) {
+            console.log("error while pausing the audio", e)
         }
     }
 
@@ -133,45 +106,45 @@ how many minutes for each
         await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
 
         const { sound: playbackObject, status: status } = await sound.current.loadAsync(
-        { uri: url }
-        );        
-    
+            { uri: url }
+        );
+
         const result = await sound.current.getStatusAsync();
-          if(result.isLoaded){
+        if (result.isLoaded) {
             setLength(result.durationMillis / 1000)
-          }
+        }
     }
 
-    async function SkipAhead(){
+    async function SkipAhead() {
         setCurrentTime(Math.min(currentTime + 15, length))
-        try{
-          const result = await sound.current.getStatusAsync();
-          if(result.isLoaded){
-            sound.current.playFromPositionAsync(Math.min(result.positionMillis + 15000), result.durationMillis);
-          }
-        }catch(e){
-          console.log('error while playing the audio',e)
+        try {
+            const result = await sound.current.getStatusAsync();
+            if (result.isLoaded) {
+                sound.current.playFromPositionAsync(Math.min(result.positionMillis + 15000), result.durationMillis);
+            }
+        } catch (e) {
+            console.log('error while playing the audio', e)
         }
     }
 
-    async function SkipBehind(){
+    async function SkipBehind() {
         setCurrentTime(Math.max(0, currentTime - 15))
-        try{
-          const result = await sound.current.getStatusAsync();
-          if(result.isLoaded){
-            sound.current.playFromPositionAsync(Math.min(result.positionMillis - 15000), 0);
-          }
-        }catch(e){
-          console.log('error while playing the audio',e)
+        try {
+            const result = await sound.current.getStatusAsync();
+            if (result.isLoaded) {
+                sound.current.playFromPositionAsync(Math.min(result.positionMillis - 15000), 0);
+            }
+        } catch (e) {
+            console.log('error while playing the audio', e)
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         LoadAudio();
-    },[]);
+    }, []);
 
 
-    async function speedChange(){
+    async function speedChange() {
         const oldIndex = multiplierIndex
         setMultiplierIndex((oldIndex + 1) % multipliers.length)
         setSpeedMultiplier(multipliers[(oldIndex + 1) % multipliers.length])
@@ -183,16 +156,6 @@ how many minutes for each
     return (
         <ScrollView style={styles.container}>
 
-            {/* Back arrow */}
-            {/* <View style={styles.headerContainer}>
-                <TouchableOpacity style={styles.button} onPress={() => {
-                    navigation.navigate("VideoOverview", {title: title, author: author, image: image})
-                    sound.current.unloadAsync()
-                }}>
-                    <Ionicons name="arrow-back" size={35} color="white" />
-                </TouchableOpacity>
-            </View> */}
-
             {/* Image */}
             <View style={styles.imageContainer}>
                 <Image style={styles.image} source={image} />
@@ -200,8 +163,7 @@ how many minutes for each
 
 
             <View style={styles.textContainer}>
-                {/* Title  <Text style={styles.titleText}>{title}</Text> */}
-                
+
                 {/* Section Title */}
                 <Text style={styles.sectionTitleText}>{title}</Text>
 
@@ -231,7 +193,7 @@ how many minutes for each
                         <TouchableOpacity onPress={() => {
                             SkipBehind()
                             setIsPlaying(true)
-                        }} style={[styles.opaqueButton, {marginHorizontal: 25}]}>
+                        }} style={[styles.opaqueButton, { marginHorizontal: 25 }]}>
                             <Feather name="skip-back" size={24} color="white" />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
@@ -240,29 +202,29 @@ how many minutes for each
                         }} style={styles.playButton}>
                             {
                                 (!isPlaying) ? <FontAwesome name="play" size={24} color="white" style={{ paddingLeft: 5 }} />
-                                : <AntDesign name="pause" size={24} color="white" />
+                                    : <AntDesign name="pause" size={24} color="white" />
                             }
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
                             SkipAhead()
                             setIsPlaying(true)
-                            }} style={[styles.opaqueButton, {marginHorizontal: 25}]}>
+                        }} style={[styles.opaqueButton, { marginHorizontal: 25 }]}>
                             <Feather name="skip-forward" size={24} color="white" />
                         </TouchableOpacity>
 
                         {/* Bookmark */}
                         <TouchableOpacity style={styles.opaqueButton} onPress={() => setBookmarked(!bookmarked)}>
                             {bookmarked ? <Ionicons name="bookmark" size={24} color="white" />
-                            : <Ionicons name="bookmark-outline" size={24} color="white" /> }
+                                : <Ionicons name="bookmark-outline" size={24} color="white" />}
                         </TouchableOpacity>
                     </View>
                 </View>
 
-            
+
             </View>
             {/* Settings */}
             <View style={styles.settingsContainer}>
-                
+
             </View>
 
         </ScrollView>
