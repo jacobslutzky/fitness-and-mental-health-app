@@ -49,7 +49,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
     "mensfullbody": "Men's Full Body",
     "mensPPL": "Men’s Advanced PPL",
     "womensbeginner": "Women’s Beginner Foundation",
-    "womenintermediate": "Women’s Intermediate Foundation ",
+    "womensintermediate": "Women’s Intermediate Foundation ",
   }
 
   const [tasksFiltered, setTasksFiltered] = useState(communityCards);
