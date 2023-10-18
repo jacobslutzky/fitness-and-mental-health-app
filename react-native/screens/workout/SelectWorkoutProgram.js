@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 30,
-    marginBottom: 20,
     fontWeight: 'bold',
     textAlign: "center",
     width: "90%",
@@ -236,7 +235,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: "column",
-    marginTop: 30,
+    marginTop: 20,
     backgroundColor: "#101214",
   },
   cardTouchable: {
