@@ -4,8 +4,8 @@ import { Ionicons, FontAwesome5, Entypo } from '@expo/vector-icons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useQuery, gql, useMutation } from "@apollo/client";
-import * as queries from "../src/graphql/queries";
-import { Colors } from './constants/Colors';
+import * as queries from "../../../src/graphql/queries";
+import { Colors } from '../../constants/Colors';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import { useRef, useEffect } from 'react';
 
@@ -51,7 +51,7 @@ export default function Profile({navigation}) {
         <View style={[styles.leaderboardRow, index === leaders.length - 1 && styles.currentUserRow]} key={leader.rank}>
           <View style={styles.rankNamePic}>
             <Text style={styles.leaderboardText}>#{leader.rank}</Text>
-            <Image style={styles.leaderBoardPic} source={require('../assets/caleb.jpeg')} />
+            <Image style={styles.leaderBoardPic} source={require('../../../assets/caleb.jpeg')} />
             <Text style={styles.leaderboardText}>{leader.name}</Text>
           </View>
           <Text style={styles.leaderboardText}>{leader.points}</Text>
@@ -72,7 +72,7 @@ export default function Profile({navigation}) {
             <Ionicons name="ios-settings-sharp" size={25} color="white" />
           </TouchableOpacity>
           */}
-          <Image style={styles.profilePic} source={require('../assets/buffalo.png')} />
+          <Image style={styles.profilePic} source={require('../../../assets/buffalo.png')} />
         </View>
         {user ? <><Text style={[styles.name, { color: colors.primary }]}>{user.attributes.name}</Text>
           <Text style={[styles.accountName, { color: colors.text }]}>{user.attributes.email}</Text></>

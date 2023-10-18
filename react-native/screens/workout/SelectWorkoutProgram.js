@@ -2,13 +2,13 @@ import {React,useState, useEffect} from 'react';
 import { ImageBackground, ScrollView, StyleSheet, TouchableOpacity, Text, View, Image } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { TabBar } from 'react-native-tab-view';
-import VideoCard from './components/VideoCard';
+import VideoCard from '../../components/VideoCard';
 import { Svg, Defs, LinearGradient, Stop, Rect } from "react-native-svg";
 import { useQuery, gql, useMutation } from "@apollo/client";
-import * as queries from "../src/graphql/queries";
-import * as mutations from "../src/graphql/mutations";
+import * as queries from "../../../src/graphql/queries";
+import * as mutations from "../../../src/graphql/mutations";
 import { useApolloClient } from '@apollo/client';
-import { Colors } from './constants/Colors';
+import { Colors } from '../../constants/Colors';
 import { SearchBar } from 'react-native-elements';
 
 
@@ -35,7 +35,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   let communityCards = []
   if (data) {
     console.log(data.listPrograms.items)
-    communityCards = data.listPrograms.items.map((program) => { console.log(program.title); return { title: program.id, img: require('../assets/quickWorkouts1.jpeg') } })
+    communityCards = data.listPrograms.items.map((program) => { console.log(program.title); return { title: program.id, img: require('../../../assets/quickWorkouts1.jpeg') } })
   }
   useEffect(() => {
     setTasksFiltered(communityCards)
@@ -122,7 +122,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
       <ScrollView style={{marginHorizontal: 20}}>
         <View style={styles.cardsContainer}>
-          <ImageBackground source={'./assets/quickWorkouts1.jpeg'} style={styles.communityCard} imageStyle={{opacity: 0.2}}>
+          <ImageBackground source={'../../../assets/quickWorkouts1.jpeg'} style={styles.communityCard} imageStyle={{opacity: 0.2}}>
                 <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToCreateWorkout()}>
                   <Text style={styles.cardText}>CREATE A PROGRAM</Text>
                 </TouchableOpacity>

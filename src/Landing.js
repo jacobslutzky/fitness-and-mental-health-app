@@ -13,7 +13,7 @@ export default function Login({navigation}) {
       }
     return (
         <View style={styles.container}>
-         <Image style = {styles.buffalo} source={require('../assets/buffalo.png')} />
+         <Image style = {styles.buffalo} source={require('../../assets/buffalo.png')} />
          <Text style = {[styles.gymind, {color:colors.text}]}>GYMIND</Text>
           <Text style={styles.title}>Login</Text>
           <TouchableOpacity style={styles.button} onPress={handleLogin}>

@@ -1,28 +1,19 @@
 import { ScrollView, StyleSheet, Image, ImageBackground, TouchableOpacity, Text, View, TextBase } from 'react-native';
 import { NavigationContainer, useTheme } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Colors } from './constants/Colors';
+import { Colors } from '../constants/Colors';
 import { createStackNavigator } from '@react-navigation/stack';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { AntDesign } from '@expo/vector-icons'; 
-import { FontAwesome } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import AchievementBubble from './components/AchievementBubble';
-import SelectWorkoutProgram from './SelectWorkoutProgram';
-import WorkoutProgramInfo from './WorkoutProgramInfo';
-import PreviewSplit from './PreviewSplit';
-import CurrentProgram from './CurrentProgram';
-import DuringWorkout from './DuringWorkout';
-import ExerciseDuringWorkout from './ExerciseDuringWorkout';
-import CreateWorkout from './CreateWorkout';
-import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client';
-import { useQuery, gql, useMutation } from "@apollo/client";
-import * as queries from "../src/graphql/queries";
+import SelectWorkoutProgram from '../screens/workout/SelectWorkoutProgram';
+import WorkoutProgramInfo from '../screens/workout/WorkoutProgramInfo';
+import PreviewSplit from '../screens/workout/PreviewSplit';
+import CurrentProgram from '../screens/workout/CurrentProgram';
+import DuringWorkout from '../screens/workout/DuringWorkout';
+import ExerciseDuringWorkout from '../screens/workout/ExerciseDuringWorkout';
+import CreateWorkout from '../screens/workout/CreateWorkout';
 import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createStackNavigator();
 
-export default function Fitness({route, navigation}) {
+export default function FitnessPageNavigator({route, navigation}) {
         colors = useTheme().colors
 
 

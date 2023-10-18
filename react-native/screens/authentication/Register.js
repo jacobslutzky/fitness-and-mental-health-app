@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { View, Image, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { useQuery, gql, useMutation } from "@apollo/client";
-import * as mutations from "../src/graphql/mutations";
-import * as queries from "../src/graphql/queries";
+import * as mutations from "../../../src/graphql/mutations";
+import * as queries from "../../../src/graphql/queries";
 import { Auth } from 'aws-amplify';
 
 
@@ -65,7 +65,7 @@ export default function Register({navigation}){
 
   return (
     <View style={styles.container}>
-    <Image style = {styles.buffalo} source={require('../assets/buffalo.png')} />
+    <Image style = {styles.buffalo} source={require('../../../assets/buffalo.png')} />
     <View style={styles.inputContainer}>
     <View style={styles.name}>
     <View style = {{flexDirection: "column", flex:1,width: "100%", gap: 12}}>

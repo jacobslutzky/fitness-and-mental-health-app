@@ -3,19 +3,19 @@ import { ImageBackground, ScrollView, StyleSheet, TouchableOpacity, Text, View, 
 import { useTheme } from '@react-navigation/native';
 import { TabBar } from 'react-native-tab-view';
 import { Ionicons } from '@expo/vector-icons';
-import { Colors } from './constants/Colors';
-import VideoCard from './components/VideoCard';
+import { Colors } from '../../constants/Colors';
+import VideoCard from '../../components/VideoCard';
 import { Svg, Defs, LinearGradient, Stop, Rect } from "react-native-svg";
 import { useQuery, gql, useMutation } from "@apollo/client";
-import * as queries from "../src/graphql/queries";
-import * as mutations from "../src/graphql/mutations";
+import * as queries from "../../../src/graphql/queries";
+import * as mutations from "../../../src/graphql/mutations";
 import { AntDesign } from '@expo/vector-icons';
 
 
 export default function WorkoutProgramInfo({route, navigation}){
     colors = useTheme().colors
     const titleToNameMap = route.params.titleToNameMap
-    const video = {title: "10-minute morning yoga", author: "Caleb Saks", img: require('../assets/fitnessYoga1.jpg'), time: "20 min", stars: "4.7"}
+    const video = {title: "10-minute morning yoga", author: "Caleb Saks", img: require('../../../assets/fitnessYoga1.jpg'), time: "20 min", stars: "4.7"}
     const { data, loading, error, refetch } = useQuery(gql`${queries.getProgram}`, {
         variables: { id: route.params.title}
       }); 
@@ -43,12 +43,12 @@ export default function WorkoutProgramInfo({route, navigation}){
 
     return (
             <ScrollView>
-                        <ImageBackground resizeMode={'cover'} style={styles.container} source={require('../assets/boulderWeightRoom.webp')} imageStyle={{opacity: .2}}>
+                        <ImageBackground resizeMode={'cover'} style={styles.container} source={require('../../../assets/boulderWeightRoom.webp')} imageStyle={{opacity: .2}}>
                             <View style={styles.titleContainer}>
                             <Text style={styles.programName}>{titleToNameMap[route.params.title].toUpperCase()}</Text>
                             </View>
                             <View style={{alignItems: 'center'}}>
-                            <ImageBackground source={'../assets/affirmationTherapy.jpeg'} style={styles.imageContainer}> 
+                            <ImageBackground source={'../../../assets/affirmationTherapy.jpeg'} style={styles.imageContainer}> 
                                     <AntDesign name="playcircleo" size={40} color="white" />
                             </ImageBackground>
                             </View>
@@ -57,7 +57,7 @@ export default function WorkoutProgramInfo({route, navigation}){
                             </View>
                             <View style={styles.buttonContainer}>
                                 <TouchableOpacity style={styles.button} onPress={() => navigateToPreviewSplit()} >
-                                        <Text style={styles.buttonText}> PREVIEW SPLIT</Text>
+                                        <Text style={styles.buttonText}>PREVIEW SPLIT</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.button} onPress={() => navigateToProgram()}>
                                         <Text style={styles.buttonText}>SELECT PROGRAM</Text>

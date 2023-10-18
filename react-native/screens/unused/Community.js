@@ -9,8 +9,8 @@ export default function Community({navigation}) {
     }
 
     const communityCards = [
-      {title: "Find a Workout Partner", subtitle: "Accountability is key", img: require('../assets/calebCommunity.jpg')},
-      {title: "Ask or Answer Questions", subtitle: "Increase your knowledge", img: require('../assets/calebCommunity2.jpg')},
+      {title: "Find a Workout Partner", subtitle: "Accountability is key", img: require('../../../assets/calebCommunity.jpg')},
+      {title: "Ask or Answer Questions", subtitle: "Increase your knowledge", img: require('../../../assets/calebCommunity2.jpg')},
 
       
     ]

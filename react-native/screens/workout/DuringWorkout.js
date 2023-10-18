@@ -1,10 +1,10 @@
 import { StyleSheet, TouchableOpacity, ScrollView, Text, View, Image, TextInput} from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { Colors } from './constants/Colors';
+import { Colors } from '../../constants/Colors';
 import {useState, React, useEffect} from 'react';
 import { useQuery, gql, useMutation } from "@apollo/client";
-import * as queries from "../src/graphql/queries";
-import * as mutations from "../src/graphql/mutations";
+import * as queries from "../../../src/graphql/queries";
+import * as mutations from "../../../src/graphql/mutations";
 import { useIsFocused } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons';
 

@@ -1,10 +1,10 @@
 import { StyleSheet, TouchableOpacity, ScrollView, Text, View, Image, TextInput } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { Colors } from './constants/Colors';
+import { Colors } from '../../constants/Colors';
 import { useState, React, useEffect } from 'react';
 import { useQuery, gql, useMutation } from "@apollo/client";
-import * as queries from "../src/graphql/queries";
-import * as mutations from "../src/graphql/mutations";
+import * as queries from "../../../src/graphql/queries";
+import * as mutations from "../../../src/graphql/mutations";
 import { useIsFocused } from '@react-navigation/native'
 
 const Set = (props) => {
@@ -208,7 +208,7 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>{label ? label : " "}</Text>
             </View>
-            {Array(data && data.getExercise ? data.getExercise.sets : 10).fill().map((item, index) => (
+            {Array(data && data.getExercise ? data.getExercise.sets : 0).fill().map((item, index) => (
                 <Set key={index} index={index} updateReps={updateReps} updateWeights={updateWeights} handleSubmit={handleSubmit} colors={colors} lastEntries={lastEntries} exercise={data && data.getExercise ? data.getExercise.name : ""} />
             ))}
             <View style={styles.graphContainer}>

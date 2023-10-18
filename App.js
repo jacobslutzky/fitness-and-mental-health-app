@@ -1,16 +1,16 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import Home from './react-native/Home';
-import Landing from './react-native/Landing';
-import Main from './react-native/Main';
-import Register from './react-native/Register';
-import Login from './react-native/Login';
-import FitnessFavorites from './react-native/FitnessFavorites';
-import FitnessWorkouts from './react-native/FitnessWorkouts';
-import FitnessYoga from './react-native/FitnessYoga';
-import VideoOverview from './react-native/VideoOverview';
-import VideoPlay from './react-native/VideoPlay';
-import WorkoutProgramInfo from './react-native/WorkoutProgramInfo'
-import PreviewSplit from './react-native/PreviewSplit'
+import Home from './react-native/screens/home/Home';
+import Landing from './react-native/screens/authentication/Landing';
+import Main from './react-native/routes/MainPageTabNavigator';
+import Register from './react-native/screens/authentication/Register';
+import Login from './react-native/screens/authentication/Login';
+//import FitnessFavorites from './react-native/FitnessFavorites';
+//import FitnessWorkouts from './react-native/FitnessWorkouts';
+//import FitnessYoga from './react-native/FitnessYoga';
+//import VideoOverview from './react-native/VideoOverview';
+//import VideoPlay from './react-native/screens/mindfulness/VideoPlay';
+import WorkoutProgramInfo from './react-native/screens/workout/WorkoutProgramInfo'
+import PreviewSplit from './react-native/screens/workout/PreviewSplit'
 import { NavigationContainer } from '@react-navigation/native';
 import { Colors } from './react-native/constants/Colors';
 import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client';
@@ -144,24 +144,17 @@ function App() {
         ),
         }}> 
             <Stack.Screen name="Landing" component={Landing} />
-            <Stack.Screen name="Main" component={Main} />
+            
             <Stack.Screen name = "Register" component={Register} options={{
               headerShown:true,  headerShadowVisible: false, title: ""
             }}/>
             <Stack.Screen name = "Login" component={Login} options={{
               headerShown:true,  headerShadowVisible: false,  title: "",
             }}/>
-            <Stack.Screen name = "FitnessWorkouts" component={FitnessWorkouts}/>
-            <Stack.Screen name = "FitnessYoga" component={FitnessYoga}/>
-            <Stack.Screen name = "FitnessFavorites" component={FitnessFavorites}/>
-            <Stack.Screen name = "VideoPlay" component={VideoPlay}/>
-            <Stack.Screen name = "VideoOverview" component={VideoOverview}/>
-            <Stack.Screen name = "WorkoutProgramInfo" component={WorkoutProgramInfo} options={{ title: "Program Information",
-              headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
-            }}/>
-            <Stack.Screen name = "PreviewSplit" component={PreviewSplit} options={{ title: "Preview Split",
-              headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
-            }}/>
+            <Stack.Screen name="Main" component={Main} options={{gestureEnabled: false}}/>
+            {/* <Stack.Screen name = "VideoPlay" component={VideoPlay}/>
+            <Stack.Screen name = "VideoOverview" component={VideoOverview}/> */}
+            
           </Stack.Navigator>
         </NavigationContainer>
     </ApolloProvider>

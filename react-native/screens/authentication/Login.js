@@ -3,7 +3,7 @@ import { View, Image, TextInput, StyleSheet, TouchableOpacity, Text } from 'reac
 import { useTheme } from '@react-navigation/native';
 import { ceil } from 'react-native-reanimated';
 import { useQuery, gql, useMutation } from "@apollo/client";
-import * as queries from "../src/graphql/queries";
+import * as queries from "../../../src/graphql/queries";
 
 export default function Login({navigation}){
   colors = useTheme().colors;
@@ -32,7 +32,7 @@ export default function Login({navigation}){
 
   return (
     <View style={styles.container}>
-    <Image style = {styles.buffalo} source={require('../assets/buffalo.png')} />
+    <Image style = {styles.buffalo} source={require('../../../assets/buffalo.png')} />
     <View style={styles.inputContainer}>
     <Text style={[styles.aboveButtonText, {color:colors.text}]}>Email</Text>
     <TextInput

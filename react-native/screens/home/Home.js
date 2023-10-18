@@ -13,8 +13,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { SearchBar } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useQuery, gql, useMutation } from "@apollo/client";
-import * as mutations from "../src/graphql/mutations";
-import * as queries from "../src/graphql/queries";
+import * as mutations from "../../../src/graphql/mutations";
+import * as queries from "../../../src/graphql/queries";
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 
 
