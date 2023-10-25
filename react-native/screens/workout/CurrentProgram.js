@@ -54,8 +54,6 @@ export default function CurrentProgram({ navigation, route }) {
         onCompleted: setWorkouts
     });
 
-    if (dataR) console.log(workouts)
-
 
 
     const { data: dataWorkout, loading: loadingWorkout, error: errorWorkout, refetch: refetchWorkout } = useQuery(gql`${queries.getWorkout}`, {
@@ -81,7 +79,6 @@ export default function CurrentProgram({ navigation, route }) {
     useEffect(() => {
         if (dataWorkout) {
             setWorkoutBeingPreviewed(dataWorkout.getWorkout)
-            console.log(dataWorkout)
         }
     }, [dataWorkout])
 
@@ -95,7 +92,7 @@ export default function CurrentProgram({ navigation, route }) {
     return (
         <ScrollView>
             {/* Header */}
-            <View horizontal={true}>
+            <ScrollView horizontal={true}>
                 <View style={styles.buttonsContainer}>
                     {
                         dataR ? Array(8).fill().map((weekNum, index) => (
@@ -108,7 +105,7 @@ export default function CurrentProgram({ navigation, route }) {
                             : <View></View>
                     }
                 </View>
-            </View>
+            </ScrollView>
             <View style={{ marginTop: 40, height: "70%" }}>
                 <Text style={styles.programHeader}>{titleToNameMap[title]}</Text>
                 <View style={{ flexDirection: "column", marginTop: 20 }}>

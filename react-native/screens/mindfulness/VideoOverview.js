@@ -2,7 +2,6 @@ import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'rea
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { FontAwesome } from '@expo/vector-icons';
 
-
 export default function VideoOverview({ route, navigation }) {
   const { title, author, image } = route.params
   const sections = [

@@ -29,6 +29,7 @@ export default function WorkoutProgramInfo({ route, navigation }) {
 
     const navigateToProgram = () => {
         //createProgramWeek({ variables : {input : input} })
+        route.params.setCurrentProgram(route.params.title)
         navigation.navigate("CurrentProgram", { title: workout, titleToNameMap: titleToNameMap })
     }
 

@@ -124,6 +124,9 @@ export default function CreateWorkout({ route, navigation }) {
     const [title, setTitle] = useState("")
     const [weekNumber, setWeekNumber] = useState(0)
 
+    const setCreatedPrograms = route.params.setCreatedPrograms
+    const createdPrograms = route.params.createdPrograms
+
     const applySetWorkout = (workout, weekNumber) => {
         console.log(weekNumber)
         setWorkout(workout)
@@ -131,7 +134,7 @@ export default function CreateWorkout({ route, navigation }) {
     }
 
     const navigateToSelectProgram = () => {
-
+        setCreatedPrograms(createdPrograms.length > 0 ? [...createdPrograms, createdPrograms[0]] : createdPrograms)
         navigation.navigate("SelectWorkoutProgram", { newProgram: title })
     }
 

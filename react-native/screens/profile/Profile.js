@@ -8,6 +8,7 @@ import * as queries from "../../../src/graphql/queries";
 import { Colors } from '../../constants/Colors';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
 import { useEffect } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Profile({ navigation }) {
   const colors = useTheme().colors;
@@ -16,6 +17,13 @@ export default function Profile({ navigation }) {
     { name: "Joel G.", rank: 2, points: 1980 },
     { name: "Sally R.", rank: 3, points: 1670 },
     { name: "You", rank: 6, points: 850 },
+  ]
+
+  const achievements = [
+    {name: "Workout Master", description: "Work out for 500 minutes!", progress: "360/500"},
+    {name: "Weekender", description: "Two workouts on the weekend!", progress: "1/2"},     
+    {name: "Super heat", description: "Master 5 endurance workouts!", progress: "4/5"}
+
   ]
 
   const { data: dataGetStats } = useQuery(gql`${queries.getUserStats}`, {
@@ -46,6 +54,9 @@ export default function Profile({ navigation }) {
     </View>
   )
 
+  const Tab = createMaterialTopTabNavigator();
+
+
   return (
 
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -56,14 +67,14 @@ export default function Profile({ navigation }) {
           <TouchableOpacity>
             <Ionicons name="ios-settings-sharp" size={25} color="white" />
           </TouchableOpacity>
-          */}
+        */}
           <Image style={styles.profilePic} source={require('../../../assets/buffalo.png')} />
         </View>
         {user ? <><Text style={[styles.name, { color: colors.primary }]}>{user.attributes.name}</Text>
           <Text style={[styles.accountName, { color: colors.text }]}>{user.attributes.email}</Text></>
           : <Text style={[styles.name, { color: colors.primary }]}></Text>}
+        
 
-        {/*
         <View style={styles.followerContainer}>
           <View style={styles.followers}>
             <Text style={[styles.followerCount, { color: colors.text }]}>15</Text>
@@ -74,7 +85,7 @@ export default function Profile({ navigation }) {
             <Text style={[styles.followerCount, { color: colors.text }]}>Following</Text>
           </View>
         </View>
-        */}
+        
         <Text style={[styles.sectionName, { color: colors.text, marginTop: 50, textAlign: 'center' }]} >My Statistics</Text>
         <View style={styles.statsContainer}>
           <View style={styles.stat}>
@@ -94,12 +105,6 @@ export default function Profile({ navigation }) {
             <Text style={styles.statsText}>Meditation{"\n"}Streak</Text>
           </View>
         </View>
-        <View style={styles.signoutContainer}>
-          <TouchableOpacity style={styles.bottomButton} onPress={() => signOut()} >
-            <Text style={styles.buttonText} > Sign Out </Text>
-          </TouchableOpacity>
-        </View>
-        {/*
         <View style={styles.leaderboardHeader}>
           <Text style={[styles.sectionName, { color: colors.text }]}>Leaderboard</Text>
         </View>
@@ -136,8 +141,12 @@ export default function Profile({ navigation }) {
 
           ))}
         </View>
-        */}
       </View>
+      <View style={styles.signoutContainer}>
+          <TouchableOpacity style={styles.bottomButton} onPress={() => signOut()} >
+            <Text style={styles.buttonText} > Sign Out </Text>
+          </TouchableOpacity>
+        </View>
     </ScrollView>
 
   )
@@ -155,10 +164,9 @@ const styles = StyleSheet.create({
   top: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 60,
     alignItems: 'center',
     marginHorizontal: 20,
-    marginTop: 125
+    marginTop: 80
   },
   profilePic: {
     height: 160,
@@ -177,8 +185,7 @@ const styles = StyleSheet.create({
   followerContainer: {
     flexDirection: "row",
     alignSelf: "center",
-    marginTop: 10,
-    marginBottom: 20
+    marginTop: 30
   },
   followers: {
     flex: 1,
@@ -235,6 +242,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10,
+    marginBottom: 20
   },
   stat: {
     flexDirection: "column",
@@ -317,6 +325,7 @@ const styles = StyleSheet.create({
   },
   signoutContainer: {
     marginTop: 50,
+    marginBottom: 50,
     justifyContent: "center",
     alignItems: 'center'
   }

@@ -8,6 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import SelectWorkoutProgram from '../screens/workout/SelectWorkoutProgram';
+import { View } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -25,7 +26,7 @@ export default function Main() {
               return <></>
             }
             else{
-              return <Top {...props} />
+              return <View style={{height: 30}}></View>
             }
              
           },
