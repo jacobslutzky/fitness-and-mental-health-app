@@ -7,14 +7,6 @@ export const onCreateBlog = /* GraphQL */ `
       id
       name
       posts {
-        items {
-          id
-          title
-          createdAt
-          updatedAt
-          blogPostsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -30,14 +22,6 @@ export const onUpdateBlog = /* GraphQL */ `
       id
       name
       posts {
-        items {
-          id
-          title
-          createdAt
-          updatedAt
-          blogPostsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -53,14 +37,6 @@ export const onDeleteBlog = /* GraphQL */ `
       id
       name
       posts {
-        items {
-          id
-          title
-          createdAt
-          updatedAt
-          blogPostsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -78,23 +54,11 @@ export const onCreatePost = /* GraphQL */ `
       blog {
         id
         name
-        posts {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
       }
       comments {
-        items {
-          id
-          content
-          createdAt
-          updatedAt
-          postCommentsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -113,23 +77,11 @@ export const onUpdatePost = /* GraphQL */ `
       blog {
         id
         name
-        posts {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
       }
       comments {
-        items {
-          id
-          content
-          createdAt
-          updatedAt
-          postCommentsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -148,23 +100,11 @@ export const onDeletePost = /* GraphQL */ `
       blog {
         id
         name
-        posts {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
       }
       comments {
-        items {
-          id
-          content
-          createdAt
-          updatedAt
-          postCommentsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -182,17 +122,6 @@ export const onCreateComment = /* GraphQL */ `
       post {
         id
         title
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-          __typename
-        }
-        comments {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         blogPostsId
@@ -213,17 +142,6 @@ export const onUpdateComment = /* GraphQL */ `
       post {
         id
         title
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-          __typename
-        }
-        comments {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         blogPostsId
@@ -244,17 +162,6 @@ export const onDeleteComment = /* GraphQL */ `
       post {
         id
         title
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-          __typename
-        }
-        comments {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         blogPostsId
@@ -279,10 +186,6 @@ export const onCreateMeditationSection = /* GraphQL */ `
         video
         author
         image
-        sections {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
@@ -308,10 +211,6 @@ export const onUpdateMeditationSection = /* GraphQL */ `
         video
         author
         image
-        sections {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
@@ -337,10 +236,6 @@ export const onDeleteMeditationSection = /* GraphQL */ `
         video
         author
         image
-        sections {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
@@ -365,16 +260,6 @@ export const onCreateMeditationEntry = /* GraphQL */ `
       author
       image
       sections {
-        items {
-          id
-          title
-          description
-          time
-          createdAt
-          updatedAt
-          meditationEntrySectionsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -394,16 +279,6 @@ export const onUpdateMeditationEntry = /* GraphQL */ `
       author
       image
       sections {
-        items {
-          id
-          title
-          description
-          time
-          createdAt
-          updatedAt
-          meditationEntrySectionsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -423,16 +298,6 @@ export const onDeleteMeditationEntry = /* GraphQL */ `
       author
       image
       sections {
-        items {
-          id
-          title
-          description
-          time
-          createdAt
-          updatedAt
-          meditationEntrySectionsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -500,34 +365,11 @@ export const onCreateUser = /* GraphQL */ `
       password
       profilePicture
       dailyTasks {
-        items {
-          id
-          label
-          screen
-          icon
-          createdAt
-          updatedAt
-          userDailyTasksId
-          __typename
-        }
         nextToken
         __typename
       }
       userStats {
         id
-        user {
-          id
-          firstName
-          lastName
-          email
-          password
-          profilePicture
-          currentProgram
-          createdAt
-          updatedAt
-          userUserStatsId
-          __typename
-        }
         mindfulMinutes
         meditationStreak
         workoutsCompleted
@@ -537,15 +379,6 @@ export const onCreateUser = /* GraphQL */ `
         __typename
       }
       exerciseLogs {
-        items {
-          id
-          exercise
-          entryLabels
-          createdAt
-          updatedAt
-          userExerciseLogsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -567,34 +400,11 @@ export const onUpdateUser = /* GraphQL */ `
       password
       profilePicture
       dailyTasks {
-        items {
-          id
-          label
-          screen
-          icon
-          createdAt
-          updatedAt
-          userDailyTasksId
-          __typename
-        }
         nextToken
         __typename
       }
       userStats {
         id
-        user {
-          id
-          firstName
-          lastName
-          email
-          password
-          profilePicture
-          currentProgram
-          createdAt
-          updatedAt
-          userUserStatsId
-          __typename
-        }
         mindfulMinutes
         meditationStreak
         workoutsCompleted
@@ -604,15 +414,6 @@ export const onUpdateUser = /* GraphQL */ `
         __typename
       }
       exerciseLogs {
-        items {
-          id
-          exercise
-          entryLabels
-          createdAt
-          updatedAt
-          userExerciseLogsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -634,34 +435,11 @@ export const onDeleteUser = /* GraphQL */ `
       password
       profilePicture
       dailyTasks {
-        items {
-          id
-          label
-          screen
-          icon
-          createdAt
-          updatedAt
-          userDailyTasksId
-          __typename
-        }
         nextToken
         __typename
       }
       userStats {
         id
-        user {
-          id
-          firstName
-          lastName
-          email
-          password
-          profilePicture
-          currentProgram
-          createdAt
-          updatedAt
-          userUserStatsId
-          __typename
-        }
         mindfulMinutes
         meditationStreak
         workoutsCompleted
@@ -671,15 +449,6 @@ export const onDeleteUser = /* GraphQL */ `
         __typename
       }
       exerciseLogs {
-        items {
-          id
-          exercise
-          entryLabels
-          createdAt
-          updatedAt
-          userExerciseLogsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -704,24 +473,6 @@ export const onCreateUserStats = /* GraphQL */ `
         email
         password
         profilePicture
-        dailyTasks {
-          nextToken
-          __typename
-        }
-        userStats {
-          id
-          mindfulMinutes
-          meditationStreak
-          workoutsCompleted
-          createdAt
-          updatedAt
-          userStatsUserId
-          __typename
-        }
-        exerciseLogs {
-          nextToken
-          __typename
-        }
         currentProgram
         createdAt
         updatedAt
@@ -751,24 +502,6 @@ export const onUpdateUserStats = /* GraphQL */ `
         email
         password
         profilePicture
-        dailyTasks {
-          nextToken
-          __typename
-        }
-        userStats {
-          id
-          mindfulMinutes
-          meditationStreak
-          workoutsCompleted
-          createdAt
-          updatedAt
-          userStatsUserId
-          __typename
-        }
-        exerciseLogs {
-          nextToken
-          __typename
-        }
         currentProgram
         createdAt
         updatedAt
@@ -798,24 +531,6 @@ export const onDeleteUserStats = /* GraphQL */ `
         email
         password
         profilePicture
-        dailyTasks {
-          nextToken
-          __typename
-        }
-        userStats {
-          id
-          mindfulMinutes
-          meditationStreak
-          workoutsCompleted
-          createdAt
-          updatedAt
-          userStatsUserId
-          __typename
-        }
-        exerciseLogs {
-          nextToken
-          __typename
-        }
         currentProgram
         createdAt
         updatedAt
@@ -902,24 +617,6 @@ export const onCreateExerciseLog = /* GraphQL */ `
         email
         password
         profilePicture
-        dailyTasks {
-          nextToken
-          __typename
-        }
-        userStats {
-          id
-          mindfulMinutes
-          meditationStreak
-          workoutsCompleted
-          createdAt
-          updatedAt
-          userStatsUserId
-          __typename
-        }
-        exerciseLogs {
-          nextToken
-          __typename
-        }
         currentProgram
         createdAt
         updatedAt
@@ -928,19 +625,6 @@ export const onCreateExerciseLog = /* GraphQL */ `
       }
       exercise
       entries {
-        items {
-          id
-          repsCompleted
-          weight
-          dateCompleted
-          workout
-          programWeek
-          program
-          createdAt
-          updatedAt
-          exerciseLogEntriesId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -965,24 +649,6 @@ export const onUpdateExerciseLog = /* GraphQL */ `
         email
         password
         profilePicture
-        dailyTasks {
-          nextToken
-          __typename
-        }
-        userStats {
-          id
-          mindfulMinutes
-          meditationStreak
-          workoutsCompleted
-          createdAt
-          updatedAt
-          userStatsUserId
-          __typename
-        }
-        exerciseLogs {
-          nextToken
-          __typename
-        }
         currentProgram
         createdAt
         updatedAt
@@ -991,19 +657,6 @@ export const onUpdateExerciseLog = /* GraphQL */ `
       }
       exercise
       entries {
-        items {
-          id
-          repsCompleted
-          weight
-          dateCompleted
-          workout
-          programWeek
-          program
-          createdAt
-          updatedAt
-          exerciseLogEntriesId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -1028,24 +681,6 @@ export const onDeleteExerciseLog = /* GraphQL */ `
         email
         password
         profilePicture
-        dailyTasks {
-          nextToken
-          __typename
-        }
-        userStats {
-          id
-          mindfulMinutes
-          meditationStreak
-          workoutsCompleted
-          createdAt
-          updatedAt
-          userStatsUserId
-          __typename
-        }
-        exerciseLogs {
-          nextToken
-          __typename
-        }
         currentProgram
         createdAt
         updatedAt
@@ -1054,19 +689,6 @@ export const onDeleteExerciseLog = /* GraphQL */ `
       }
       exercise
       entries {
-        items {
-          id
-          repsCompleted
-          weight
-          dateCompleted
-          workout
-          programWeek
-          program
-          createdAt
-          updatedAt
-          exerciseLogEntriesId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -1084,22 +706,9 @@ export const onCreateExercise = /* GraphQL */ `
       id
       workout {
         id
-        programWeek {
-          id
-          weekNumber
-          workoutLabels
-          createdAt
-          updatedAt
-          programWeeksId
-          __typename
-        }
         workoutNumber
         title
         status
-        exercises {
-          nextToken
-          __typename
-        }
         exerciseLabels
         createdAt
         updatedAt
@@ -1125,22 +734,9 @@ export const onUpdateExercise = /* GraphQL */ `
       id
       workout {
         id
-        programWeek {
-          id
-          weekNumber
-          workoutLabels
-          createdAt
-          updatedAt
-          programWeeksId
-          __typename
-        }
         workoutNumber
         title
         status
-        exercises {
-          nextToken
-          __typename
-        }
         exerciseLabels
         createdAt
         updatedAt
@@ -1166,22 +762,9 @@ export const onDeleteExercise = /* GraphQL */ `
       id
       workout {
         id
-        programWeek {
-          id
-          weekNumber
-          workoutLabels
-          createdAt
-          updatedAt
-          programWeeksId
-          __typename
-        }
         workoutNumber
         title
         status
-        exercises {
-          nextToken
-          __typename
-        }
         exerciseLabels
         createdAt
         updatedAt
@@ -1207,21 +790,7 @@ export const onCreateWorkout = /* GraphQL */ `
       id
       programWeek {
         id
-        program {
-          id
-          author
-          image
-          title
-          introVideo
-          createdAt
-          updatedAt
-          __typename
-        }
         weekNumber
-        workouts {
-          nextToken
-          __typename
-        }
         workoutLabels
         createdAt
         updatedAt
@@ -1232,19 +801,6 @@ export const onCreateWorkout = /* GraphQL */ `
       title
       status
       exercises {
-        items {
-          id
-          name
-          sets
-          RIR
-          restMinutes
-          repRange
-          exerciseNum
-          createdAt
-          updatedAt
-          workoutExercisesId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -1262,21 +818,7 @@ export const onUpdateWorkout = /* GraphQL */ `
       id
       programWeek {
         id
-        program {
-          id
-          author
-          image
-          title
-          introVideo
-          createdAt
-          updatedAt
-          __typename
-        }
         weekNumber
-        workouts {
-          nextToken
-          __typename
-        }
         workoutLabels
         createdAt
         updatedAt
@@ -1287,19 +829,6 @@ export const onUpdateWorkout = /* GraphQL */ `
       title
       status
       exercises {
-        items {
-          id
-          name
-          sets
-          RIR
-          restMinutes
-          repRange
-          exerciseNum
-          createdAt
-          updatedAt
-          workoutExercisesId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -1317,21 +846,7 @@ export const onDeleteWorkout = /* GraphQL */ `
       id
       programWeek {
         id
-        program {
-          id
-          author
-          image
-          title
-          introVideo
-          createdAt
-          updatedAt
-          __typename
-        }
         weekNumber
-        workouts {
-          nextToken
-          __typename
-        }
         workoutLabels
         createdAt
         updatedAt
@@ -1342,19 +857,6 @@ export const onDeleteWorkout = /* GraphQL */ `
       title
       status
       exercises {
-        items {
-          id
-          name
-          sets
-          RIR
-          restMinutes
-          repRange
-          exerciseNum
-          createdAt
-          updatedAt
-          workoutExercisesId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -1378,27 +880,12 @@ export const onCreateProgramWeek = /* GraphQL */ `
         image
         title
         introVideo
-        weeks {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
       }
       weekNumber
       workouts {
-        items {
-          id
-          workoutNumber
-          title
-          status
-          exerciseLabels
-          createdAt
-          updatedAt
-          programWeekWorkoutsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -1422,27 +909,12 @@ export const onUpdateProgramWeek = /* GraphQL */ `
         image
         title
         introVideo
-        weeks {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
       }
       weekNumber
       workouts {
-        items {
-          id
-          workoutNumber
-          title
-          status
-          exerciseLabels
-          createdAt
-          updatedAt
-          programWeekWorkoutsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -1466,27 +938,12 @@ export const onDeleteProgramWeek = /* GraphQL */ `
         image
         title
         introVideo
-        weeks {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
       }
       weekNumber
       workouts {
-        items {
-          id
-          workoutNumber
-          title
-          status
-          exerciseLabels
-          createdAt
-          updatedAt
-          programWeekWorkoutsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -1507,15 +964,6 @@ export const onCreateProgram = /* GraphQL */ `
       title
       introVideo
       weeks {
-        items {
-          id
-          weekNumber
-          workoutLabels
-          createdAt
-          updatedAt
-          programWeeksId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -1534,15 +982,6 @@ export const onUpdateProgram = /* GraphQL */ `
       title
       introVideo
       weeks {
-        items {
-          id
-          weekNumber
-          workoutLabels
-          createdAt
-          updatedAt
-          programWeeksId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -1561,15 +1000,6 @@ export const onDeleteProgram = /* GraphQL */ `
       title
       introVideo
       weeks {
-        items {
-          id
-          weekNumber
-          workoutLabels
-          createdAt
-          updatedAt
-          programWeeksId
-          __typename
-        }
         nextToken
         __typename
       }

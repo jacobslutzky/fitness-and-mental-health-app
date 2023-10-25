@@ -7,14 +7,6 @@ export const getBlog = /* GraphQL */ `
       id
       name
       posts {
-        items {
-          id
-          title
-          createdAt
-          updatedAt
-          blogPostsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -34,10 +26,6 @@ export const listBlogs = /* GraphQL */ `
       items {
         id
         name
-        posts {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
@@ -55,23 +43,11 @@ export const getPost = /* GraphQL */ `
       blog {
         id
         name
-        posts {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
       }
       comments {
-        items {
-          id
-          content
-          createdAt
-          updatedAt
-          postCommentsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -92,17 +68,6 @@ export const listPosts = /* GraphQL */ `
       items {
         id
         title
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-          __typename
-        }
-        comments {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         blogPostsId
@@ -120,17 +85,6 @@ export const getComment = /* GraphQL */ `
       post {
         id
         title
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-          __typename
-        }
-        comments {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         blogPostsId
@@ -153,14 +107,6 @@ export const listComments = /* GraphQL */ `
     listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        post {
-          id
-          title
-          createdAt
-          updatedAt
-          blogPostsId
-          __typename
-        }
         content
         createdAt
         updatedAt
@@ -181,10 +127,6 @@ export const getMeditationSection = /* GraphQL */ `
         video
         author
         image
-        sections {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
@@ -212,15 +154,6 @@ export const listMeditationSections = /* GraphQL */ `
     ) {
       items {
         id
-        meditation {
-          id
-          video
-          author
-          image
-          createdAt
-          updatedAt
-          __typename
-        }
         title
         description
         time
@@ -242,16 +175,6 @@ export const getMeditationEntry = /* GraphQL */ `
       author
       image
       sections {
-        items {
-          id
-          title
-          description
-          time
-          createdAt
-          updatedAt
-          meditationEntrySectionsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -277,10 +200,6 @@ export const listMeditationEntries = /* GraphQL */ `
         video
         author
         image
-        sections {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
@@ -336,34 +255,11 @@ export const getUser = /* GraphQL */ `
       password
       profilePicture
       dailyTasks {
-        items {
-          id
-          label
-          screen
-          icon
-          createdAt
-          updatedAt
-          userDailyTasksId
-          __typename
-        }
         nextToken
         __typename
       }
       userStats {
         id
-        user {
-          id
-          firstName
-          lastName
-          email
-          password
-          profilePicture
-          currentProgram
-          createdAt
-          updatedAt
-          userUserStatsId
-          __typename
-        }
         mindfulMinutes
         meditationStreak
         workoutsCompleted
@@ -373,15 +269,6 @@ export const getUser = /* GraphQL */ `
         __typename
       }
       exerciseLogs {
-        items {
-          id
-          exercise
-          entryLabels
-          createdAt
-          updatedAt
-          userExerciseLogsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -407,24 +294,6 @@ export const listUsers = /* GraphQL */ `
         email
         password
         profilePicture
-        dailyTasks {
-          nextToken
-          __typename
-        }
-        userStats {
-          id
-          mindfulMinutes
-          meditationStreak
-          workoutsCompleted
-          createdAt
-          updatedAt
-          userStatsUserId
-          __typename
-        }
-        exerciseLogs {
-          nextToken
-          __typename
-        }
         currentProgram
         createdAt
         updatedAt
@@ -447,24 +316,6 @@ export const getUserStats = /* GraphQL */ `
         email
         password
         profilePicture
-        dailyTasks {
-          nextToken
-          __typename
-        }
-        userStats {
-          id
-          mindfulMinutes
-          meditationStreak
-          workoutsCompleted
-          createdAt
-          updatedAt
-          userStatsUserId
-          __typename
-        }
-        exerciseLogs {
-          nextToken
-          __typename
-        }
         currentProgram
         createdAt
         updatedAt
@@ -490,19 +341,6 @@ export const listUserStats = /* GraphQL */ `
     listUserStats(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        user {
-          id
-          firstName
-          lastName
-          email
-          password
-          profilePicture
-          currentProgram
-          createdAt
-          updatedAt
-          userUserStatsId
-          __typename
-        }
         mindfulMinutes
         meditationStreak
         workoutsCompleted
@@ -569,24 +407,6 @@ export const getExerciseLog = /* GraphQL */ `
         email
         password
         profilePicture
-        dailyTasks {
-          nextToken
-          __typename
-        }
-        userStats {
-          id
-          mindfulMinutes
-          meditationStreak
-          workoutsCompleted
-          createdAt
-          updatedAt
-          userStatsUserId
-          __typename
-        }
-        exerciseLogs {
-          nextToken
-          __typename
-        }
         currentProgram
         createdAt
         updatedAt
@@ -595,19 +415,6 @@ export const getExerciseLog = /* GraphQL */ `
       }
       exercise
       entries {
-        items {
-          id
-          repsCompleted
-          weight
-          dateCompleted
-          workout
-          programWeek
-          program
-          createdAt
-          updatedAt
-          exerciseLogEntriesId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -628,24 +435,7 @@ export const listExerciseLogs = /* GraphQL */ `
     listExerciseLogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        user {
-          id
-          firstName
-          lastName
-          email
-          password
-          profilePicture
-          currentProgram
-          createdAt
-          updatedAt
-          userUserStatsId
-          __typename
-        }
         exercise
-        entries {
-          nextToken
-          __typename
-        }
         entryLabels
         createdAt
         updatedAt
@@ -663,22 +453,9 @@ export const getExercise = /* GraphQL */ `
       id
       workout {
         id
-        programWeek {
-          id
-          weekNumber
-          workoutLabels
-          createdAt
-          updatedAt
-          programWeeksId
-          __typename
-        }
         workoutNumber
         title
         status
-        exercises {
-          nextToken
-          __typename
-        }
         exerciseLabels
         createdAt
         updatedAt
@@ -707,17 +484,6 @@ export const listExercises = /* GraphQL */ `
     listExercises(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        workout {
-          id
-          workoutNumber
-          title
-          status
-          exerciseLabels
-          createdAt
-          updatedAt
-          programWeekWorkoutsId
-          __typename
-        }
         name
         sets
         RIR
@@ -740,21 +506,7 @@ export const getWorkout = /* GraphQL */ `
       id
       programWeek {
         id
-        program {
-          id
-          author
-          image
-          title
-          introVideo
-          createdAt
-          updatedAt
-          __typename
-        }
         weekNumber
-        workouts {
-          nextToken
-          __typename
-        }
         workoutLabels
         createdAt
         updatedAt
@@ -765,19 +517,6 @@ export const getWorkout = /* GraphQL */ `
       title
       status
       exercises {
-        items {
-          id
-          name
-          sets
-          RIR
-          restMinutes
-          repRange
-          exerciseNum
-          createdAt
-          updatedAt
-          workoutExercisesId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -798,22 +537,9 @@ export const listWorkouts = /* GraphQL */ `
     listWorkouts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        programWeek {
-          id
-          weekNumber
-          workoutLabels
-          createdAt
-          updatedAt
-          programWeeksId
-          __typename
-        }
         workoutNumber
         title
         status
-        exercises {
-          nextToken
-          __typename
-        }
         exerciseLabels
         createdAt
         updatedAt
@@ -835,27 +561,12 @@ export const getProgramWeek = /* GraphQL */ `
         image
         title
         introVideo
-        weeks {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename
       }
       weekNumber
       workouts {
-        items {
-          id
-          workoutNumber
-          title
-          status
-          exerciseLabels
-          createdAt
-          updatedAt
-          programWeekWorkoutsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -876,21 +587,7 @@ export const listProgramWeeks = /* GraphQL */ `
     listProgramWeeks(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        program {
-          id
-          author
-          image
-          title
-          introVideo
-          createdAt
-          updatedAt
-          __typename
-        }
         weekNumber
-        workouts {
-          nextToken
-          __typename
-        }
         workoutLabels
         createdAt
         updatedAt
@@ -911,15 +608,6 @@ export const getProgram = /* GraphQL */ `
       title
       introVideo
       weeks {
-        items {
-          id
-          weekNumber
-          workoutLabels
-          createdAt
-          updatedAt
-          programWeeksId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -942,10 +630,6 @@ export const listPrograms = /* GraphQL */ `
         image
         title
         introVideo
-        weeks {
-          nextToken
-          __typename
-        }
         createdAt
         updatedAt
         __typename

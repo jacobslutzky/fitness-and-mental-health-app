@@ -1,21 +1,20 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
-type Blog @model {
+type Blog @model @auth(rules: [{ allow: private }]) {
   id: ID!
   name: String!
   posts: [Post!] @hasMany
 }
 
-type Post @model {
+type Post @model @auth(rules: [{ allow: private }]) {
   id: ID!
   title: String!
   blog: Blog @belongsTo
   comments: [Comment!] @hasMany
 }
 
-type Comment @model {
+type Comment @model @auth(rules: [{ allow: private }]) {
   id: ID!
   post: Post @belongsTo
   content: String!
@@ -25,7 +24,7 @@ type Comment @model {
 Meditation queries 
 """
 
-type MeditationSection @model {
+type MeditationSection @model @auth(rules: [{ allow: private }]) {
   id: ID!
   meditation: MeditationEntry @belongsTo
   title: String!
@@ -33,7 +32,7 @@ type MeditationSection @model {
   time: Int!
 }
 
-type MeditationEntry @model {
+type MeditationEntry @model @auth(rules: [{ allow: private }]) {
   id: ID!
   video: String!
   author: String!
@@ -45,14 +44,14 @@ type MeditationEntry @model {
 """
 User queries 
 """
-type DailyTask @model {
+type DailyTask @model @auth(rules: [{ allow: private }]) {
   id: ID!
   label: String!
   screen: String!
   icon: String!
 }
 
-type User @model {
+type User @model @auth(rules: [{ allow: private }]) {
   id: ID!
   firstName: String!
   lastName: String!
@@ -70,7 +69,7 @@ type User @model {
 """
 Meditation stats
 """
-type UserStats @model {
+type UserStats @model @auth(rules: [{ allow: private }]) {
   id: ID!
   user: User @belongsTo
   mindfulMinutes: Int
@@ -82,7 +81,7 @@ type UserStats @model {
 Workout queries 
 """
 
-type ExerciseEntry @model {
+type ExerciseEntry @model @auth(rules: [{ allow: private }]) {
   id: ID!
   repsCompleted: Int
   weight: Float
@@ -92,7 +91,7 @@ type ExerciseEntry @model {
   program: String
 }
 
-type ExerciseLog @model {
+type ExerciseLog @model @auth(rules: [{ allow: private }]) {
   id: ID!
   user: User @belongsTo
   exercise: String!
@@ -100,7 +99,7 @@ type ExerciseLog @model {
   entryLabels: [String]
 }
 
-type Exercise @model {
+type Exercise @model @auth(rules: [{ allow: private }]) {
   id: ID!
   workout: Workout @belongsTo
   name: String!
@@ -111,7 +110,7 @@ type Exercise @model {
   exerciseNum: Int!
 }
 
-type Workout @model {
+type Workout @model @auth(rules: [{ allow: private }]) {
   id: ID!
   programWeek: ProgramWeek @belongsTo
   workoutNumber: Int!
@@ -121,7 +120,7 @@ type Workout @model {
   exerciseLabels: [String]
 }
 
-type ProgramWeek @model {
+type ProgramWeek @model @auth(rules: [{ allow: private }]) {
   id: ID!
   program: Program @belongsTo
   weekNumber: Int!
@@ -129,7 +128,7 @@ type ProgramWeek @model {
   workoutLabels: [String]
 }
 
-type Program @model {
+type Program @model @auth(rules: [{ allow: private }]) {
   id: ID!
   author: String!
   image: String!
@@ -146,7 +145,7 @@ timesMeditating: list of times upon listening
 meditationEntryListenMinutes: list of minutes listened entries
   Form: {entry}::{minutes}
 """
-type GeneralStats @model {
+type GeneralStats @model @auth(rules: [{ allow: private }]) {
   id: ID!
   usersMeditating: [String]
   timesMeditating: [String]

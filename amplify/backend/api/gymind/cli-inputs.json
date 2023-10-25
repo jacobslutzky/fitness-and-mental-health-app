@@ -4,8 +4,10 @@
     "apiName": "gymind",
     "serviceName": "AppSync",
     "defaultAuthType": {
-      "mode": "API_KEY",
-      "expirationTime": 7
-    }
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authgymind8beb6dff"
+    },
+    "conflictResolution": {},
+    "additionalAuthTypes": []
   }
 }
