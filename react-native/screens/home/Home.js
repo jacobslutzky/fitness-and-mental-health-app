@@ -235,7 +235,7 @@ export default function Home({ navigation }) {
         mutateFunction({ variables: { input: input } });
         isPressed[index] = !isPressed[index];
         setIsPressed([...isPressed]);
-        navigation.navigate(item.screen);
+        navigation.navigate(item.screen, {taskCompletionList: isPressed, taskCompletionListIndex: index});
     };
 
     const handleFilter = (command) => {

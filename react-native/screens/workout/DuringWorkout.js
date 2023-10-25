@@ -135,6 +135,7 @@ export default function DuringWorkout({ navigation, route }) {
         }
 
         updateUserStats({ variables: { input: statsInput } })
+        route.params.taskCompletionList[route.params.taskCompletionListIndex] = true
 
         navigation.navigate("CurrentProgram", { title: title, titleToNameMap: titleToNameMap })
     }

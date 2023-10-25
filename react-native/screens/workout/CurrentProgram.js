@@ -66,7 +66,7 @@ export default function CurrentProgram({ navigation, route }) {
     }
     const navigatedToWorkout = () => {
         refetchWorkout()
-        if (dataWorkout) navigation.navigate("DuringWorkout", { workout: dataR.getProgramWeek.workoutLabels[0], title: title, exerciseLabels: dataWorkout.getWorkout.exerciseLabels, weekNumber: dataR.getProgramWeek.weekNumber, titleToNameMap: titleToNameMap })
+        if (dataWorkout) navigation.navigate("DuringWorkout", { workout: dataR.getProgramWeek.workoutLabels[0], title: title, exerciseLabels: dataWorkout.getWorkout.exerciseLabels, weekNumber: dataR.getProgramWeek.weekNumber, titleToNameMap: titleToNameMap,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
     }
 
     const handleWeekClick = (weekNumber) => {

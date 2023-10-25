@@ -24,13 +24,13 @@ export default function WorkoutProgramInfo({ route, navigation }) {
     }
 
     const navigateToPreviewSplit = () => {
-        navigation.navigate("PreviewSplit", { title: workout, titleToNameMap: titleToNameMap })
+        navigation.navigate("PreviewSplit", { title: workout, titleToNameMap: titleToNameMap,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
     }
 
     const navigateToProgram = () => {
         //createProgramWeek({ variables : {input : input} })
         route.params.setCurrentProgram(route.params.title)
-        navigation.navigate("CurrentProgram", { title: workout, titleToNameMap: titleToNameMap })
+        navigation.navigate("CurrentProgram", { title: workout, titleToNameMap: titleToNameMa,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
     }
 
     return (

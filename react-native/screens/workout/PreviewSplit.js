@@ -75,7 +75,7 @@ export default function PreviewSplit({ route, navigation }) {
   const titleToNameMap = route.params.titleToNameMap
 
   const navigateToProgram = () => {
-    navigation.navigate("CurrentProgram", { title: title, titleToNameMap: titleToNameMap })
+    navigation.navigate("CurrentProgram", { title: title, titleToNameMap: titleToNameMap,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
   }
 
   let weekQueries = []
