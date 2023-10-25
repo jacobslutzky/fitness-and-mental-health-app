@@ -132,7 +132,6 @@ function App() {
       <Authenticator signUpAttributes={[
           "email",
           "name",
-          "phone_number",
           "updated_at"
         ]}>
     <ApolloProvider client={client}>
