@@ -141,6 +141,8 @@ export default function VideoPlay({ route }) {
 
     useEffect(() => {
         LoadAudio();
+        setIsPlaying(!isPlaying)
+        ResumeAudio()
     }, []);
 
 
@@ -150,7 +152,7 @@ export default function VideoPlay({ route }) {
         setSpeedMultiplier(multipliers[(oldIndex + 1) % multipliers.length])
         sound.current.setRateAsync(multipliers[(oldIndex + 1) % multipliers.length], true)
     }
-
+    
 
 
     return (

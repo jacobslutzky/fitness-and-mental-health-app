@@ -67,7 +67,7 @@ type User @model @auth(rules: [{ allow: private }]) {
 
 
 """
-Meditation stats
+Stats
 """
 type UserStats @model @auth(rules: [{ allow: private }]) {
   id: ID!
@@ -75,8 +75,23 @@ type UserStats @model @auth(rules: [{ allow: private }]) {
   mindfulMinutes: Int
   meditationStreak: Int
   workoutsCompleted: Int
+  achievementProgresses: [AchievementProgress] @hasMany
 }
 
+
+type AchievementProgress @model @auth(rules: [{ allow: private }]) {
+  id: ID!
+  userStats: UserStats @belongsTo
+  title: String!
+  progress: Int!
+}
+
+
+type Achievement @model @auth(rules: [{ allow: private }]) {
+  id: ID!
+  title: String!
+  goal: Int!
+}
 """
 Workout queries 
 """

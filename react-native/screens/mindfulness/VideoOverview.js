@@ -5,17 +5,17 @@ import { FontAwesome } from '@expo/vector-icons';
 export default function VideoOverview({ route, navigation }) {
   const { title, author, image } = route.params
   const sections = [
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Allowing-Yourself-to-Rest-in-Being.mp4", title: "Allowing Yourself to Rest in Being", description: "Allow everything about your experience to simply be.", length: 120 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Don't-Look-For-Anything-Else-mg.mp3", title: "Don’t Look for Anything Else", author: author, image: image, description: "Be with things exactly as they are.", length: 10 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Allowing-Yourself-to-Rest-in-Being.mp4", title: "Allowing Yourself to Rest in Being", description: "Allow everything about your experience to simply be.", length: 4 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Don't-Look-For-Anything-Else-mg.mp3", title: "Don’t Look for Anything Else", author: author, image: image, description: "Be with things exactly as they are.", length: 5 },
     { url: "https://d1eff9kpv3cdea.cloudfront.net/Ever-Present-Presence.mp4", title: "Ever Present Presence", author: author, image: image, description: "Connect with the undeniable awareness that is with us in each and every moment.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Letting-Go.mp4", title: "Letting Go", author: author, image: image, description: "Explore the present moment with gentleness, openness, and curiosity.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Letting-the-Moment-Be.mp3", title: "Letting the Moment Be", author: author, image: image, description: "For the next few moments, see what it is like to simply experience whatever is being experienced.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/No-Matter-You're-Thinking-You-Are.mp3", title: "No Matter Your Thinking, You are", author: author, image: image, description: "Draw upon the ever-present essence of each moment.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Relaxing-All-Effort.mp4", title: "Relaxing All Effort", author: author, image: image, description: "We are constantly trying to make our experience different than it naturally is. Take a moment to simply relax into the present.", length: 5 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Letting-Go.mp4", title: "Letting Go", author: author, image: image, description: "Explore the present moment with gentleness, openness, and curiosity.", length: 2 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Letting-the-Moment-Be.mp3", title: "Letting the Moment Be", author: author, image: image, description: "For the next few moments, see what it is like to simply experience whatever is being experienced.", length: 6 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/No-Matter-You're-Thinking-You-Are.mp3", title: "No Matter Your Thinking, You are", author: author, image: image, description: "Draw upon the ever-present essence of each moment.", length: 4 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Relaxing-All-Effort.mp4", title: "Relaxing All Effort", author: author, image: image, description: "We are constantly trying to make our experience different than it naturally is. Take a moment to simply relax into the present.", length: 4 },
     { url: "https://d1eff9kpv3cdea.cloudfront.net/Relaxing-with-What-Is.mp4", title: "Relaxing With What Is", author: author, image: image, description: "Discover what it means to you when you finally let experience be as it is.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/Simply-Notice-Thought.mp3", title: "Simply Noticing Thought", author: author, image: image, description: "Become aware of what happens to your thoughts when you notice them.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/The-Mode-of-Just-Being.mp4", title: "The River of Experience", author: author, image: image, description: "Allow your everyday experience to flow like water.", length: 5 },
-    { url: "https://d1eff9kpv3cdea.cloudfront.net/The-River-of-Experience.mp4", title: "The Mode of Just Being", author: author, image: image, description: "Notice what happens to your mind when you practice just being here now.", length: 5 }
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/Simply-Notice-Thought.mp3", title: "Simply Noticing Thought", author: author, image: image, description: "Become aware of what happens to your thoughts when you notice them.", length: 4 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/The-Mode-of-Just-Being.mp4", title: "The River of Experience", author: author, image: image, description: "Allow your everyday experience to flow like water.", length: 2 },
+    { url: "https://d1eff9kpv3cdea.cloudfront.net/The-River-of-Experience.mp4", title: "The Mode of Just Being", author: author, image: image, description: "Notice what happens to your mind when you practice just being here now.", length: 4 }
   ]
   state = {
     index: 0,

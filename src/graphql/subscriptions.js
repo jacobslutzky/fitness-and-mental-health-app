@@ -482,6 +482,10 @@ export const onCreateUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      achievementProgresses {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       userStatsUserId
@@ -511,6 +515,10 @@ export const onUpdateUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      achievementProgresses {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       userStatsUserId
@@ -540,9 +548,130 @@ export const onDeleteUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      achievementProgresses {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       userStatsUserId
+      __typename
+    }
+  }
+`;
+export const onCreateAchievementProgress = /* GraphQL */ `
+  subscription OnCreateAchievementProgress(
+    $filter: ModelSubscriptionAchievementProgressFilterInput
+  ) {
+    onCreateAchievementProgress(filter: $filter) {
+      id
+      userStats {
+        id
+        mindfulMinutes
+        meditationStreak
+        workoutsCompleted
+        createdAt
+        updatedAt
+        userStatsUserId
+        __typename
+      }
+      title
+      progress
+      createdAt
+      updatedAt
+      userStatsAchievementProgressesId
+      __typename
+    }
+  }
+`;
+export const onUpdateAchievementProgress = /* GraphQL */ `
+  subscription OnUpdateAchievementProgress(
+    $filter: ModelSubscriptionAchievementProgressFilterInput
+  ) {
+    onUpdateAchievementProgress(filter: $filter) {
+      id
+      userStats {
+        id
+        mindfulMinutes
+        meditationStreak
+        workoutsCompleted
+        createdAt
+        updatedAt
+        userStatsUserId
+        __typename
+      }
+      title
+      progress
+      createdAt
+      updatedAt
+      userStatsAchievementProgressesId
+      __typename
+    }
+  }
+`;
+export const onDeleteAchievementProgress = /* GraphQL */ `
+  subscription OnDeleteAchievementProgress(
+    $filter: ModelSubscriptionAchievementProgressFilterInput
+  ) {
+    onDeleteAchievementProgress(filter: $filter) {
+      id
+      userStats {
+        id
+        mindfulMinutes
+        meditationStreak
+        workoutsCompleted
+        createdAt
+        updatedAt
+        userStatsUserId
+        __typename
+      }
+      title
+      progress
+      createdAt
+      updatedAt
+      userStatsAchievementProgressesId
+      __typename
+    }
+  }
+`;
+export const onCreateAchievement = /* GraphQL */ `
+  subscription OnCreateAchievement(
+    $filter: ModelSubscriptionAchievementFilterInput
+  ) {
+    onCreateAchievement(filter: $filter) {
+      id
+      title
+      goal
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateAchievement = /* GraphQL */ `
+  subscription OnUpdateAchievement(
+    $filter: ModelSubscriptionAchievementFilterInput
+  ) {
+    onUpdateAchievement(filter: $filter) {
+      id
+      title
+      goal
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteAchievement = /* GraphQL */ `
+  subscription OnDeleteAchievement(
+    $filter: ModelSubscriptionAchievementFilterInput
+  ) {
+    onDeleteAchievement(filter: $filter) {
+      id
+      title
+      goal
+      createdAt
+      updatedAt
       __typename
     }
   }

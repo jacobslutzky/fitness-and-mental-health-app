@@ -325,6 +325,10 @@ export const getUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      achievementProgresses {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       userStatsUserId
@@ -347,6 +351,86 @@ export const listUserStats = /* GraphQL */ `
         createdAt
         updatedAt
         userStatsUserId
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getAchievementProgress = /* GraphQL */ `
+  query GetAchievementProgress($id: ID!) {
+    getAchievementProgress(id: $id) {
+      id
+      userStats {
+        id
+        mindfulMinutes
+        meditationStreak
+        workoutsCompleted
+        createdAt
+        updatedAt
+        userStatsUserId
+        __typename
+      }
+      title
+      progress
+      createdAt
+      updatedAt
+      userStatsAchievementProgressesId
+      __typename
+    }
+  }
+`;
+export const listAchievementProgresses = /* GraphQL */ `
+  query ListAchievementProgresses(
+    $filter: ModelAchievementProgressFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAchievementProgresses(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        title
+        progress
+        createdAt
+        updatedAt
+        userStatsAchievementProgressesId
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const getAchievement = /* GraphQL */ `
+  query GetAchievement($id: ID!) {
+    getAchievement(id: $id) {
+      id
+      title
+      goal
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const listAchievements = /* GraphQL */ `
+  query ListAchievements(
+    $filter: ModelAchievementFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAchievements(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        title
+        goal
+        createdAt
+        updatedAt
         __typename
       }
       nextToken

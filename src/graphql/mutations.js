@@ -528,6 +528,10 @@ export const createUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      achievementProgresses {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       userStatsUserId
@@ -558,6 +562,10 @@ export const updateUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      achievementProgresses {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       userStatsUserId
@@ -588,9 +596,136 @@ export const deleteUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      achievementProgresses {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       userStatsUserId
+      __typename
+    }
+  }
+`;
+export const createAchievementProgress = /* GraphQL */ `
+  mutation CreateAchievementProgress(
+    $input: CreateAchievementProgressInput!
+    $condition: ModelAchievementProgressConditionInput
+  ) {
+    createAchievementProgress(input: $input, condition: $condition) {
+      id
+      userStats {
+        id
+        mindfulMinutes
+        meditationStreak
+        workoutsCompleted
+        createdAt
+        updatedAt
+        userStatsUserId
+        __typename
+      }
+      title
+      progress
+      createdAt
+      updatedAt
+      userStatsAchievementProgressesId
+      __typename
+    }
+  }
+`;
+export const updateAchievementProgress = /* GraphQL */ `
+  mutation UpdateAchievementProgress(
+    $input: UpdateAchievementProgressInput!
+    $condition: ModelAchievementProgressConditionInput
+  ) {
+    updateAchievementProgress(input: $input, condition: $condition) {
+      id
+      userStats {
+        id
+        mindfulMinutes
+        meditationStreak
+        workoutsCompleted
+        createdAt
+        updatedAt
+        userStatsUserId
+        __typename
+      }
+      title
+      progress
+      createdAt
+      updatedAt
+      userStatsAchievementProgressesId
+      __typename
+    }
+  }
+`;
+export const deleteAchievementProgress = /* GraphQL */ `
+  mutation DeleteAchievementProgress(
+    $input: DeleteAchievementProgressInput!
+    $condition: ModelAchievementProgressConditionInput
+  ) {
+    deleteAchievementProgress(input: $input, condition: $condition) {
+      id
+      userStats {
+        id
+        mindfulMinutes
+        meditationStreak
+        workoutsCompleted
+        createdAt
+        updatedAt
+        userStatsUserId
+        __typename
+      }
+      title
+      progress
+      createdAt
+      updatedAt
+      userStatsAchievementProgressesId
+      __typename
+    }
+  }
+`;
+export const createAchievement = /* GraphQL */ `
+  mutation CreateAchievement(
+    $input: CreateAchievementInput!
+    $condition: ModelAchievementConditionInput
+  ) {
+    createAchievement(input: $input, condition: $condition) {
+      id
+      title
+      goal
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const updateAchievement = /* GraphQL */ `
+  mutation UpdateAchievement(
+    $input: UpdateAchievementInput!
+    $condition: ModelAchievementConditionInput
+  ) {
+    updateAchievement(input: $input, condition: $condition) {
+      id
+      title
+      goal
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const deleteAchievement = /* GraphQL */ `
+  mutation DeleteAchievement(
+    $input: DeleteAchievementInput!
+    $condition: ModelAchievementConditionInput
+  ) {
+    deleteAchievement(input: $input, condition: $condition) {
+      id
+      title
+      goal
+      createdAt
+      updatedAt
       __typename
     }
   }
