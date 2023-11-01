@@ -3,55 +3,133 @@ import { useTheme } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import * as queries from "../../../src/graphql/queries";
+import * as mutations from "../../../src/graphql/mutations";
+import { useState, React, useEffect } from 'react';
 import { Colors } from '../../constants/Colors';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
-import { useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function Profile({ navigation }) {
   const colors = useTheme().colors;
-  const leaders = [
+  const [leaders, setLeaders] = useState([
     { name: "Zach B.", rank: 1, points: 8000 },
     { name: "Joel G.", rank: 2, points: 1980 },
     { name: "Sally R.", rank: 3, points: 1670 },
     { name: "You", rank: 6, points: 850 },
-  ]
+  ])
 
-  const achievements = [
-    {name: "Workout Master", description: "Work out for 500 minutes!", progress: "360/500"},
-    {name: "Weekender", description: "Two workouts on the weekend!", progress: "1/2"},     
-    {name: "Super heat", description: "Master 5 endurance workouts!", progress: "4/5"}
+  const [achievements, setAchievements] = useState([])
 
-  ]
+  const [createAchievement] = useMutation(gql`${mutations.createAchievement}`);
+
+  const [achievementProgresses, setAchievementProgresses] = useState([])
+
+  /*
+  useEffect(() => {
+    const title = `meditation-streak-10`
+    const input = {
+      id: title,
+      title: title,
+      description: "Meditate 10 days in a row",
+      goal: 10
+    }
+    createAchievement({ variables: { input: input, id: title } })
+  },[])
+  */
+
+  const { data: dataAchievements } = useQuery(gql`${queries.listAchievements}`)
+
+  const { data: dataAchievementProgresses } = useQuery(gql`${queries.listAchievementProgresses}`, {
+    variables: { filter: 
+      {
+        userStatsAchievementProgressesId: {
+          eq: `stats-${global.userId}`
+        }
+      }
+  }})
+
+  const [achievementFlag, setAchievementFlag] = useState(false)
+
+  useEffect(() => {
+    if(!dataAchievements) return
+    console.log(dataAchievements.listAchievements.items)
+
+    for(let i = 0; i < dataAchievements.listAchievements.items.length; i++){
+      const achievement = dataAchievements.listAchievements.items[i]
+      const achievementConverted = {name: achievement.title, description: achievement.description, progress: 0, goal: achievement.goal}
+      if(achievements.length == 0 || achievements[achievements.length - 1].name != achievementConverted.name){
+        setAchievements([...achievements, achievementConverted])
+      }
+      console.log('achievements: ', achievementConverted)
+    }
+    console.log(achievements)
+    setAchievementFlag(true)
+  }, [dataAchievements])
 
   const { data: dataGetStats } = useQuery(gql`${queries.getUserStats}`, {
     variables: { id: `stats-${global.userId}` }
   });
 
+  useEffect(() => {
+    console.log("eeeee")
+    console.log(dataAchievementProgresses ? dataAchievementProgresses.listAchievementProgresses : "not available")
+    const achievementProgresses = dataAchievementProgresses ? dataAchievementProgresses.listAchievementProgresses.items : []
+    console.log('lengths', achievements.length, achievementProgresses.length)
+    for(let i = 0; i < achievements.length; i++){
+      const achievement = achievements[i]
+      for(let j = 0; j < achievementProgresses.length; j++){
+        const achievementProgress = achievementProgresses[j]
+        console.log('Achievement Progress: ', achievementProgress)
+        if(achievement.name == achievementProgress.title){
+          const achievementConverted = {name: achievement.name, description: achievement.description, progress: achievementProgress.progress, goal: achievement.goal}
+          let achievementsTemp = achievements.slice()
+          achievementsTemp[i] = achievementConverted
+          setAchievements(achievementsTemp)
+          console.log('percent', achievements[i].progress, achievements[i].goal, 100*(achievements[i].progress / achievements[i].goal))
+        }
+      }
+    }
+    console.log(achievements)
+    
+  }, [dataGetStats, dataAchievements, achievementFlag, dataAchievementProgresses])
+
   const { user, signOut } = useAuthenticator((context) => [context.user]);
 
 
+  const { data: dataUserStats } = useQuery(gql`${queries.listUserStats}`)
+
   useEffect(() => {
-    console.log(user)
-    console.log(user.attributes.email)
-  })
+    if(!dataUserStats) return
+    let tempLeaders = []
+    let userStatsList = dataUserStats.listUserStats.items
+    for(let i = 0; i < userStatsList.length; i++){
+      tempLeaders.push({name: userStatsList[i].email, points: userStatsList[i].points})
+    }
+
+    tempLeaders.sort(function(a, b) { 
+      return b.points - a.points;
+    })
+    
+    setLeaders(tempLeaders)
+  }, [dataUserStats])
+
 
   const Leaders = () => (
-    <View style={styles.leaderboardContainer}>
+    <ScrollView style={styles.leaderboardContainer}>
       {leaders.map((leader, index) => (
         <View style={[styles.leaderboardRow, index === leaders.length - 1 && styles.currentUserRow]} key={leader.rank}>
           <View style={styles.rankNamePic}>
-            <Text style={styles.leaderboardText}>#{leader.rank}</Text>
-            <Image style={styles.leaderBoardPic} source={require('../../../assets/caleb.jpeg')} />
+            <Text style={styles.leaderboardText}>#{index + 1}</Text>
+            <Image style={styles.leaderBoardPic} source={require('../../../assets/dumbell.jpeg')} />
             <Text style={styles.leaderboardText}>{leader.name}</Text>
           </View>
           <Text style={styles.leaderboardText}>{leader.points}</Text>
         </View>
       ))}
 
-    </View>
+    </ScrollView>
   )
 
   const Tab = createMaterialTopTabNavigator();
@@ -88,7 +166,7 @@ export default function Profile({ navigation }) {
         
         <Text style={[styles.sectionName, { color: colors.text, marginTop: 50, textAlign: 'center' }]} >My Statistics</Text>
         <View style={styles.statsContainer}>
-          <View style={styles.stat}>
+          <View style={[styles.stat, {paddingRight: 25}]}>
             <FontAwesome5 name="brain" size={25} color={"white"} />
             <Text style={{ color: colors.text }}>{dataGetStats && dataGetStats.getUserStats ? dataGetStats.getUserStats.mindfulMinutes : 0}</Text>
             <Text style={styles.statsText}>Mindful{"\n"}Minutes</Text>
@@ -102,7 +180,7 @@ export default function Profile({ navigation }) {
           <View style={styles.stat}>
             <MaterialCommunityIcons name="meditation" size={25} color="white" />
             <Text style={{ color: colors.text }}>{dataGetStats && dataGetStats.getUserStats ? dataGetStats.getUserStats.meditationStreak : 0}</Text>
-            <Text style={styles.statsText}>Meditation{"\n"}Streak</Text>
+            <Text style={styles.statsText}>Meditations{"\n"}Completed</Text>
           </View>
         </View>
         <View style={styles.leaderboardHeader}>
@@ -127,12 +205,12 @@ export default function Profile({ navigation }) {
           {achievements.map((achievement, index) => (
 
             <View style={styles.achievementBubble} key={index}>
-              <Text style={styles.achievementName}>You've done 3 workouts this week!</Text>
-              <Text style={styles.achievementProgressText}>75% of your weekly goal is complete.</Text>
+              <Text style={styles.achievementName}>{achievement.description}</Text>
+              <Text style={styles.achievementProgressText}>{100 * (achievement.progress / achievement.goal)}% of your weekly goal is complete.</Text>
               
               <View style={styles.progressBarContainer}>
                 <View style={styles.progressBarOuter}>
-                  <View style={styles.progressBarInner}>
+                  <View style={[styles.progressBarInner, {width:`${100 * (achievement.progress / achievement.goal)}%` }]}>
                   </View>
                 </View>
               </View>
@@ -299,7 +377,6 @@ const styles = StyleSheet.create({
   progressBarInner: {
     backgroundColor: '#1A1A1A',
     borderRadius: 10,
-    width: '75%',
     height: 10,
   },
   progressBarContainer: {

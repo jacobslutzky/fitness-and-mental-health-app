@@ -398,10 +398,8 @@ export const createUser = /* GraphQL */ `
   ) {
     createUser(input: $input, condition: $condition) {
       id
-      firstName
-      lastName
+      name
       email
-      password
       profilePicture
       dailyTasks {
         nextToken
@@ -412,6 +410,8 @@ export const createUser = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -436,10 +436,8 @@ export const updateUser = /* GraphQL */ `
   ) {
     updateUser(input: $input, condition: $condition) {
       id
-      firstName
-      lastName
+      name
       email
-      password
       profilePicture
       dailyTasks {
         nextToken
@@ -450,6 +448,8 @@ export const updateUser = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -474,10 +474,8 @@ export const deleteUser = /* GraphQL */ `
   ) {
     deleteUser(input: $input, condition: $condition) {
       id
-      firstName
-      lastName
+      name
       email
-      password
       profilePicture
       dailyTasks {
         nextToken
@@ -488,6 +486,8 @@ export const deleteUser = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -514,10 +514,8 @@ export const createUserStats = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt
@@ -528,6 +526,8 @@ export const createUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      points
+      email
       achievementProgresses {
         nextToken
         __typename
@@ -548,10 +548,8 @@ export const updateUserStats = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt
@@ -562,6 +560,8 @@ export const updateUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      points
+      email
       achievementProgresses {
         nextToken
         __typename
@@ -582,10 +582,8 @@ export const deleteUserStats = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt
@@ -596,6 +594,8 @@ export const deleteUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      points
+      email
       achievementProgresses {
         nextToken
         __typename
@@ -619,6 +619,8 @@ export const createAchievementProgress = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -645,6 +647,8 @@ export const updateAchievementProgress = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -671,6 +675,8 @@ export const deleteAchievementProgress = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -693,6 +699,7 @@ export const createAchievement = /* GraphQL */ `
     createAchievement(input: $input, condition: $condition) {
       id
       title
+      description
       goal
       createdAt
       updatedAt
@@ -708,6 +715,7 @@ export const updateAchievement = /* GraphQL */ `
     updateAchievement(input: $input, condition: $condition) {
       id
       title
+      description
       goal
       createdAt
       updatedAt
@@ -723,6 +731,7 @@ export const deleteAchievement = /* GraphQL */ `
     deleteAchievement(input: $input, condition: $condition) {
       id
       title
+      description
       goal
       createdAt
       updatedAt
@@ -799,10 +808,8 @@ export const createExerciseLog = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt
@@ -832,10 +839,8 @@ export const updateExerciseLog = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt
@@ -865,10 +870,8 @@ export const deleteExerciseLog = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt

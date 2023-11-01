@@ -26,9 +26,16 @@ export default function Home({ navigation }) {
   const { data : dataGetStats, loading : loadingGetStats, error : errorGetStats } = useQuery(gql`${queries.getUserStats}`, {
     variables: { id: `stats-${global.userId}`}
   }); 
+  //Check if user exists
+  const { data : dataUser, loading : loadingUser, error : errorUser } = useQuery(gql`${queries.getUser}`, {
+    variables: { id: `${global.userId}`}
+  }); 
 
   
   const [createUserStats, { data : dataCreateStats, loading : loadingCreateStats, error : errorCreateStats}] = useMutation(gql`${mutations.createUserStats}`);
+
+  const [createUser, { data : dataCreateUser, loading : loadingCreateUser, error : errorCreateUser}] = useMutation(gql`${mutations.createUser}`);
+
 
   useEffect(() => {
     console.log(global.userId)
@@ -38,12 +45,26 @@ export default function Home({ navigation }) {
         id: `stats-${global.userId}`,
         mindfulMinutes: 0,
         meditationStreak: 0,
-        workoutsCompleted: 0
+        workoutsCompleted: 0,
+        email: user.username,
+        points: 0
       }
       createUserStats({ variables : {input : statsInput} })
-
     }
-  }, [dataGetStats]);
+
+    console.log("name", user)
+
+    if(!(dataUser && dataUser.getUser)){
+      const userInput = {
+        id: `${global.userId}`,
+        name: user.attributes.name ? user.attributes.name: "",
+        email: user.username,
+        profilePicture: "",
+        currentProgram: ""
+      }
+      createUser({ variables : {input : userInput} })
+    }
+  }, [dataGetStats, dataUser]);
 
 
 

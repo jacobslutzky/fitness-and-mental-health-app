@@ -3064,22 +3064,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "firstName",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "NON_NULL",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            }
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "lastName",
+          "name" : "name",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -3095,21 +3080,6 @@
           "deprecationReason" : null
         }, {
           "name" : "email",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "NON_NULL",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            }
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "password",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -3355,6 +3325,28 @@
           "type" : {
             "kind" : "SCALAR",
             "name" : "Int",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "points",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Int",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "email",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
             "ofType" : null
           },
           "isDeprecated" : false,
@@ -4392,16 +4384,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "firstName",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "lastName",
+          "name" : "name",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -4411,15 +4394,6 @@
           "defaultValue" : null
         }, {
           "name" : "email",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "password",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -4574,6 +4548,24 @@
           },
           "defaultValue" : null
         }, {
+          "name" : "points",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelIntInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "email",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
           "name" : "and",
           "description" : null,
           "type" : {
@@ -4642,6 +4634,21 @@
           "deprecationReason" : null
         }, {
           "name" : "title",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "NON_NULL",
+            "name" : null,
+            "ofType" : {
+              "kind" : "SCALAR",
+              "name" : "String",
+              "ofType" : null
+            }
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "description",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -4760,6 +4767,15 @@
           "defaultValue" : null
         }, {
           "name" : "title",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "description",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -9070,20 +9086,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "firstName",
-          "description" : null,
-          "type" : {
-            "kind" : "NON_NULL",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            }
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "lastName",
+          "name" : "name",
           "description" : null,
           "type" : {
             "kind" : "NON_NULL",
@@ -9097,19 +9100,6 @@
           "defaultValue" : null
         }, {
           "name" : "email",
-          "description" : null,
-          "type" : {
-            "kind" : "NON_NULL",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            }
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "password",
           "description" : null,
           "type" : {
             "kind" : "NON_NULL",
@@ -9158,16 +9148,7 @@
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
-          "name" : "firstName",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "lastName",
+          "name" : "name",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -9177,15 +9158,6 @@
           "defaultValue" : null
         }, {
           "name" : "email",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "password",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -9278,16 +9250,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "firstName",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "lastName",
+          "name" : "name",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -9297,15 +9260,6 @@
           "defaultValue" : null
         }, {
           "name" : "email",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "password",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -9408,6 +9362,24 @@
           },
           "defaultValue" : null
         }, {
+          "name" : "points",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Int",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "email",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
           "name" : "userStatsUserId",
           "description" : null,
           "type" : {
@@ -9449,6 +9421,24 @@
           "type" : {
             "kind" : "INPUT_OBJECT",
             "name" : "ModelIntInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "points",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelIntInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "email",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -9542,6 +9532,24 @@
           "type" : {
             "kind" : "SCALAR",
             "name" : "Int",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "points",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Int",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "email",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
             "ofType" : null
           },
           "defaultValue" : null
@@ -9803,6 +9811,19 @@
           },
           "defaultValue" : null
         }, {
+          "name" : "description",
+          "description" : null,
+          "type" : {
+            "kind" : "NON_NULL",
+            "name" : null,
+            "ofType" : {
+              "kind" : "SCALAR",
+              "name" : "String",
+              "ofType" : null
+            }
+          },
+          "defaultValue" : null
+        }, {
           "name" : "goal",
           "description" : null,
           "type" : {
@@ -9826,6 +9847,15 @@
         "fields" : null,
         "inputFields" : [ {
           "name" : "title",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "description",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -9901,6 +9931,15 @@
           "defaultValue" : null
         }, {
           "name" : "title",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "description",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -13445,16 +13484,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "firstName",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelSubscriptionStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "lastName",
+          "name" : "name",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -13464,15 +13494,6 @@
           "defaultValue" : null
         }, {
           "name" : "email",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelSubscriptionStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "password",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -13566,6 +13587,24 @@
           "type" : {
             "kind" : "INPUT_OBJECT",
             "name" : "ModelSubscriptionIntInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "points",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelSubscriptionIntInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "email",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelSubscriptionStringInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -13677,6 +13716,15 @@
           "defaultValue" : null
         }, {
           "name" : "title",
+          "description" : null,
+          "type" : {
+            "kind" : "INPUT_OBJECT",
+            "name" : "ModelSubscriptionStringInput",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "description",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -15232,52 +15280,10 @@
         "onFragment" : false,
         "onField" : true
       }, {
-        "name" : "aws_subscribe",
-        "description" : "Tells the service which mutation triggers this subscription.",
-        "locations" : [ "FIELD_DEFINITION" ],
-        "args" : [ {
-          "name" : "mutations",
-          "description" : "List of mutations which will trigger this subscription when they are called.",
-          "type" : {
-            "kind" : "LIST",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            }
-          },
-          "defaultValue" : null
-        } ],
-        "onOperation" : false,
-        "onFragment" : false,
-        "onField" : false
-      }, {
-        "name" : "aws_iam",
-        "description" : "Tells the service this field/object has access authorized by sigv4 signing.",
+        "name" : "aws_api_key",
+        "description" : "Tells the service this field/object has access authorized by an API key.",
         "locations" : [ "OBJECT", "FIELD_DEFINITION" ],
         "args" : [ ],
-        "onOperation" : false,
-        "onFragment" : false,
-        "onField" : false
-      }, {
-        "name" : "aws_auth",
-        "description" : "Directs the schema to enforce authorization on a field",
-        "locations" : [ "FIELD_DEFINITION" ],
-        "args" : [ {
-          "name" : "cognito_groups",
-          "description" : "List of cognito user pool groups which have access on this field",
-          "type" : {
-            "kind" : "LIST",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            }
-          },
-          "defaultValue" : null
-        } ],
         "onOperation" : false,
         "onFragment" : false,
         "onField" : false
@@ -15299,31 +15305,18 @@
         "onFragment" : false,
         "onField" : false
       }, {
-        "name" : "aws_oidc",
-        "description" : "Tells the service this field/object has access authorized by an OIDC token.",
+        "name" : "aws_lambda",
+        "description" : "Tells the service this field/object has access authorized by a Lambda Authorizer.",
         "locations" : [ "OBJECT", "FIELD_DEFINITION" ],
         "args" : [ ],
         "onOperation" : false,
         "onFragment" : false,
         "onField" : false
       }, {
-        "name" : "aws_publish",
-        "description" : "Tells the service which subscriptions will be published to when this mutation is called. This directive is deprecated use @aws_susbscribe directive instead.",
-        "locations" : [ "FIELD_DEFINITION" ],
-        "args" : [ {
-          "name" : "subscriptions",
-          "description" : "List of subscriptions which will be published to when this mutation is called.",
-          "type" : {
-            "kind" : "LIST",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            }
-          },
-          "defaultValue" : null
-        } ],
+        "name" : "aws_oidc",
+        "description" : "Tells the service this field/object has access authorized by an OIDC token.",
+        "locations" : [ "OBJECT", "FIELD_DEFINITION" ],
+        "args" : [ ],
         "onOperation" : false,
         "onFragment" : false,
         "onField" : false
@@ -15349,18 +15342,73 @@
         "onFragment" : false,
         "onField" : false
       }, {
-        "name" : "aws_api_key",
-        "description" : "Tells the service this field/object has access authorized by an API key.",
+        "name" : "aws_iam",
+        "description" : "Tells the service this field/object has access authorized by sigv4 signing.",
         "locations" : [ "OBJECT", "FIELD_DEFINITION" ],
         "args" : [ ],
         "onOperation" : false,
         "onFragment" : false,
         "onField" : false
       }, {
-        "name" : "aws_lambda",
-        "description" : "Tells the service this field/object has access authorized by a Lambda Authorizer.",
-        "locations" : [ "OBJECT", "FIELD_DEFINITION" ],
-        "args" : [ ],
+        "name" : "aws_subscribe",
+        "description" : "Tells the service which mutation triggers this subscription.",
+        "locations" : [ "FIELD_DEFINITION" ],
+        "args" : [ {
+          "name" : "mutations",
+          "description" : "List of mutations which will trigger this subscription when they are called.",
+          "type" : {
+            "kind" : "LIST",
+            "name" : null,
+            "ofType" : {
+              "kind" : "SCALAR",
+              "name" : "String",
+              "ofType" : null
+            }
+          },
+          "defaultValue" : null
+        } ],
+        "onOperation" : false,
+        "onFragment" : false,
+        "onField" : false
+      }, {
+        "name" : "aws_auth",
+        "description" : "Directs the schema to enforce authorization on a field",
+        "locations" : [ "FIELD_DEFINITION" ],
+        "args" : [ {
+          "name" : "cognito_groups",
+          "description" : "List of cognito user pool groups which have access on this field",
+          "type" : {
+            "kind" : "LIST",
+            "name" : null,
+            "ofType" : {
+              "kind" : "SCALAR",
+              "name" : "String",
+              "ofType" : null
+            }
+          },
+          "defaultValue" : null
+        } ],
+        "onOperation" : false,
+        "onFragment" : false,
+        "onField" : false
+      }, {
+        "name" : "aws_publish",
+        "description" : "Tells the service which subscriptions will be published to when this mutation is called. This directive is deprecated use @aws_susbscribe directive instead.",
+        "locations" : [ "FIELD_DEFINITION" ],
+        "args" : [ {
+          "name" : "subscriptions",
+          "description" : "List of subscriptions which will be published to when this mutation is called.",
+          "type" : {
+            "kind" : "LIST",
+            "name" : null,
+            "ofType" : {
+              "kind" : "SCALAR",
+              "name" : "String",
+              "ofType" : null
+            }
+          },
+          "defaultValue" : null
+        } ],
         "onOperation" : false,
         "onFragment" : false,
         "onField" : false

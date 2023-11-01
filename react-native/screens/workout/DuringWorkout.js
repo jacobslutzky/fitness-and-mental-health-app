@@ -132,21 +132,23 @@ export default function DuringWorkout({ navigation, route }) {
             mindfulMinutes: dataGetStats.getUserStats ? dataGetStats.getUserStats.mindfulMinutes : 0,
             meditationStreak: dataGetStats.getUserStats ? dataGetStats.getUserStats.meditationStreak : 0,
             workoutsCompleted: dataGetStats.getUserStats ? dataGetStats.getUserStats.workoutsCompleted + 1 : 1,
+            points: dataGetStats.getUserStats ? dataGetStats.getUserStats.points + 10 : 0,
+            email: dataGetStats.getUserStats ? dataGetStats.getUserStats.email : "",
         }
 
         updateUserStats({ variables: { input: statsInput } })
-        route.params.taskCompletionList[route.params.taskCompletionListIndex] = true
+        if(route.params.taskCompletionList) route.params.taskCompletionList[route.params.taskCompletionListIndex] = true
 
         navigation.navigate("CurrentProgram", { title: title, titleToNameMap: titleToNameMap })
     }
 
     return (
 
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>{titleToNameMap[title]}</Text>
             </View>
-            <ScrollView style={{ marginBottom: 150 }}>
+            <View style={{ marginBottom: 150 }}>
                 {exerciseLabels.map((exercise, index) => (
                     <Exercise key={index} label={exercise} title={title} workout={workout} weekNumber={weekNumber} isFocused={isFocused} navigation={navigation} />
                 ))}
@@ -155,8 +157,8 @@ export default function DuringWorkout({ navigation, route }) {
                         <Text style={styles.buttonText} > Complete Workout </Text>
                     </TouchableOpacity>
                 </View>
-            </ScrollView>
-        </View>
+            </View>
+        </ScrollView>
     )
 
 }

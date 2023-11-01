@@ -249,10 +249,8 @@ export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
       id
-      firstName
-      lastName
+      name
       email
-      password
       profilePicture
       dailyTasks {
         nextToken
@@ -263,6 +261,8 @@ export const getUser = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -289,10 +289,8 @@ export const listUsers = /* GraphQL */ `
     listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt
@@ -311,10 +309,8 @@ export const getUserStats = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt
@@ -325,6 +321,8 @@ export const getUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      points
+      email
       achievementProgresses {
         nextToken
         __typename
@@ -348,6 +346,8 @@ export const listUserStats = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -367,6 +367,8 @@ export const getAchievementProgress = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -411,6 +413,7 @@ export const getAchievement = /* GraphQL */ `
     getAchievement(id: $id) {
       id
       title
+      description
       goal
       createdAt
       updatedAt
@@ -428,6 +431,7 @@ export const listAchievements = /* GraphQL */ `
       items {
         id
         title
+        description
         goal
         createdAt
         updatedAt
@@ -486,10 +490,8 @@ export const getExerciseLog = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt

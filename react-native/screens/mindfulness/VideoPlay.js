@@ -17,10 +17,15 @@ export default function VideoPlay({ route }) {
         variables: { id: `stats-${global.userId}` }
     });
 
+    const [createAchievement] = useMutation(gql`${mutations.createAchievementProgress}`);
+
+    const { data: meditationAchievement } = useQuery(gql`${queries.getAchievementProgress}`, {
+        variables: { id: `meditation-streak-10` }
+    });
+
     const [updateUserStats] = useMutation(gql`${mutations.updateUserStats}`);
 
     const [updateGeneralStats] = useMutation(gql`${mutations.updateGeneralStats}`);
-
 
     const { url, title, author, image, sections, section } = route.params;
     const [currentTime, setCurrentTime] = useState(0);
@@ -42,7 +47,9 @@ export default function VideoPlay({ route }) {
                             id: `stats-${global.userId}`,
                             mindfulMinutes: dataGetStats.getUserStats.mindfulMinutes + Math.floor(length / 60),
                             meditationStreak: dataGetStats.getUserStats.meditationStreak + 1,
-                            workoutsCompleted: dataGetStats.getUserStats.workoutsCompleted
+                            workoutsCompleted: dataGetStats.getUserStats.workoutsCompleted,
+                            email: dataGetStats.getUserStats.email,
+                            points: dataGetStats.getUserStats.points + 10
                         }
 
                         updateUserStats({ variables: { input: statsInput } })
@@ -56,9 +63,44 @@ export default function VideoPlay({ route }) {
                             meditationEntryListenMinutes: ['' + (length / 60)]
                         }
 
-
                         updateGeneralStats({ variables: { input: generalStatsInput } })
                         setPointsAdded(true)
+
+
+                        //Update achievement
+                        let achievementProgresses = dataGetStats.getUserStats.achievementProgresses
+                        const achievementExistenceCheck = false
+                        for(let i = 0; i < achievementProgresses.length; i++){
+                            if(achievementProgresses[i].title == "meditation-streak-10" && meditationAchievement.getAchievementProgress){
+                                const lastUpdatedDate = new Date(meditationAchievement.getAchievementProgress.updatedAt)
+                                const todayDate = new Date()
+                                if(lastUpdatedDate.getDate() != todayDate.getDate() && lastUpdatedDate.getMonth() != todayDate.getMonth()){
+                                    achievementProgresses[i].progress += 1
+                                    if(achievementProgresses[i].progress == 10){
+                                        const statsInput = {
+                                            id: `stats-${global.userId}`,
+                                            mindfulMinutes: dataGetStats.getUserStats.mindfulMinutes,
+                                            meditationStreak: dataGetStats.getUserStats.meditationStreak,
+                                            workoutsCompleted: dataGetStats.getUserStats.workoutsCompleted,
+                                            email: dataGetStats.getUserStats.email,
+                                            points: dataGetStats.getUserStats.points + 100
+                                        }
+                
+                                        updateUserStats({ variables: { input: statsInput } })
+                                    }  
+                                }
+                                achievementExistenceCheck = true
+                            }
+                        }
+                        if(!achievementExistenceCheck){
+                            const input = {
+                                id: `stats-${global.userId}::meditation-streak-10`,
+                                title: `meditation-streak-10`,
+                                progress: 1,
+                                userStatsAchievementProgressesId: `stats-${global.userId}`
+                            }
+                            createAchievement({ variables: { input: input, id: `stats-${global.userId}::meditation-streak-10` } })
+                        }
                     }
                     if (oldTime >= length) {
                         clearInterval(id)
@@ -152,7 +194,7 @@ export default function VideoPlay({ route }) {
         setSpeedMultiplier(multipliers[(oldIndex + 1) % multipliers.length])
         sound.current.setRateAsync(multipliers[(oldIndex + 1) % multipliers.length], true)
     }
-    
+
 
 
     return (

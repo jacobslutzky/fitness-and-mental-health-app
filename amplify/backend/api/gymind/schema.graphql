@@ -53,10 +53,8 @@ type DailyTask @model @auth(rules: [{ allow: private }]) {
 
 type User @model @auth(rules: [{ allow: private }]) {
   id: ID!
-  firstName: String!
-  lastName: String!
+  name: String!
   email: String!
-  password: String!
   profilePicture: String
   dailyTasks: [DailyTask] @hasMany
   userStats: UserStats @hasOne
@@ -75,6 +73,8 @@ type UserStats @model @auth(rules: [{ allow: private }]) {
   mindfulMinutes: Int
   meditationStreak: Int
   workoutsCompleted: Int
+  points: Int
+  email: String
   achievementProgresses: [AchievementProgress] @hasMany
 }
 
@@ -90,6 +90,7 @@ type AchievementProgress @model @auth(rules: [{ allow: private }]) {
 type Achievement @model @auth(rules: [{ allow: private }]) {
   id: ID!
   title: String!
+  description: String!
   goal: Int!
 }
 """

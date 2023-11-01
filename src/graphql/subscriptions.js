@@ -359,10 +359,8 @@ export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
     onCreateUser(filter: $filter) {
       id
-      firstName
-      lastName
+      name
       email
-      password
       profilePicture
       dailyTasks {
         nextToken
@@ -373,6 +371,8 @@ export const onCreateUser = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -394,10 +394,8 @@ export const onUpdateUser = /* GraphQL */ `
   subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
     onUpdateUser(filter: $filter) {
       id
-      firstName
-      lastName
+      name
       email
-      password
       profilePicture
       dailyTasks {
         nextToken
@@ -408,6 +406,8 @@ export const onUpdateUser = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -429,10 +429,8 @@ export const onDeleteUser = /* GraphQL */ `
   subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
     onDeleteUser(filter: $filter) {
       id
-      firstName
-      lastName
+      name
       email
-      password
       profilePicture
       dailyTasks {
         nextToken
@@ -443,6 +441,8 @@ export const onDeleteUser = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -468,10 +468,8 @@ export const onCreateUserStats = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt
@@ -482,6 +480,8 @@ export const onCreateUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      points
+      email
       achievementProgresses {
         nextToken
         __typename
@@ -501,10 +501,8 @@ export const onUpdateUserStats = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt
@@ -515,6 +513,8 @@ export const onUpdateUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      points
+      email
       achievementProgresses {
         nextToken
         __typename
@@ -534,10 +534,8 @@ export const onDeleteUserStats = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt
@@ -548,6 +546,8 @@ export const onDeleteUserStats = /* GraphQL */ `
       mindfulMinutes
       meditationStreak
       workoutsCompleted
+      points
+      email
       achievementProgresses {
         nextToken
         __typename
@@ -570,6 +570,8 @@ export const onCreateAchievementProgress = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -595,6 +597,8 @@ export const onUpdateAchievementProgress = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -620,6 +624,8 @@ export const onDeleteAchievementProgress = /* GraphQL */ `
         mindfulMinutes
         meditationStreak
         workoutsCompleted
+        points
+        email
         createdAt
         updatedAt
         userStatsUserId
@@ -641,6 +647,7 @@ export const onCreateAchievement = /* GraphQL */ `
     onCreateAchievement(filter: $filter) {
       id
       title
+      description
       goal
       createdAt
       updatedAt
@@ -655,6 +662,7 @@ export const onUpdateAchievement = /* GraphQL */ `
     onUpdateAchievement(filter: $filter) {
       id
       title
+      description
       goal
       createdAt
       updatedAt
@@ -669,6 +677,7 @@ export const onDeleteAchievement = /* GraphQL */ `
     onDeleteAchievement(filter: $filter) {
       id
       title
+      description
       goal
       createdAt
       updatedAt
@@ -741,10 +750,8 @@ export const onCreateExerciseLog = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt
@@ -773,10 +780,8 @@ export const onUpdateExerciseLog = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt
@@ -805,10 +810,8 @@ export const onDeleteExerciseLog = /* GraphQL */ `
       id
       user {
         id
-        firstName
-        lastName
+        name
         email
-        password
         profilePicture
         currentProgram
         createdAt
