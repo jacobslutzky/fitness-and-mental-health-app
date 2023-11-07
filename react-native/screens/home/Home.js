@@ -5,7 +5,7 @@ import {
     Text,
     View,
 } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import { useTheme, useIsFocused } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -16,6 +16,7 @@ import { useQuery, gql, useMutation } from "@apollo/client";
 import * as mutations from "../../../src/graphql/mutations";
 import * as queries from "../../../src/graphql/queries";
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
+import { removeConnectionDirectiveFromDocument } from "@apollo/client/utilities";
 
 
 export default function Home({ navigation }) {
@@ -27,10 +28,30 @@ export default function Home({ navigation }) {
     variables: { id: `stats-${global.userId}`}
   }); 
   //Check if user exists
-  const { data : dataUser, loading : loadingUser, error : errorUser } = useQuery(gql`${queries.getUser}`, {
+  const { data : dataUser, loading : loadingUser, error : errorUser, refetch } = useQuery(gql`${queries.getUser}`, {
     variables: { id: `${global.userId}`}
   }); 
 
+  const taskLabels = [
+    {
+        label: "Complete Today's Workout",
+        screen: "Fitness",
+        iconType: "lifting",
+        iconColor: "#3787D5",
+    },
+    {
+        label: "Complete Today's Meditation",
+        screen: "Mindfulness",
+        iconType: "brain",
+        iconColor: "#F5AB26",
+    },
+  ];
+
+  const [isPressed, setIsPressed] = useState(
+    new Array(taskLabels.length).fill(false)
+  );
+
+  const [updateUser, { data: dataUpdateUser, loading: loadingUpdateUser, error: errorUpdateUser }] = useMutation(gql`${mutations.updateUser}`);
   
   const [createUserStats, { data : dataCreateStats, loading : loadingCreateStats, error : errorCreateStats}] = useMutation(gql`${mutations.createUserStats}`);
 
@@ -38,7 +59,7 @@ export default function Home({ navigation }) {
 
 
   useEffect(() => {
-    console.log(global.userId)
+    console.log("skiyi", dataUser ? dataUser.getUser : "")
     if(!(dataGetStats && dataGetStats.getUserStats)){
       console.log("yo")
       const statsInput = {
@@ -52,7 +73,6 @@ export default function Home({ navigation }) {
       createUserStats({ variables : {input : statsInput} })
     }
 
-    console.log("name", user)
 
     if(!(dataUser && dataUser.getUser)){
       const userInput = {
@@ -60,7 +80,8 @@ export default function Home({ navigation }) {
         name: user.attributes.name ? user.attributes.name: "",
         email: user.username,
         profilePicture: "",
-        currentProgram: ""
+        currentProgram: "",
+        taskCompletionList: isPressed
       }
       createUser({ variables : {input : userInput} })
     }
@@ -215,11 +236,6 @@ export default function Home({ navigation }) {
             ${mutations.createDailyTask}
         `
     );
-    const { data2, loading2, error2 } = useQuery(
-        gql`
-            ${queries.getDailyTask}
-        `
-    );
 
     const input = {
         label: "TestLabel",
@@ -229,24 +245,6 @@ export default function Home({ navigation }) {
 
     const colors = useTheme().colors;
 
-    const taskLabels = [
-        {
-            label: "Complete Today's Workout",
-            screen: "Fitness",
-            iconType: "lifting",
-            iconColor: "#3787D5",
-        },
-        {
-            label: "Complete Today's Meditation",
-            screen: "Mindfulness",
-            iconType: "brain",
-            iconColor: "#F5AB26",
-        },
-    ];
-
-    const [isPressed, setIsPressed] = useState(
-        new Array(taskLabels.length).fill(false)
-    );
     const [tasksFiltered, setTasksFiltered] = useState(taskLabels);
     const [tasksSearched, setTasksSearched] = useState(taskLabels);
     const [isAll, setIsAll] = useState(true);
@@ -254,8 +252,8 @@ export default function Home({ navigation }) {
 
     const handlePress = (item, index) => {
         mutateFunction({ variables: { input: input } });
-        isPressed[index] = !isPressed[index];
-        setIsPressed([...isPressed]);
+        //isPressed[index] = !isPressed[index];
+        //setIsPressed([...isPressed]);
         navigation.navigate(item.screen, {taskCompletionList: isPressed, taskCompletionListIndex: index});
     };
 
@@ -287,6 +285,51 @@ export default function Home({ navigation }) {
 
         setSearch(text);
     };
+
+    useEffect(() => {
+      if(!dataUser) return
+      const lastAppOpenDate = new Date(dataUser.updatedAt)
+      const currentDate = new Date()
+      if(lastAppOpenDate.getDate() != currentDate.getDate()){
+        setIsPressed(new Array(taskLabels.length).fill(false))
+      }
+      else setIsPressed(dataUser.taskCompletionList)
+
+      const userInput = {
+        id: `stats-${global.userId}`,
+        name: dataUser.getUser.name,
+        profilePicture: dataUser.getUser.profilePicture,
+        currentProgram: dataUser.getUser.currentProgram,
+        taskCompletionList: isPressed
+      }
+
+      updateUser({ variables: { input: userInput } })
+    }, [dataUser])
+
+    useEffect(() => {
+      if(!dataUser) return
+      const userInput = {
+        id: `stats-${global.userId}`,
+        name: dataUser.getUser.name,
+        profilePicture: dataUser.getUser.profilePicture,
+        currentProgram: dataUser.getUser.currentProgram,
+        taskCompletionList: isPressed
+      }
+
+
+      updateUser({ variables: { input: userInput } })
+    }, [isPressed])
+
+    const isFocused = useIsFocused()
+    useEffect(() => {
+      if(!dataUser) return
+      if(isFocused){
+        refetch()
+        setIsPressed(dataUser.getUser.taskCompletionList)
+        console.log('is pressed', isPressed)
+      }
+  }, [isFocused])
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>

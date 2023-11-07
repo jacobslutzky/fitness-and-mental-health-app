@@ -56,7 +56,7 @@ type User @model @auth(rules: [{ allow: private }]) {
   name: String!
   email: String!
   profilePicture: String
-  dailyTasks: [DailyTask] @hasMany
+  taskCompletionList: [Int] 
   userStats: UserStats @hasOne
   exerciseLogs: [ExerciseLog] @hasMany
   currentProgram: String

@@ -318,7 +318,6 @@ export const onCreateDailyTask = /* GraphQL */ `
       icon
       createdAt
       updatedAt
-      userDailyTasksId
       __typename
     }
   }
@@ -334,7 +333,6 @@ export const onUpdateDailyTask = /* GraphQL */ `
       icon
       createdAt
       updatedAt
-      userDailyTasksId
       __typename
     }
   }
@@ -350,7 +348,6 @@ export const onDeleteDailyTask = /* GraphQL */ `
       icon
       createdAt
       updatedAt
-      userDailyTasksId
       __typename
     }
   }
@@ -362,10 +359,7 @@ export const onCreateUser = /* GraphQL */ `
       name
       email
       profilePicture
-      dailyTasks {
-        nextToken
-        __typename
-      }
+      taskCompletionList
       userStats {
         id
         mindfulMinutes
@@ -397,10 +391,7 @@ export const onUpdateUser = /* GraphQL */ `
       name
       email
       profilePicture
-      dailyTasks {
-        nextToken
-        __typename
-      }
+      taskCompletionList
       userStats {
         id
         mindfulMinutes
@@ -432,10 +423,7 @@ export const onDeleteUser = /* GraphQL */ `
       name
       email
       profilePicture
-      dailyTasks {
-        nextToken
-        __typename
-      }
+      taskCompletionList
       userStats {
         id
         mindfulMinutes
@@ -471,6 +459,7 @@ export const onCreateUserStats = /* GraphQL */ `
         name
         email
         profilePicture
+        taskCompletionList
         currentProgram
         createdAt
         updatedAt
@@ -504,6 +493,7 @@ export const onUpdateUserStats = /* GraphQL */ `
         name
         email
         profilePicture
+        taskCompletionList
         currentProgram
         createdAt
         updatedAt
@@ -537,6 +527,7 @@ export const onDeleteUserStats = /* GraphQL */ `
         name
         email
         profilePicture
+        taskCompletionList
         currentProgram
         createdAt
         updatedAt
@@ -753,6 +744,7 @@ export const onCreateExerciseLog = /* GraphQL */ `
         name
         email
         profilePicture
+        taskCompletionList
         currentProgram
         createdAt
         updatedAt
@@ -783,6 +775,7 @@ export const onUpdateExerciseLog = /* GraphQL */ `
         name
         email
         profilePicture
+        taskCompletionList
         currentProgram
         createdAt
         updatedAt
@@ -813,6 +806,7 @@ export const onDeleteExerciseLog = /* GraphQL */ `
         name
         email
         profilePicture
+        taskCompletionList
         currentProgram
         createdAt
         updatedAt

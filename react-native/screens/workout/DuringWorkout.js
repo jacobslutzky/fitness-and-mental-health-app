@@ -17,17 +17,10 @@ const Exercise = (props) => {
     const weekNumber = props.weekNumber
     const navigation = props.navigation
 
-    console.log(title)
 
     const { data, loading, error } = useQuery(gql`${queries.getExercise}`, {
         variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}::${label}` : `${label}-${workout}-week${weekNumber}-${title}` }
     });
-
-
-    console.log(`${title}::${weekNumber}::${workout}::${label}`)
-    console.log(data)
-
-
 
     const { data: dataLog, loading: loadingLog, error: errorLog, refetch: refetchLog } = useQuery(gql`${queries.getExerciseLog}`, {
         skip: !data,
@@ -53,9 +46,6 @@ const Exercise = (props) => {
         else if (data && dataLog && dataLog.getExerciseLog) {
             const entryLabels2 = dataLog.getExerciseLog.entryLabels
             const numSets = data.getExercise.sets
-            if (data.getExercise.name == "Leg Press") {
-                console.log("Should be here")
-            }
             for (let j = Math.min(entryLabels2.length - 1, numSets - 1); j >= 0; j--) {
                 let setNum = '';
                 for (let k = entryLabels2[j].length - 1; k >= 0; k--) {
@@ -69,7 +59,6 @@ const Exercise = (props) => {
                 setLastEntries(copyEntries)
 
             }
-            console.log(lastEntries)
             refetchLog()
         }
     }, [data, dataLog, props.isFocused]);
@@ -123,10 +112,29 @@ export default function DuringWorkout({ navigation, route }) {
     });
 
 
+    const { data : dataUser, loading : loadingUser, error : errorUser } = useQuery(gql`${queries.getUser}`, {
+        variables: { id: `${global.userId}`}
+      }); 
+
+    
+    const [updateUser, { data: dataUpdateUser, loading: loadingUpdateUser, error: errorUpdateUser }] = useMutation(gql`${mutations.updateUser}`);
+
     const [updateUserStats, { data: dataUpdateStats, loading: loadingUpdateStats, error: errorUpdateStats }] = useMutation(gql`${mutations.updateUserStats}`);
 
 
     const navigateToSelectProgram = () => {
+        const userInput = {
+            id: `${global.userId}`,
+            name: dataUser.getUser.name,
+            email: global.userId,
+            profilePicture: dataUser.getUser.profilePicture,
+            currentProgram: dataUser.getUser.currentProgram,
+            taskCompletionList: [1,0]
+        }
+        
+        updateUser({ variables: { input: userInput } })
+
+
         const statsInput = {
             id: `stats-${global.userId}`,
             mindfulMinutes: dataGetStats.getUserStats ? dataGetStats.getUserStats.mindfulMinutes : 0,

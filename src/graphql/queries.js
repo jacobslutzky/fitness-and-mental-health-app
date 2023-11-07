@@ -218,7 +218,6 @@ export const getDailyTask = /* GraphQL */ `
       icon
       createdAt
       updatedAt
-      userDailyTasksId
       __typename
     }
   }
@@ -237,7 +236,6 @@ export const listDailyTasks = /* GraphQL */ `
         icon
         createdAt
         updatedAt
-        userDailyTasksId
         __typename
       }
       nextToken
@@ -252,10 +250,7 @@ export const getUser = /* GraphQL */ `
       name
       email
       profilePicture
-      dailyTasks {
-        nextToken
-        __typename
-      }
+      taskCompletionList
       userStats {
         id
         mindfulMinutes
@@ -292,6 +287,7 @@ export const listUsers = /* GraphQL */ `
         name
         email
         profilePicture
+        taskCompletionList
         currentProgram
         createdAt
         updatedAt
@@ -312,6 +308,7 @@ export const getUserStats = /* GraphQL */ `
         name
         email
         profilePicture
+        taskCompletionList
         currentProgram
         createdAt
         updatedAt
@@ -493,6 +490,7 @@ export const getExerciseLog = /* GraphQL */ `
         name
         email
         profilePicture
+        taskCompletionList
         currentProgram
         createdAt
         updatedAt

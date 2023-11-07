@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { Colors } from '../../constants/Colors';
 import { useState, React, useEffect } from 'react';
@@ -6,6 +6,8 @@ import { useQuery, gql, useMutation } from "@apollo/client";
 import * as queries from "../../../src/graphql/queries";
 import * as mutations from "../../../src/graphql/mutations";
 import { useIsFocused } from '@react-navigation/native'
+import ExerciseLineChart from '../../components/ExerciseLineChart';
+
 
 const Set = (props) => {
     const index = props.index + 1
@@ -27,46 +29,47 @@ const Set = (props) => {
         enabled: props.lastEntries
     });
 
-    useEffect(() => {
-        refetch()
-        if (props.exercise == "Leg Press") {
-            console.log(props.exercise)
-            console.log(props.lastEntries)
-            for (const entry in props.lastEntries) {
-                console.log(entry)
-            }
-        }
-    }, [props]);
-
 
     return (
         <View key={index} style={styles.set}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View style={styles.cardNumber}>
-                    <Text>{index}</Text>
+                    <Text style={{color: 'white', fontWeight: 'bold'}}>Set {index}</Text>
                 </View>
-                <TextInput
-                    style={[styles.input, { color: colors.text, marginLeft: 20 }]}
-                    placeholder=""
-                    keyboardType="numeric"
-                    textAlign='center'
-                    onChangeText={text => updateReps(index, text)} />
-                <Text style={{ color: "grey" }}>x</Text>
-                <TextInput
-                    style={[styles.input, { color: colors.text }]}
-                    placeholder=""
-                    keyboardType="numeric"
-                    textAlign='center'
-                    onChangeText={text => updateWeights(index, text)}
-                    onSubmitEditing={() => handleSubmit(index - 1)} />
-                <Text style={{ color: "grey" }}>lbs</Text>
+                <View style={styles.repsContianer}>
+                    <View style={styles.repsTextContainer}>
+                        <Text style={{color:'white', fontWeight: 'bold'}}>Reps</Text>
+                    </View>
+                    <TextInput
+                        style={[styles.input, { color: colors.text, marginLeft: 20 }]}
+                        placeholder=""
+                        keyboardType="numeric"
+                        textAlign='center'
+                        onChangeText={text => updateReps(index, text)} />
+                </View>
+                <View style={styles.weightContainer}>
+                    <View style={styles.weightTextContainer}>
+                        <Text style={{color:'white', fontWeight: 'bold'}}>Weight</Text>
+                    </View>
+                    <TextInput
+                        style={[styles.input, { color: colors.text }]}
+                        placeholder=""
+                        keyboardType="numeric"
+                        textAlign='center'
+                        onChangeText={text => updateWeights(index, text)}
+                        onSubmitEditing={() => handleSubmit(index - 1)} />
+                </View>
             </View>
-            {data && data.getExerciseEntry && lastEntryWasToday
-                ? <Text style={{ color: "grey" }}>{data.getExerciseEntry.repsCompleted} x {data.getExerciseEntry.weight} lbs</Text>
-                : <Text style={{ color: "grey" }}>0 x 0 lbs</Text>}
         </View>
     )
 }
+
+/*
+            {data && data.getExerciseEntry && lastEntryWasToday
+                ? <Text style={{ color: "grey" }}>{data.getExerciseEntry.repsCompleted} x {data.getExerciseEntry.weight} lbs</Text>
+                : <Text style={{ color: "grey" }}>0 x 0 lbs</Text>}
+
+*/
 
 export default function ExerciseDuringWorkout({ navigation, route }) {
 
@@ -79,11 +82,9 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
     const [createLogEntry, { data: dataLogEntry, loading: loadingLogEntry, error: errorLogEntry }] = useMutation(gql`${mutations.createExerciseEntry}`);
     const [updateLogEntry, { data: dataLogEntryUpdate, loading: loadingLogEntryUpdate, error: errorLogEntryUpdate }] = useMutation(gql`${mutations.updateExerciseEntry}`);
 
-    console.log(title, label, weekNumber, workout)
     const { data, loading, error } = useQuery(gql`${queries.getExercise}`, {
         variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}::${label}` : `${label}-${workout}-week${weekNumber}-${title}` }
     });
-    console.log(`${title}::${weekNumber}::${workout}::${label}`)
 
 
     const { data: dataLog, loading: loadingLog, error: errorLog, refetch: refetchLog } = useQuery(gql`${queries.getExerciseLog}`, {
@@ -100,8 +101,7 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
     const [lastEntries, setLastEntries] = useState({})
     useEffect(() => {
         refetchLog()
-        if (dataLog && !dataLog.getExerciseLog) {
-            console.log(data)
+        if (data && data.getExercise && dataLog && !dataLog.getExerciseLog) {
             const input = {
                 id: `${global.userId}::${data.getExercise.name}`,
                 exercise: title,
@@ -115,9 +115,6 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
         else if (data && dataLog && dataLog.getExerciseLog) {
             const entryLabels2 = dataLog.getExerciseLog.entryLabels
             const numSets = data.getExercise.sets
-            if (data.getExercise.name == "Leg Press") {
-                console.log("Should be here")
-            }
             for (let j = Math.min(entryLabels2.length - 1, numSets - 1); j >= 0; j--) {
                 let setNum = '';
                 for (let k = entryLabels2[j].length - 1; k >= 0; k--) {
@@ -132,7 +129,6 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
 
             }
             setEntryLabels(entryLabels2)
-            console.log(lastEntries)
             refetchLog()
         }
     }, [data, dataLog, isFocused]);
@@ -155,7 +151,6 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
 
 
     const handleSubmit = (index) => {
-        console.log('AAAAAAAAAA')
         refetchLog()
         if (reps[index] && weight[index] && data) {
             const date = new Date();
@@ -173,12 +168,20 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
                 console.log('updatingLog')
 
                 updateLog({ variables: { input: logInput } })
-                console.log(dataLogUpdate, errorLogUpdate, loadingLogUpdate)
             }
 
-            console.log(entryLabels)
 
             if (entryLabels.find((entry) => entry == logEntryId)) {
+                const input = {
+                    id: logEntryId,
+                    repsCompleted: parseInt(reps[index]),
+                    weight: weight[index],
+                    dateCompleted: date,
+                    workout: workout,
+                    programWeek: weekNumber,
+                    program: title,
+                    exerciseLogEntriesId: `${global.userId}::${data.getExercise.name}`
+                }
                 updateLogEntry({ variables: { input: input } })
             }
             else {
@@ -201,16 +204,18 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
 
     return (
 
-        <View style={styles.container}>
-            <View style={styles.titleContainer}>
-                <Text style={styles.title}>{label ? label : " "}</Text>
+        <ScrollView style={styles.container}>
+            <View style={{marginHorizontal: 25}}>
+                <View style={styles.titleContainer}>
+                    <Text style={styles.title}>{label ? label : " "}</Text>
+                </View>
+                {Array(data && data.getExercise ? data.getExercise.sets : 0).fill().map((item, index) => (
+                    <Set key={index} index={index} updateReps={updateReps} updateWeights={updateWeights} handleSubmit={handleSubmit} colors={colors} lastEntries={lastEntries} exercise={data && data.getExercise ? data.getExercise.name : ""} />
+                ))}
             </View>
-            {Array(data && data.getExercise ? data.getExercise.sets : 0).fill().map((item, index) => (
-                <Set key={index} index={index} updateReps={updateReps} updateWeights={updateWeights} handleSubmit={handleSubmit} colors={colors} lastEntries={lastEntries} exercise={data && data.getExercise ? data.getExercise.name : ""} />
-            ))}
-            <View style={styles.graphContainer}>
-            </View>
-        </View>
+            {/* Build in graphs */}
+            <ExerciseLineChart exercise={data && data.getExercise ? data.getExercise.name : ""}/>
+        </ScrollView>
     )
 
 }
@@ -218,13 +223,12 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
 const styles = StyleSheet.create({
     input: {
         height: 35,
-        width: 75,
-        marginHorizontal: 5,
-        backgroundColor: "rgba(207, 184, 124, 0.3)",
-        borderRadius: 10,
-    },
-    container: {
-        marginHorizontal: 25
+        width: 100,
+        backgroundColor: "rgb(22,19,10)",
+        borderRadius: 20,
+        borderColor: Colors.primary,
+        borderWidth: 1,
+        marginTop: 10
     },
     title: {
         color: 'white',
@@ -270,7 +274,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: 40
+        marginBottom: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: Colors.primary,
+        paddingBottom: 20
     },
     graphContainer: {
         height: '25%',
@@ -280,13 +287,29 @@ const styles = StyleSheet.create({
     },
     cardNumber: {
         height: 35,
-        width: 35,
-        borderRadius: 10,
+        width: 40,
         textAlign: 'center',
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: "rgba(207, 184, 124, 1)",
-        marginLeft: 5
+        marginTop: 30,
+        marginLeft: 5,
     },
+    repsTextContainer : {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 100,
+        marginLeft: 20
+    },
+    weightTextContainer : {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 100,
+    },
+    repsContianer : {
+        marginRight: 40,
+    },
+    weightContainer : {
+
+    }
 })

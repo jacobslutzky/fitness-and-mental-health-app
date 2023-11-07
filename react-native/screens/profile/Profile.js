@@ -186,7 +186,7 @@ export default function Profile({ navigation }) {
         <View style={styles.leaderboardHeader}>
           <Text style={[styles.sectionName, { color: colors.text }]}>Leaderboard</Text>
         </View>
-        <View style={{ height: 270 }}>
+        <View style={{ height: 300 }}>
 
           <Tab.Navigator screenOptions={{
             tabBarStyle: { backgroundColor: colors.backgroundColor, }, tabBarActiveTintColor: colors.text,
@@ -286,7 +286,6 @@ const styles = StyleSheet.create({
   leaderboardContainer: {
     flexDirection: "column",
     flex: 1,
-
   },
   leaderboardRow: {
     flexDirection: "row",
