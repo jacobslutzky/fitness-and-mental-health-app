@@ -25,11 +25,9 @@ export default function ExerciseLineChart({exercise}) {
      }
   });
 
-  if(!dataExerciseLog) return(<View></View>)
-
-  let data = dataExerciseLog.listExerciseEntries.items.map((entry) => {
+  let data = dataExerciseLog ? dataExerciseLog.listExerciseEntries.items.map((entry) => {
     return {repsCompleted: entry.repsCompleted, weight: entry.weight, volume: entry.repsCompleted * entry.weight, date: entry.updatedAt}
-  })
+  }) : []
 
   useEffect(() => {
     setMaxWeight(Math.max(...data.map((entry) => {return entry.weight})))
