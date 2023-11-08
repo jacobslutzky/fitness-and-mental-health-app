@@ -59,9 +59,7 @@ export default function Home({ navigation }) {
 
 
   useEffect(() => {
-    console.log("skiyi", dataUser ? dataUser.getUser : "")
     if(!(dataGetStats && dataGetStats.getUserStats)){
-      console.log("yo")
       const statsInput = {
         id: `stats-${global.userId}`,
         mindfulMinutes: 0,
@@ -296,7 +294,7 @@ export default function Home({ navigation }) {
       else setIsPressed(dataUser.taskCompletionList)
 
       const userInput = {
-        id: `stats-${global.userId}`,
+        id: `${global.userId}`,
         name: dataUser.getUser.name,
         profilePicture: dataUser.getUser.profilePicture,
         currentProgram: dataUser.getUser.currentProgram,
