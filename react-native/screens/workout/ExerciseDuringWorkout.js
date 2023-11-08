@@ -214,7 +214,7 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
                 ))}
             </View>
             {/* Build in graphs */}
-            <ExerciseLineChart exercise={data && data.getExercise ? data.getExercise.name : ""}/>
+            <ExerciseLineChart navigation={navigation} exercise={data && data.getExercise ? data.getExercise.name : ""}/>
         </ScrollView>
     )
 

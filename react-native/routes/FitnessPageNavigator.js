@@ -9,6 +9,7 @@ import CurrentProgram from '../screens/workout/CurrentProgram';
 import DuringWorkout from '../screens/workout/DuringWorkout';
 import ExerciseDuringWorkout from '../screens/workout/ExerciseDuringWorkout';
 import CreateWorkout from '../screens/workout/CreateWorkout';
+import ExerciseProgress from '../screens/workout/ExerciseProgress';
 import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createStackNavigator();
@@ -40,6 +41,9 @@ export default function FitnessPageNavigator({route, navigation}) {
               headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back",  title: ""
             }}/>
             <Stack.Screen name = "CreateWorkout" component={CreateWorkout} options={{
+              headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back",  title: ""
+            }}/>
+            <Stack.Screen name = "ExerciseProgress" component={ExerciseProgress} options={{
               headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back",  title: ""
             }}/>
             </Stack.Navigator>
