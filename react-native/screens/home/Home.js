@@ -307,7 +307,7 @@ export default function Home({ navigation }) {
     useEffect(() => {
       if(!dataUser) return
       const userInput = {
-        id: `stats-${global.userId}`,
+        id: `${global.userId}`,
         name: dataUser.getUser.name,
         profilePicture: dataUser.getUser.profilePicture,
         currentProgram: dataUser.getUser.currentProgram,
