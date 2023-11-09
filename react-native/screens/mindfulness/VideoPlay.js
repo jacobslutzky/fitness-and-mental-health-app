@@ -45,7 +45,7 @@ export default function VideoPlay({ route }) {
                     if (oldTime > length - 20 && !pointsAdded) {
                         const statsInput = {
                             id: `stats-${global.userId}`,
-                            mindfulMinutes: dataGetStats.getUserStats.mindfulMinutes + Math.floor(length / 60),
+                            mindfulMinutes: dataGetStats.getUserStats.mindfulMinutes + length,
                             meditationStreak: dataGetStats.getUserStats.meditationStreak + 1,
                             workoutsCompleted: dataGetStats.getUserStats.workoutsCompleted,
                             email: dataGetStats.getUserStats.email,
