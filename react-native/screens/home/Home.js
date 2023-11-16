@@ -362,7 +362,7 @@ export default function Home({ navigation }) {
         } else if (command == "not completed") {
             tasksFilteredTemp = new Array();
             for (let i = 0; i < taskLabels.length; i++) {
-                if (isPressed[i] == false) {
+                if (isPressed[i] == 0) {
                     tasksFilteredTemp.push(taskLabels[i]);
                 }
             }
@@ -406,26 +406,26 @@ export default function Home({ navigation }) {
             setIsPressed(new Array(taskLabels.length).fill(false));
         } else setIsPressed(dataUser.taskCompletionList);
 
-        const userInput = {
-            id: `${global.userId}`,
-            name: dataUser.getUser.name,
-            profilePicture: dataUser.getUser.profilePicture,
-            currentProgram: dataUser.getUser.currentProgram,
-            taskCompletionList: isPressed,
-        };
+      const userInput = {
+        id: `${global.userId}`,
+        name: dataUser.getUser.name,
+        profilePicture: dataUser.getUser.profilePicture,
+        currentProgram: dataUser.getUser.currentProgram,
+        taskCompletionList: isPressed
+      }
 
-        updateUser({ variables: { input: userInput } });
-    }, [dataUser]);
+      updateUser({ variables: { input: userInput } })
+    }, [dataUser])
 
     useEffect(() => {
-        if (!dataUser || !dataUser.getUser) return;
-        const userInput = {
-            id: `${global.userId}`,
-            name: dataUser.getUser.name,
-            profilePicture: dataUser.getUser.profilePicture,
-            currentProgram: dataUser.getUser.currentProgram,
-            taskCompletionList: isPressed,
-        };
+      if(!dataUser) return
+      const userInput = {
+        id: `${global.userId}`,
+        name: dataUser.getUser.name,
+        profilePicture: dataUser.getUser.profilePicture,
+        currentProgram: dataUser.getUser.currentProgram,
+        taskCompletionList: isPressed
+      }
 
         updateUser({ variables: { input: userInput } });
     }, [isPressed]);
