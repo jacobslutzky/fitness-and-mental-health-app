@@ -25,7 +25,7 @@ export default function Home({ navigation }) {
 
   //Check if user exists
   const { data : dataGetStats, loading : loadingGetStats, error : errorGetStats } = useQuery(gql`${queries.getUserStats}`, {
-    variables: { id: `stats-${global.userId}`}
+    variables: { id: `${global.userId}`}
   }); 
   //Check if user exists
   const { data : dataUser, loading : loadingUser, error : errorUser, refetch } = useQuery(gql`${queries.getUser}`, {
@@ -61,7 +61,7 @@ export default function Home({ navigation }) {
   useEffect(() => {
     if(!(dataGetStats && dataGetStats.getUserStats)){
       const statsInput = {
-        id: `stats-${global.userId}`,
+        id: `stats-==${global.userId}`,
         mindfulMinutes: 0,
         meditationStreak: 0,
         workoutsCompleted: 0,
@@ -285,7 +285,7 @@ export default function Home({ navigation }) {
     };
 
     useEffect(() => {
-      if(!dataUser) return
+      if(!dataUser || !dataUser.getUser) return
       const lastAppOpenDate = new Date(dataUser.updatedAt)
       const currentDate = new Date()
       if(lastAppOpenDate.getDate() != currentDate.getDate()){
@@ -305,7 +305,7 @@ export default function Home({ navigation }) {
     }, [dataUser])
 
     useEffect(() => {
-      if(!dataUser) return
+      if(!dataUser || !dataUser.getUser) return
       const userInput = {
         id: `${global.userId}`,
         name: dataUser.getUser.name,
@@ -320,7 +320,7 @@ export default function Home({ navigation }) {
 
     const isFocused = useIsFocused()
     useEffect(() => {
-      if(!dataUser) return
+      if(!dataUser || !dataUser.getUser) return
       if(isFocused){
         refetch()
         setIsPressed(dataUser.getUser.taskCompletionList)

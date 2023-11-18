@@ -12,9 +12,9 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
   const newProgram = route.params ? route.params.newProgram : null
 
-  const navigateToCreateWorkout = (createdPrograms, setCreatedPrograms) => {
+  const navigateToCreateProgram = (createdPrograms, setCreatedPrograms) => {
 
-    navigation.navigate("CreateWorkout", {createdPrograms: createdPrograms, setCreatedPrograms: setCreatedPrograms})
+    navigation.navigate("CreateProgram", {createdPrograms: createdPrograms, setCreatedPrograms: setCreatedPrograms})
   }
 
   const navigateToWorkoutInfo = (title, titleToNameMap) => {
@@ -34,13 +34,13 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   }, [data]);
 
   const titleToNameMap = {
-    "womensintermediateglute": "Women’s Intermediate to Advanced Glute Focused ",
-    "menslvl3PPL": "Men’s Intermediate 2.0 Push, Pull, Legs, Upper, Lower",
-    "menslvl2UL": "Men’s Intermediate Upper, Lower",
+    "womensintermediateglute": "Women's Intermediate to Advanced Glute Focused ",
+    "menslvl3PPL": "Men's Intermediate 2.0 Push, Pull, Legs, Upper, Lower",
+    "menslvl2UL": "Men's Intermediate Upper, Lower",
     "mensfullbody": "Men's Full Body",
-    "mensPPL": "Men’s Advanced PPL",
-    "womensbeginner": "Women’s Beginner Foundation",
-    "womensintermediate": "Women’s Intermediate Foundation ",
+    "mensPPL": "Men's Advanced PPL",
+    "womensbeginner": "Women's Beginner Foundation",
+    "womensintermediate": "Women's Intermediate Foundation ",
   }
 
   const [gymindPrograms, setGymindPrograms] = useState(communityCards);
@@ -80,6 +80,8 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   }, [createdPrograms])
 
   useEffect(() => {
+    console.log(gymindPrograms)
+    console.log("jake")
     if(tasksSearched.length == 0) return
     let tempProgram = tasksSearched[0]
     for(let i = 0; i < tasksSearched.length; i++){
@@ -165,7 +167,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
       <ScrollView style={{ marginHorizontal: 20 }}>
         <View style={styles.cardsContainer}>
           <ImageBackground source={'../../../assets/quickWorkouts1.jpeg'} style={styles.communityCard} imageStyle={{ opacity: 0.2 }}>
-            <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToCreateWorkout(createdPrograms, setCreatedPrograms)}>
+            <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToCreateProgram(createdPrograms, setCreatedPrograms)}>
               <Text style={styles.cardText}>CREATE A PROGRAM</Text>
             </TouchableOpacity>
           </ImageBackground>

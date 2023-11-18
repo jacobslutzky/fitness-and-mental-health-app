@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import {StyleSheet,TouchableOpacity, Text, View,ScrollView, ImageBackground } from "react-native";
+import React, { useState,useEffect} from "react";
+import {StyleSheet,TouchableOpacity, Text, View,ScrollView, ImageBackground, TextInput} from "react-native";
 import Modal from "react-native-modal";
 import { Colors } from '../constants/Colors';
 import { useQuery, gql, useMutation } from "@apollo/client";
@@ -7,19 +7,34 @@ import * as queries from "../../src/graphql/queries";
 import * as mutations from "../../src/graphql/mutations";
 import { SearchBar } from 'react-native-elements';
 import { Svg, Defs, LinearGradient, Stop, Rect } from "react-native-svg";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign,Ionicons,Feather} from '@expo/vector-icons';
+import uuid from 'react-native-uuid';
+import { NoDeprecatedCustomRule } from "graphql";
 
-const Week = (props) => {
-    const [exercises, setExercises] = useState(0)
 
-    const cardPress = () => {
-        console.log(props.weekNumber)
-        props.togglePopup()
-        props.setWorkout(props.workout, props.weekNumber)
+const Workout = (props) => {
+    
+    const { data, loading, error } = useQuery(gql`${queries.getWorkout}`, {
+        variables: { id: props.workout.id }
+  });
+
+    const cardPress = async() => {
+        selectedWorkout = data.getWorkout
+        const workoutInput = {
+            id: uuid.v4(),
+            title: selectedWorkout.title,
+            programWeekWorkoutsId: props.weekID,
+            exercises: selectedWorkout.exercises.items,
+            notes: selectedWorkout.notes,
+            status: "incomplete"
+          }
+          props.togglePopup()
+    
+        props.setWorkout( props.weekID, workoutInput)
     }
 
     return (
-            <TouchableOpacity style={styles.weekContainer} onPress={() => cardPress()}>
+            <TouchableOpacity style={styles.weekContainer} onPress={() => !loading?(cardPress()):undefined}>
                 {/* Week Card */}
                 <ImageBackground source={require("../../assets/workoutBackground.png")} style={styles.weekCard} resizeMode="cover" imageStyle={{width: '100%', height: '100%', borderRadius: 15, opacity: 0.7}}>
                     <View style={styles.cardHeader}>
@@ -44,78 +59,107 @@ const Week = (props) => {
                     </View>
                     <View style={{height: '40%'}}></View>
                     <View style={styles.cardFooter}>
-                        <Text style={{color: 'white',fontWeight: 'bold'}}>{props.workout}</Text>
+                        <Text style={{color: 'white',fontWeight: 'bold'}}>{loading?"loading":props.workout.title}</Text>
                     </View>
                 </ImageBackground>
             </TouchableOpacity>
     )
 }
 
-const Exercise = (props) => {
-  console.log("exercise reached")
+// const Exercise = (props) => {
+//   console.log("exercise reached")
 
 
-  const label = props.label
-  const workout = props.workout
-  const title = props.title
-  const weekNumber = props.weekNumber
-  const index = props.index
+//   const label = props.label
+//   const workout = props.workout
+//   const title = props.title
+//   const weekNumber = props.weekNumber
+//   const index = props.index
 
-  const { data, loading, error } = useQuery(gql`${queries.getExercise}`, {
-    variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}::${label}` : `${label}-${workout}-week${weekNumber}-${title}`}
-  }); 
+//   const { data, loading, error } = useQuery(gql`${queries.getExercise}`, {
+//     variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}::${label}` : `${label}-${workout}-week${weekNumber}-${title}`}
+//   }); 
 
-  return (
-    <View key={index}>
-      {data && data.getExercise ?
-        <View style={styles.exercise}>
-              <View style={styles.exerciseNumberBox}>
-                <Text style={styles.exerciseNumber}>{index + 1}</Text>
-              </View>
-              <View style={styles.exerciseDetails}>
-                <Text style={styles.exerciseName}>{data.getExercise.name}</Text>
-                <View style={styles.exerciseStats}>
-                  <Text style={styles.exerciseStat}>Sets: {data.getExercise.sets}</Text>
-                  <Text style={styles.exerciseStat}>Reps: {data.getExercise.repRange}</Text>
-                  <Text style={styles.exerciseStat}>Rest: {data.getExercise.restMinutes} min</Text>
-                </View>
-              </View>
-          </View>
-              :
-        <View></View>
-        }
-            </View>
-  )
-}
+//   return (
+//     <View key={index}>
+//       {data && data.getExercise ?
+//         <View style={styles.exercise}>
+//               <View style={styles.exerciseNumberBox}>
+//                 <Text style={styles.exerciseNumber}>{index + 1}</Text>
+//               </View>
+//               <View style={styles.exerciseDetails}>
+//                 <Text style={styles.exerciseName}>{data.getExercise.name}</Text>
+//                 <View style={styles.exerciseStats}>
+//                   <Text style={styles.exerciseStat}>Sets: {data.getExercise.sets}</Text>
+//                   <Text style={styles.exerciseStat}>Reps: {data.getExercise.repRange}</Text>
+//                   <Text style={styles.exerciseStat}>Rest: {data.getExercise.restMinutes} min</Text>
+//                 </View>
+//               </View>
+//           </View>
+//               :
+//         <View></View>
+//         }
+//             </View>
+//   )
+// }
 
-function CreateWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekNumber }) {
+
+
+function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToChange, navigation}) {
     let communityCards = []
 
     const [newWorkoutActive, setNewWorkoutActive] = useState(false)
-    const [workouts, setWorkouts] = useState(["Upper", "Lower", "Full"])
+    const [workouts, setWorkouts] = useState([])
+
     const [tasksFiltered, setTasksFiltered] = useState(communityCards);
     const [tasksSearched, setTasksSearched] = useState(communityCards)
     const [isAll, setIsAll] = useState(true)
     const [search, setSearch] = useState("")
+    const { data, loading, error, refetch } = useQuery(gql`${queries.listWorkouts}`,
+    {
+        variables: {
+            filter : {programWeekWorkoutsId :  {attributeExists: false}},
+        }
+    })
+    if (loading) {
+        console.log("loading");
+      }
+    
+      if (error) {
+         console.log("Error: " + error.message)
+      }
+    
+    useEffect(()=>{
+        refetch()
 
-    const handleFilter = ( command ) => {
-        if(command == 'all'){
-        setTasksFiltered([...communityCards])
-        setTasksSearched([...communityCards])
-        setIsAll(true)
+    },[isVisible])
+    useEffect(() => {
+        // const filteredData = data?.listWorkouts?.items?.filter(workout => workout.programWeekWorkoutsId === null);
+        if(loading==false){
+        setWorkouts(data.listWorkouts.items)
+        
         }
-        else if(command == 'not completed'){
-        communityCardsTemp = new Array();
-        for(let i = 0; i < communityCards.length; i++){
-            if(isPressed[i] == false){
-            communityCardsTemp.push(communityCards[i])
-            }
-        }
-        setTasksFiltered([...communityCardsTemp])
-        setTasksSearched([...communityCardsTemp])
-        setIsAll(false)
-        }
-    }
+        
+      }, [data]);
+
+    // const handleFilter = ( command ) => {
+    //     if(command == 'all'){
+    //     setTasksFiltered([...communityCards])
+    //     setTasksSearched([...communityCards])
+    //     setIsAll(true)
+    //     }
+    //     else if(command == 'not completed'){
+    //     communityCardsTemp = new Array();
+    //     for(let i = 0; i < communityCards.length; i++){
+    //         if(isPressed[i] == false){
+    //         communityCardsTemp.push(communityCards[i])
+    //         }
+    //     }
+    //     setTasksFiltered([...communityCardsTemp])
+    //     setTasksSearched([...communityCardsTemp])
+    //     setIsAll(false)
+    //     }
+    // }
 
     const updateSearch = (text) => {
         console.log("tasks filtered ", tasksSearched)
@@ -132,60 +176,113 @@ function CreateWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekNum
         
         setSearch(text)
     };
+    //This creates the workout that is included in the list of workouts that users can select from
+    
+
+
+    const handleCreateWorkoutButtonPressed = () => {
+        const workoutInput = {
+            id: uuid.v4(),
+            title: "NAME YOUR WORKOUT",
+            programWeekWorkoutsId: weekToChange,
+            exercises: []
+          }
+          togglePopup()
+     
+        navigation.navigate("ViewWorkout",  {
+            workout: workoutInput,
+            saveWorkout: setWorkout,
+            isNewWorkout: true,
+            index: weekToChange
+        })
+        
+        
+        
+    }
 
     return (
         <Modal isVisible={isVisible}>
-            <View style={styles.popupContainer}>
-                <ScrollView style={{margin: 10}}>
-                    <TouchableOpacity style={{width: '100%'}} onPress={() => togglePopup()}>
-                        <AntDesign name="closecircleo" size={24} color="white" />
-                    </TouchableOpacity>
-                    <View style={{alignItems: 'center', marginTop: 20}}>
-                        <Text style={styles.title}>WORKOUT SELECTION</Text>
-                    </View>
-                    <View style={styles.searchContainer}>
-                        <SearchBar
-                        placeholder="Search"
-                        onChangeText={updateSearch}
-                        containerStyle={{backgroundColor: '#444444', borderBottomColor: 'transparent', borderTopColor: 'transparent'}}
-                        inputContainerStyle={styles.searchBar}
-                        value={search}
-                        round={true} 
-                        />
-                    </View>
+        <View style={styles.outerContainer}>
+        <TouchableOpacity onPress={() => togglePopup()}>
+        <Feather name = "x-circle" size = {17} color = {"white"}/>            
+        </TouchableOpacity>
+        <Text style={styles.headerOne}>WORKOUT CREATION</Text>
+            <View style={[styles.innerContainer]}>
+                    {/* <View style={styles.bottomButton}> */}
+                    <View style={styles.searchBarContainer}>
+                    <TextInput
+                    placeholder="Search"
+                    placeholderTextColor={"white"}
+                    onChangeText={updateSearch}
+                    style={styles.searchBarInput}
+                    value={search}
+                    // round={true}
+                    />
+                    <Ionicons name="search" size={15} color="white" />
+                     </View>
 
                     <ScrollView persistentScrollbar={true}>
                         <View style={styles.weeksContainer}>
                             {
                                 workouts.map((item, index) => (
-                                    <Week workout={item} index={index} togglePopup={togglePopup} setWorkout={setWorkout} weekNumber={weekNumber}/>
+                                    <Workout workout={item} weekID={weekToChange} key ={item.id} index={index} togglePopup={togglePopup} setWorkout={setWorkout}/>
                                 ))
                             }
                         </View>
-                    </ScrollView>
-
-                    <TouchableOpacity style={styles.closeButton} onPress={() => setWorkouts(workouts => [...workouts, ""])}>
-                        <Text style={styles.closeButtonText}>Create New Workout</Text>
-                    </TouchableOpacity>
-                </ScrollView>
+                    </ScrollView>                  
+                    
+                </View>
+                {/* <TouchableOpacity style={styles.bottomButton} onPress={() => setWorkouts(workouts => [...workouts, ""])}>
+                        <Text style={styles.bottomButtonText}>Create New Workout</Text>
+                </TouchableOpacity> */}
+                <TouchableOpacity style={styles.bottomButton} onPress={() => handleCreateWorkoutButtonPressed()}>
+                        <Text style={styles.bottomButtonText}>Create New Workout</Text>
+                </TouchableOpacity> 
             </View>
         </Modal>
     );
 }
 
 const styles = StyleSheet.create({
-    popupContainer: {
-    height: "80%", 
-    width: "100%", 
-    backgroundColor: '#444444',
-    alignSelf: "center",
-   borderRadius: "10%",
-   shadowColor: "grey",
-   shadowOffset: {width: 0, height: 0},
-   shadowOpacity: .5,
-   shadowRadius:5,
+//     popupContainer: {
+//     height: "80%", 
+//     width: "100%", 
+//     backgroundColor: '#444444',
+//     alignSelf: "center",
+//    borderRadius: "10%",
+//    shadowColor: "grey",
+//    shadowOffset: {width: 0, height: 0},
+//    shadowOpacity: .5,
+//    shadowRadius:5,
 
     
+//   },
+  outerContainer: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: "#383838",
+    height: "80%",
+    width: "90%",
+    borderRadius: 15,
+    alignSelf: "center",
+    padding:10
+  },
+  innerContainer: {
+    backgroundColor: "#595555",
+    borderRadius: 10,
+    height: "85%",
+    width: "90%",
+    paddingHorizontal: 10,
+    paddingTop:10
+
+  },
+  headerOne:
+  {
+    alignSelf: "center",
+    fontWeight: "bold",
+    color: "white",
+    fontSize: 20,
+    marginBottom: 10
   },
   title: {
     color: "white",
@@ -193,23 +290,23 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: "bold"
   },
-  exerciseList: {
-    flexDirection: "column",
-    marginBottom:20,
-    maxHeight: "90%",
-    borderTopColor: "grey",
-    borderTopWidth: 2
-  },
-  exerciseNumberBox: {
-    width: 24,
-    height: 24,
-    backgroundColor: Colors.primary,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 10,
-    borderRadius: 4,
-    marginVertical:10
-  },
+//   exerciseList: {
+//     flexDirection: "column",
+//     marginBottom:20,
+//     maxHeight: "90%",
+//     borderTopColor: "grey",
+//     borderTopWidth: 2
+//   },
+//   exerciseNumberBox: {
+//     width: 24,
+//     height: 24,
+//     backgroundColor: Colors.primary,
+//     justifyContent: "center",
+//     alignItems: "center",
+//     marginRight: 10,
+//     borderRadius: 4,
+//     marginVertical:10
+//   },
   exercise: {
     flexDirection: "row",
     justifyContent: "flex-start",
@@ -267,13 +364,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderBottomWidth: 1
   },
-  searchContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: "column",
-    backgroundColor: "#444444",
-    marginBottom: 10
-  },
+  
   bodyText : {
     color: 'white',
     marginBottom: 10
@@ -391,9 +482,10 @@ weeksContainer : {
     marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    
 },
 weekCard : {
-    width: '90%',
+    width: '100%',
     height: 140,
     borderRadius: 15
 },
@@ -497,6 +589,37 @@ communityCard: {
     alignItems: 'center',
     justifyContent: 'center'
   },
+  bottomButton: {
+    borderWidth: 1,
+    borderRadius: 15,
+    borderColor: 'rgba(139, 136, 136, 1)',
+    width: "90%",
+    marginTop: "5%",
+    paddingVertical: 5,
+  },
+  bottomButtonText: {
+    color: "white",
+    textAlign: "center",
+    fontWeight:"bold"
+  },
+  searchBarContainer: {
+    borderWidth: 1,
+    borderRadius: 15,
+    justifyContent:"space-between",
+    width:"100%",
+    alignSelf: 'center',
+    flexDirection:"row",
+    paddingHorizontal:15,
+    paddingVertical: 5,
+    marginBottom:10
+  },
+ 
+  searchBarInput: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight:"bold"
+  
+  },
 });
 
-export default CreateWorkoutPopup
+export default SelectWorkoutPopup

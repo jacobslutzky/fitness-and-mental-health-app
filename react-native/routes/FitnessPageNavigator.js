@@ -8,13 +8,13 @@ import PreviewSplit from '../screens/workout/PreviewSplit';
 import CurrentProgram from '../screens/workout/CurrentProgram';
 import DuringWorkout from '../screens/workout/DuringWorkout';
 import ExerciseDuringWorkout from '../screens/workout/ExerciseDuringWorkout';
-import CreateWorkout from '../screens/workout/CreateWorkout';
+import CreateProgram from '../screens/workout/CreateProgram';
 import { Ionicons } from '@expo/vector-icons';
+import ViewWorkout from '../screens/workout/ViewWorkout';
 
 const Stack = createStackNavigator();
 
 export default function FitnessPageNavigator({route, navigation}) {
-        colors = useTheme().colors
 
 
         return (
@@ -39,7 +39,10 @@ export default function FitnessPageNavigator({route, navigation}) {
             <Stack.Screen name = "ExerciseDuringWorkout" component={ExerciseDuringWorkout} options={{
               headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back",  title: ""
             }}/>
-            <Stack.Screen name = "CreateWorkout" component={CreateWorkout} options={{
+            <Stack.Screen name = "CreateProgram" component={CreateProgram} options={{
+              headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back",  title: ""
+            }}/>
+            <Stack.Screen name = "ViewWorkout" component={ViewWorkout} options={{
               headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back",  title: ""
             }}/>
             </Stack.Navigator>

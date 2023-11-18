@@ -90,6 +90,7 @@ export default function CurrentProgram({ navigation, route }) {
 
 
     return (
+        <View style={styles.container}>
         <ScrollView>
             {/* Header */}
             <ScrollView horizontal={true}>
@@ -108,7 +109,7 @@ export default function CurrentProgram({ navigation, route }) {
             </ScrollView>
             <View style={{ marginTop: 40, height: "70%" }}>
                 <Text style={styles.programHeader}>{titleToNameMap[title]}</Text>
-                <View style={{ flexDirection: "column", marginTop: 20 }}>
+                <View style={{ flexDirection: "column",  }}>
                     {
                         dataR ? dataR.getProgramWeek.workoutLabels.map((workout, index) => (
                             <Workout key={workout} dataR={dataR} title={title} workout={workout} togglePopup={togglePopup} workoutBeingPreviewed={workoutBeingPreviewed} index={index + 1}></Workout>
@@ -129,13 +130,16 @@ export default function CurrentProgram({ navigation, route }) {
             {dataWorkout ? <WorkoutPreviewPopUp isVisible={isModalVisible} workout={workoutBeingPreviewed} togglePopup={togglePopup} title={title} weekNumber={dataR && dataR.getProgramWeek ? dataR.getProgramWeek.weekNumber : 0} />
                 : <View></View>}
         </ScrollView>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
 
     container: {
-
+        marginTop: 40,
+        alignItems:"center",
+        justifyContent: "center"
     },
 
     buttonsContainer: {
