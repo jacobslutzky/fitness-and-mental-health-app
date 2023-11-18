@@ -11,10 +11,6 @@ const AchievementCard = ({ onDismiss, onShare, onProfile }) => {
                     source={require("../../assets/coin.webp")}
                     style={styles.medalImage}
                 />
-                <Image
-                    source={require("../../assets/confetti.webp")}
-                    style={styles.confetti}
-                />
                 <Text style={styles.medalText}>+100</Text>
             </View>
             <LinearGradient

@@ -561,6 +561,7 @@ export default function Home({ navigation }) {
             </View>
 
             {/* Achievement Card */}
+            {/*
             <View>
                 {isAchievmentVisible && (
                     <View style={styles.achievementCard}>
@@ -572,7 +573,7 @@ export default function Home({ navigation }) {
                     </View>
                 )}
             </View>
-
+            */}
             {/* Plus Button */}
             {/*
     <View style={styles.plusButtonContainer}>
