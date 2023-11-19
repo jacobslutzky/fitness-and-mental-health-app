@@ -15,7 +15,7 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
     
     const [ismuscleWorkedDropdownCollapsed, setIsmuscleWorkedDropdownCollapsed] = useState(true);
     const [isWorkoutTypeDropdownCollapsed, setIsWorkoutTypeDropdownCollapsed] = useState(true);
-    const [selectedmuscleWorked, setSelectedmuscleWorked] = useState(null)
+    const [selectedMuscleWorked, setSelectedMuscleWorked] = useState(null)
     const [selectedWorkoutType, setSelectedWorkoutType] = useState(null)
     const [muscleWorkedDropdownKey, setmuscleWorkedDropdownKey] = useState(0);
     const [workoutTypeDropdownKey, setWorkoutTypeDropdownKey] = useState(0);
@@ -25,28 +25,17 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
 
 
     const { data, loading, error, refetch } = useQuery(gql`${queries.listExerciseInfos}`)
-    if (loading) {
-        console.log("loading");
-      }
-    
-      if (error) {
-         console.log("Error: " + error.message)
-      }
-    
+  
     useEffect(() => {
-        // const filteredData = data?.listWorkouts?.items?.filter(workout => workout.programWeekWorkoutsId === null);
         if(loading==false){
           const exerciseInfos = data.listExerciseInfos.items
           
           setMusclesWorked([...new Set(exerciseInfos.map(exercise => exercise.muscleWorked))])
           setWorkoutTypes([...new Set(exerciseInfos.map(exercise => exercise.workoutType))])
           setExercises(exerciseInfos)
-          console.log("hehe")
-          console.log(exerciseInfos.map(exercise => exercise.muscleWorked))
+          
         }
-       
-        console.log(workoutTypes)
-        console.log(exercises)
+        
       }, [data]);
 
 
@@ -66,14 +55,13 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
         setWorkoutTypeDropdownKey((prevKey) => prevKey + 1);
 
       };
-      const handlemusclesWorkedelected = (muscleWorked) => {
-        if(selectedmuscleWorked != null){
-          setSelectedmuscleWorked(null)
+      const handleMuscleWorkedSelected = (muscleWorked) => {
+        if(selectedMuscleWorked != null){
+          setSelectedMuscleWorked(null)
         }
         else{
-          setSelectedmuscleWorked(muscleWorked)
+          setSelectedMuscleWorked(muscleWorked)
         }
-        console.log(selectedmuscleWorked)
       }
       const handleWorkoutTypeSelected = (workoutType) => {
         if(selectedWorkoutType != null){
@@ -82,22 +70,19 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
         else{
           setSelectedWorkoutType(workoutType)
         }
-        console.log(selectedmuscleWorked)
       }
       const handleExerciseSelected = (exercise) => {
         collapseAll()
-        console.log("test")
-        console.log(exercise)
         callbackSelectedExercise(exercise)
       }
       const collapseAll = () => {
-        setSelectedmuscleWorked(null)
+        setSelectedMuscleWorked(null)
         setSelectedWorkoutType(null)
         setIsWorkoutTypeDropdownCollapsed(true)
         setIsmuscleWorkedDropdownCollapsed(true)
       }
       const muscleWorkedItem = ({ item }) => (
-        <TouchableOpacity style={[styles.dropdownContent,selectedmuscleWorked!=null?styles.highlightedItem:{}]} onPress={()=>handlemusclesWorkedelected(item)}>
+        <TouchableOpacity style={[styles.dropdownContent,selectedMuscleWorked!=null?styles.highlightedItem:{}]} onPress={()=>handleMuscleWorkedSelected(item)}>
           <Text style={styles.dropdownContentText}>{item}</Text>
         </TouchableOpacity>
       );
@@ -122,10 +107,10 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
     </TouchableOpacity>
     <Collapsible collapsed={ismuscleWorkedDropdownCollapsed} key={muscleWorkedDropdownKey}>
         <FlatList
-          data={selectedmuscleWorked === null ? musclesWorked : [selectedmuscleWorked]}
+          data={selectedMuscleWorked === null ? musclesWorked : [selectedMuscleWorked]}
           renderItem={muscleWorkedItem}
           keyExtractor={(item, index) => index.toString()}
-          extraData={selectedmuscleWorked}
+          extraData={selectedMuscleWorked}
           scrollEnabled={false} 
         />
       </Collapsible>
@@ -145,8 +130,8 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
         />
       </Collapsible>
     <FlatList
-        data={exercises.filter(exercise=>(selectedmuscleWorked == null || exercise.muscleWorked==selectedmuscleWorked.name ) 
-          && (selectedWorkoutType==null || exercise.workoutType==selectedWorkoutType.name) 
+        data={exercises.filter(exercise=>(selectedMuscleWorked == null || exercise.muscleWorked==selectedMuscleWorked ) 
+          && (selectedWorkoutType==null || exercise.workoutType==selectedWorkoutType) 
           && exercise.name.toLowerCase().includes(searchResult.toLowerCase()))
         }
         renderItem={exerciseItem}
