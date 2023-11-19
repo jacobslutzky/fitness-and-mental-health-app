@@ -52,7 +52,6 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
   useEffect(() => {
     if (newProgram) {
-      console.log("hi")
       let testProgram = gymindPrograms[0]
       testProgram.title = newProgram
       setGymindPrograms(gymindPrograms => [...gymindPrograms, testProgram])

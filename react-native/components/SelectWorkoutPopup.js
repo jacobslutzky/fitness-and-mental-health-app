@@ -110,37 +110,30 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
 
     const [newWorkoutActive, setNewWorkoutActive] = useState(false)
     const [workouts, setWorkouts] = useState([])
-
-    const [tasksFiltered, setTasksFiltered] = useState(communityCards);
-    const [tasksSearched, setTasksSearched] = useState(communityCards)
+    const [filteredWorkouts, setFilteredWorkouts] = useState([])
     const [isAll, setIsAll] = useState(true)
     const [search, setSearch] = useState("")
     const { data, loading, error, refetch } = useQuery(gql`${queries.listWorkouts}`,
     {
         variables: {
-            filter : {programWeekWorkoutsId :  {attributeExists: false}},
+            filter : {
+                programWeekWorkoutsId :  {attributeExists: false}
+           },
+
         }
     })
-    if (loading) {
-        console.log("loading");
-      }
-    
-      if (error) {
-         console.log("Error: " + error.message)
-      }
     
     useEffect(()=>{
-        refetch()
-
-    },[isVisible])
-    useEffect(() => {
-        // const filteredData = data?.listWorkouts?.items?.filter(workout => workout.programWeekWorkoutsId === null);
-        if(loading==false){
-        setWorkouts(data.listWorkouts.items)
-        
+        console.log("hey")
+        if(isVisible){
+            refetch()
+            if(loading==false){
+            setWorkouts(data.listWorkouts.items)
+            setFilteredWorkouts(data.listWorkouts.items)
+            
         }
-        
-      }, [data]);
+    }
+    },[isVisible,data])
 
     // const handleFilter = ( command ) => {
     //     if(command == 'all'){
@@ -162,23 +155,19 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
     // }
 
     const updateSearch = (text) => {
-        console.log("tasks filtered ", tasksSearched)
-        if(!tasksFiltered) return;
+        console.log("tasks filtered ", workouts)
 
-        const updatedData = tasksFiltered.filter((item) => {
-        const item_data = `${item.title.toUpperCase()})`;
-        const text_data = text.toUpperCase().split(" ").join('');
+        const updatedData = workouts.filter((item) => {
+        const item_data = `${item.title.toLowerCase()})`;
+        const text_data = text.toLowerCase();
         console.log(text_data)
         return item_data.indexOf(text_data) > -1;
         });
         
-        setTasksSearched(updatedData)
+        setFilteredWorkouts(updatedData)
         
         setSearch(text)
     };
-    //This creates the workout that is included in the list of workouts that users can select from
-    
-
 
     const handleCreateWorkoutButtonPressed = () => {
         const workoutInput = {
@@ -203,7 +192,7 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
     return (
         <Modal isVisible={isVisible}>
         <View style={styles.outerContainer}>
-        <TouchableOpacity onPress={() => togglePopup()}>
+        <TouchableOpacity onPress={() => {togglePopup(); setSearch("")}}>
         <Feather name = "x-circle" size = {17} color = {"white"}/>            
         </TouchableOpacity>
         <Text style={styles.headerOne}>WORKOUT CREATION</Text>
@@ -216,15 +205,16 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
                     onChangeText={updateSearch}
                     style={styles.searchBarInput}
                     value={search}
+                    autoCapitalize='none'
                     // round={true}
                     />
-                    <Ionicons name="search" size={15} color="white" />
+                    <Ionicons name="search" size={15} color="white" style={{marginRight:10}} />
                      </View>
 
                     <ScrollView persistentScrollbar={true}>
                         <View style={styles.weeksContainer}>
                             {
-                                workouts.map((item, index) => (
+                                filteredWorkouts.map((item, index) => (
                                     <Workout workout={item} weekID={weekToChange} key ={item.id} index={index} togglePopup={togglePopup} setWorkout={setWorkout}/>
                                 ))
                             }
@@ -232,9 +222,6 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
                     </ScrollView>                  
                     
                 </View>
-                {/* <TouchableOpacity style={styles.bottomButton} onPress={() => setWorkouts(workouts => [...workouts, ""])}>
-                        <Text style={styles.bottomButtonText}>Create New Workout</Text>
-                </TouchableOpacity> */}
                 <TouchableOpacity style={styles.bottomButton} onPress={() => handleCreateWorkoutButtonPressed()}>
                         <Text style={styles.bottomButtonText}>Create New Workout</Text>
                 </TouchableOpacity> 
@@ -244,19 +231,6 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
 }
 
 const styles = StyleSheet.create({
-//     popupContainer: {
-//     height: "80%", 
-//     width: "100%", 
-//     backgroundColor: '#444444',
-//     alignSelf: "center",
-//    borderRadius: "10%",
-//    shadowColor: "grey",
-//    shadowOffset: {width: 0, height: 0},
-//    shadowOpacity: .5,
-//    shadowRadius:5,
-
-    
-//   },
   outerContainer: {
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -540,7 +514,7 @@ exerciseIcon : {
     height: '70%',
     width: '15%',
     backgroundColor: 'grey',
-    opacity: '0.3',
+    opacity: 0.3,
     borderRadius: 10
 },
 exerciseTextContainer : {
@@ -605,20 +579,22 @@ communityCard: {
   searchBarContainer: {
     borderWidth: 1,
     borderRadius: 15,
-    justifyContent:"space-between",
-    width:"100%",
-    alignSelf: 'center',
-    flexDirection:"row",
-    paddingHorizontal:15,
-    paddingVertical: 5,
-    marginBottom:10
+    justifyContent: "space-between",
+    width: "100%",
+    alignSelf: "center",
+    flexDirection: "row",
+    alignItems:"center",
+    marginBottom: 10,
   },
- 
   searchBarInput: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
-    fontWeight:"bold"
-  
+    fontWeight: "bold",
+    flex: 1, // Take up all available space
+    paddingLeft: 15,
+    paddingVertical: 5,
+    
+
   },
 });
 

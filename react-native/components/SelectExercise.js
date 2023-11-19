@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect} from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet,TextInput,FlatList} from 'react-native';
 import Modal from 'react-native-modal';
 import { useTheme } from '@react-navigation/native';
@@ -41,7 +41,9 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
 
 
     useEffect(() => {
-      collapseAll()
+      if (closeSelectExercise){
+        collapseAll()
+      }
     },[closeSelectExercise]);
     
 
@@ -105,11 +107,11 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
      <Text style={styles.dropdownButtonText}>SELECT MUSCLE GROUP</Text>
      <Ionicons name={ismuscleWorkedDropdownCollapsed?"caret-down-outline": "caret-up-outline"} color="white" size={15} />
     </TouchableOpacity>
-    <Collapsible collapsed={ismuscleWorkedDropdownCollapsed} key={muscleWorkedDropdownKey}>
+    <Collapsible collapsed={ismuscleWorkedDropdownCollapsed} key={"muscles" + muscleWorkedDropdownKey}>
         <FlatList
           data={selectedMuscleWorked === null ? musclesWorked : [selectedMuscleWorked]}
           renderItem={muscleWorkedItem}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => item.name}
           extraData={selectedMuscleWorked}
           scrollEnabled={false} 
         />
@@ -120,11 +122,11 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
      <Ionicons name={isWorkoutTypeDropdownCollapsed?"caret-down-outline": "caret-up-outline"} color="white" size={15} />
 
     </TouchableOpacity>
-    <Collapsible collapsed={isWorkoutTypeDropdownCollapsed} key={workoutTypeDropdownKey}>
+    <Collapsible collapsed={isWorkoutTypeDropdownCollapsed} key={"workout" + workoutTypeDropdownKey}>
         <FlatList
           data={selectedWorkoutType === null ? workoutTypes : [selectedWorkoutType]}
           renderItem={workoutTypeItem}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => item.name}
           extraData={selectedWorkoutType}
           scrollEnabled={false} 
         />
@@ -132,10 +134,9 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
     <FlatList
         data={exercises.filter(exercise=>(selectedMuscleWorked == null || exercise.muscleWorked==selectedMuscleWorked ) 
           && (selectedWorkoutType==null || exercise.workoutType==selectedWorkoutType) 
-          && exercise.name.toLowerCase().includes(searchResult.toLowerCase()))
-        }
+          && exercise.name.toLowerCase().includes(searchResult.toLowerCase()))}
         renderItem={exerciseItem}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.id}
         scrollEnabled={false} 
       />
         </ScrollView>

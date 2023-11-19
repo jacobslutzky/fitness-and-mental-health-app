@@ -10,8 +10,6 @@ import { EvilIcons,AntDesign} from '@expo/vector-icons';
 import AddExercisePopUp from '../../components/AddExercisePopUp';
 import uuid from 'react-native-uuid';
 
-import { select } from 'd3';
-import { colors } from 'react-native-elements';
 
 
 
@@ -25,16 +23,6 @@ const Exercise = (props) => {
         variables: {id: exerciseInput.exerciseInfoID}
     });
 
-    useEffect(() => {
-        console.log(data)
-        console.log(loading)
-        console.log(error)
-      }, [data]);
-
-
-    const deleteExercise = () => {
-
-    }
 
 
     return (
@@ -49,7 +37,7 @@ const Exercise = (props) => {
                 </View>
 
             </TouchableOpacity>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={() => {props.removeExercise(index)}}>
                 <EvilIcons size={24} color={"white"} name="trash"/>
             </TouchableOpacity>
         </View>
@@ -64,9 +52,6 @@ export default function ViewWorkout({ navigation, route }) {
 
     const colors = useTheme().colors;
 
-    //const exercises2 = route.params.workouts.exercises.items
-    console.log("hello")
-    console.log(route.params.workout)
     const [exercises, setExercises] = useState(route.params.workout.exercises)
     const [isAddExerciseVisible, setIsAddExerciseVisible] = useState(false)
     const [selectedExerciseInput, setSelectedExerciseInput] = useState(null)
@@ -82,16 +67,19 @@ export default function ViewWorkout({ navigation, route }) {
     const weekNumber = route.params.weekNumber
 
     const openAddExercisePopUp = (exerciseInput, exerciseInfo,index) => {
-        //TODO add method to add exercise to workout
         setSelectedExerciseInput(exerciseInput)
         setSelectedExerciseInfo(exerciseInfo)
         setSelectedExerciseIndex(index)
         setIsAddExerciseVisible(true)
-        // console.log("check")
-        // console.log(exerciseInput)
-        // console.log(selectedExerciseInput)
-       
     }
+
+    const removeExercise = (indexToRemove) => {
+        setExercises((prevExercises) => {
+            const newExercises = [...prevExercises];
+            newExercises.splice(indexToRemove, 1);
+            return newExercises;
+        });
+    };
     
     const closeAddExercisePopUp = () => {
         setSelectedExerciseInput(null)
@@ -124,8 +112,6 @@ export default function ViewWorkout({ navigation, route }) {
     
 
     const handleSaveWorkout = () => {
-            // console.log("carr")
-            // console.log(title)
             const newWorkout = workout
             if(isNewWorkout){
                 const workoutID = uuid.v4()
@@ -135,33 +121,20 @@ export default function ViewWorkout({ navigation, route }) {
                   }
                     
                 createWorkout({variables: {input: workoutInput}})
-                // console.log("here")
-                // console.log(exercises)
                 const newExercises = exercises
                 newExercises.forEach((exerciseInput) => {
                     exerciseInput.id = uuid.v4();
                     exerciseInput.workoutID = workoutID;
-                    console.log("input")
-                    console.log(exerciseInput)
                     createExercise({ variables: { input: exerciseInput } });
                 });
 
             }
-            // console.log("here")
-            // console.log(exercises)
             newWorkout.exercises = exercises
             newWorkout.title = title
-            console.log("ahhh")
-            console.log(newWorkout)
             saveWorkout(index, newWorkout)
             navigation.goBack(null)
              };
 
-    
-
-
-    // console.log("jakey")
-    // console.log(title)
     return (
 
         <View style={styles.container}>
@@ -176,7 +149,7 @@ export default function ViewWorkout({ navigation, route }) {
             </View>
             <ScrollView style={{ marginBottom: 150 }}>
                 {exercises.map((exercise, index) => (
-                    <Exercise openAddExercisePopUp={openAddExercisePopUp} key={exercise.id} index={index} exerciseInput={exercise} />
+                    <Exercise openAddExercisePopUp={openAddExercisePopUp} key={exercise.id} index={index} exerciseInput={exercise} removeExercise={removeExercise}/>
                 ))}
                 <View style={styles.buttonContainer}> 
                     <TouchableOpacity style={styles.addButton} onPress={() => openAddExercisePopUp(null,null,-1)} >

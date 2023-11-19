@@ -51,14 +51,6 @@ const Workout = (props) => {
             <View style={styles.exerciseTextContainer}>
                 <Text style={styles.bodyText}>{props.workout.title}</Text>
             </View>
-
-            {/* Information Container */}
-            <View style={styles.informationContainer}>
-                <TouchableOpacity style={styles.informationButton}>
-                    <Ionicons name="information-circle-outline" size={24} color="white" />
-                </TouchableOpacity>
-            </View>
-
             {/* Trash Container */}
             <View style={styles.trashContainer}>
                 <TouchableOpacity style={styles.trashButton} onPress={() => setUpdateParent(true)}>
@@ -98,8 +90,6 @@ const Week = (props) => {
             createWorkout({ variables: { input: workoutInput } });
             
             const newExercises = workout.exercises
-            console.log("heree")
-            //console.log(newExercises)
 
                 newExercises.forEach((exercise,index) => {
                     const exerciseInput = {
@@ -215,23 +205,6 @@ export default function CreateProgram({ route, navigation }) {
     const setCreatedPrograms = route.params.setCreatedPrograms
     const createdPrograms = route.params.createdPrograms
     
-    let { data, loading, error, refetch } = useQuery(gql`${queries.getWorkout}`, {
-        variables: { id: "6538af4e-4b39-4d1f-b1d0-89937e79f670" }
-      });1
-      
-      if (error) console.log(`Submission error! ${error.message}`);
-
-      // Log the program data
-      useEffect(() => {
-      
-      if(loading==false){
-        console.log("program")
-        console.log(data.getWorkout.exercises)
-
-      }
-     
-    }, [data])
-   
 
     const handleProgramInitialized = () => {
         setSection(2)
@@ -252,8 +225,6 @@ export default function CreateProgram({ route, navigation }) {
     const applySetWorkout = (weekID, workoutInput) => {
         setWorkout(workoutInput)
         setWeekToChange(weekID)
-        console.log(workout)
-        console.log(weekID)
     }
 
   
@@ -511,7 +482,7 @@ const styles = StyleSheet.create({
         width: '80%',
         height: 50,
         borderRadius: 10,
-        marginTop: 50,
+        marginTop: 20,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -530,7 +501,7 @@ const styles = StyleSheet.create({
         width: '80%',
         height: 50,
         borderRadius: 10,
-        marginBottom: -30,
+        
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -602,7 +573,7 @@ const styles = StyleSheet.create({
     exerciseTextContainer: {
         justifyContent: 'center',
         marginLeft: 10,
-        width: '70%',
+        width: '80%',
     },
     informationContainer: {
         alignItems: 'center',

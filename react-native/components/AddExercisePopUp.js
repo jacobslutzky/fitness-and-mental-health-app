@@ -1,5 +1,5 @@
-import React, { useState, useEffect} from 'react';
-import { View, Text, TouchableOpacity,ScrollView, StyleSheet,TextInput, Pressable} from 'react-native';
+import React, { useState, useEffect,useRef} from 'react';
+import { View, Text, TouchableOpacity,ScrollView, StyleSheet,TextInput, TouchableWithoutFeedback,Keyboard} from 'react-native';
 import Modal from 'react-native-modal';
 import { useTheme } from '@react-navigation/native';
 import {Feather,Ionicons} from 'react-native-vector-icons'
@@ -11,7 +11,7 @@ import { secondsToMinutes } from 'date-fns';
 
 
 const AddExercisePopUp = ({isVisible, closeAddExercisePopUp, startingExerciseInput,startingExerciseInfo,saveExercise}) => {
-  const [searchingForExercise, setSearchingForExercise] = useState(null)
+  const [searchingForExercise, setSearchingForExercise] = useState(false)
   const [exerciseInfo, setExerciseInfo] = useState(null)
   const [searchResult, setSearchResult] = useState(null)
   const [repRange, setRepRange] = useState(null)
@@ -19,7 +19,8 @@ const AddExercisePopUp = ({isVisible, closeAddExercisePopUp, startingExerciseInp
   const [RIR, setRIR] = useState(null)
   const [restMinutes, setRestMinutes]  = useState(null)
   const [notes, setNotes] = useState(null)
-  //]
+  const textInputRef = useRef(null);
+
   useEffect(() => {
     if(startingExerciseInput!=null){
       setExerciseInfo(startingExerciseInfo)
@@ -43,9 +44,13 @@ const AddExercisePopUp = ({isVisible, closeAddExercisePopUp, startingExerciseInp
     
   },[isVisible]);
 
+  const handleFindExercisePressIn = () => {
+    setSearchingForExercise(true)
+   setSearchResult("")
+   
+  }
   const toggleFindExercisePress = () => {
     setSearchingForExercise(!searchingForExercise)
-    console.log(searchingForExercise)
   }
   const handleExerciseSelected = (exercise) => {
     toggleFindExercisePress()
@@ -54,10 +59,10 @@ const AddExercisePopUp = ({isVisible, closeAddExercisePopUp, startingExerciseInp
   }
 
     return (
-      <View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Modal isVisible={isVisible}>
       <View style={styles.outerContainer}>
-      <TouchableOpacity onPress={closeAddExercisePopUp}>
+      <TouchableOpacity onPress={() => { setSearchingForExercise(false); closeAddExercisePopUp()}}>
         <Feather name = "x-circle" size = {17} color = {"white"}/>            
         </TouchableOpacity>
       <Text style={styles.headerOne}>WORKOUT CREATION</Text>
@@ -67,16 +72,17 @@ const AddExercisePopUp = ({isVisible, closeAddExercisePopUp, startingExerciseInp
         <View style={[styles.input,{flexDirection:"row",alignItems:"center"},
         searchingForExercise?{borderBottomWidth:0,borderBottomLeftRadius:0,borderBottomRightRadius:0,padding:5}:{}]}>
         {searchingForExercise?(
-        <TouchableOpacity onPress={()=>{toggleFindExercisePress(); setSearchResult(exerciseInfo?exerciseInfo:"")}}>
+        <TouchableOpacity onPress={()=>{textInputRef.current.blur();setSearchingForExercise(false); setSearchResult(exerciseInfo!=null?exerciseInfo.name:"")}}>
         <Ionicons name="chevron-back-circle-outline" color="white" size={20} />
         </TouchableOpacity>
         ):(<></>)}
         <TextInput
+        ref={textInputRef}
         style={styles.exerciseInput}
         value={searchResult}
         onChangeText={setSearchResult}
-        onPressIn={()=>{setSearchingForExercise(true); setSearchResult("")}}
-        placeholder="Find Exercise"
+        onPressIn={()=>{handleFindExercisePressIn()}}
+        placeholder={!searchingForExercise?"Find Exercise":"Search"}
         placeholderTextColor="lightgrey"
         autoCapitalize='none'
         />
@@ -143,8 +149,8 @@ const AddExercisePopUp = ({isVisible, closeAddExercisePopUp, startingExerciseInp
    </TouchableOpacity>
    <Text style={styles.labels}>Notes (Optional)</Text>
       <TextInput
-        style={[styles.input, {height: 80,textAlignVertical: 'top'}]}
-        
+        style={[styles.input, {height: 80}]}
+        multiline
        value={notes}
        onChangeText={setNotes}
        
@@ -164,7 +170,7 @@ const AddExercisePopUp = ({isVisible, closeAddExercisePopUp, startingExerciseInp
    
           </View>
         </Modal>
-      </View>
+      </TouchableWithoutFeedback>
     );
   };
   export default AddExercisePopUp;
