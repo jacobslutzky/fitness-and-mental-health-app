@@ -122,12 +122,12 @@ export default function ViewWorkout({ navigation, route }) {
                     
                 createWorkout({variables: {input: workoutInput}})
                 const newExercises = exercises
-                newExercises.forEach((exerciseInput) => {
+                newExercises.forEach((exerciseInput,index) => {
                     exerciseInput.id = uuid.v4();
                     exerciseInput.workoutID = workoutID;
+                    exerciseInput.exerciseNum = index+1
                     createExercise({ variables: { input: exerciseInput } });
                 });
-
             }
             newWorkout.exercises = exercises
             newWorkout.title = title

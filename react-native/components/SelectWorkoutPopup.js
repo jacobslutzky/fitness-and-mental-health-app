@@ -24,7 +24,7 @@ const Workout = (props) => {
             id: uuid.v4(),
             title: selectedWorkout.title,
             programWeekWorkoutsId: props.weekID,
-            exercises: selectedWorkout.exercises.items,
+            exercises:selectedWorkout.exercises.items.sort((a, b) => a.exerciseNum - b.exerciseNum),
             notes: selectedWorkout.notes,
             status: "incomplete"
           }
@@ -119,12 +119,13 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
             filter : {
                 programWeekWorkoutsId :  {attributeExists: false}
            },
+           limit: 1000, 
+        
 
         }
     })
     
     useEffect(()=>{
-        console.log("hey")
         if(isVisible){
             refetch()
             if(loading==false){
@@ -133,7 +134,7 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
             
         }
     }
-    },[isVisible,data])
+    },[isVisible])
 
     // const handleFilter = ( command ) => {
     //     if(command == 'all'){
@@ -155,7 +156,6 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
     // }
 
     const updateSearch = (text) => {
-        console.log("tasks filtered ", workouts)
 
         const updatedData = workouts.filter((item) => {
         const item_data = `${item.title.toLowerCase()})`;

@@ -118,28 +118,7 @@ const Week = (props) => {
           });
 
     }
-    // const addWorkout = () => {
-    //     const workoutID = uuid.v4()
-    //     const workoutInput = {
-    //             id: workoutID,
-    //             propgramWeekID: props.week.id,
-    //             workoutNumber: workouts.length+1,
-    //             title: props.workout.title,
-    //             status: "incomplete",
-    //             notes: props.workout.notes
-    // }
-    
-    //     setWorkouts(workouts => [...workouts, props.workout])
 
-    // }
-    
-    // const createCopiesOfExercises = () => {
-    //     const { data, loading, error, refetch } = useQuery(gql`${queries.getWorkout}`, {
-    //         variables: { id: programID }
-    //      });
-
-
-    // }
     return (
         <View style={styles.weekContainer}>
             {/* Week Card */}
