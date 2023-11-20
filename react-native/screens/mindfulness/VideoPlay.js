@@ -9,9 +9,10 @@ import { Audio } from 'expo-av';
 import { useQuery, gql, useMutation } from "@apollo/client";
 import * as queries from "../../../src/graphql/queries";
 import * as mutations from "../../../src/graphql/mutations";
+import { Colors } from '../../constants/Colors';
 
 
-export default function VideoPlay({ route }) {
+export default function VideoPlay({ navigation, route }) {
 
     const { data: dataGetStats } = useQuery(gql`${queries.getUserStats}`, {
         variables: { id: `stats-${global.userId}` }
@@ -42,6 +43,7 @@ export default function VideoPlay({ route }) {
         if (isPlaying) {
             const id = setInterval(() => {
                 setCurrentTime((oldTime) => {
+                    if(!dataGetStats) return oldTime
                     if (oldTime > length - 20 && !pointsAdded) {
                         const statsInput = {
                             id: `stats-${global.userId}`,
@@ -195,10 +197,17 @@ export default function VideoPlay({ route }) {
         sound.current.setRateAsync(multipliers[(oldIndex + 1) % multipliers.length], true)
     }
 
-
+    const navigateToMeditationOverview = () => {
+        PauseAudio()
+        navigation.navigate("VideoOverview", { title: route.params.title, author: route.params.author, image: route.params.image })
+    }
 
     return (
         <ScrollView style={styles.container}>
+
+            <TouchableOpacity style={{marginLeft: 20}} onPress={() => navigateToMeditationOverview()}>
+                <Ionicons name="arrow-back" size={24} color={Colors.primary} />
+            </TouchableOpacity>
 
             {/* Image */}
             <View style={styles.imageContainer}>

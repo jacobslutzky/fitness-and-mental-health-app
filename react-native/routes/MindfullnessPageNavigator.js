@@ -26,7 +26,7 @@ export default function MindfulnessPageNavigator({route, navigation}) {
                 headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
               }}/>
             <Stack.Screen name = "VideoPlay" component={VideoPlay} options={{ title: "",
-            headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
+            headerShown:false,  headerShadowVisible: false, headerBackTitle: "Back"
             }}/>
         </Stack.Navigator>
          

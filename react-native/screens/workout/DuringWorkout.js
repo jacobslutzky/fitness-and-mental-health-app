@@ -69,7 +69,7 @@ const Exercise = (props) => {
 
     return (
 
-        <View style={{ justifyContent: "center", marginHorizontal: 30, borderBottomColor: '#CFB87C', borderBottomWidth: 2, paddingVertical: 10 }}>
+        <TouchableOpacity style={{ justifyContent: "center", marginHorizontal: 30, borderBottomColor: '#CFB87C', borderBottomWidth: 2, paddingVertical: 10 }} onPress={() => navigateToExerciseScreen()}>
             {!data ? <View><Text>Loading</Text></View>
                 :
                 <View>
@@ -78,14 +78,14 @@ const Exercise = (props) => {
                             <Text style={{ color: colors.text, fontSize: 16, marginBottom: 5 }}>{data && data.getExercise ? data.getExercise.name : ""}</Text>
                             <Text style={{ color: "grey" }}>{data.getExercise ? data.getExercise.sets : ""} sets x 5-7,8-10</Text>
                         </View>
-                        <TouchableOpacity style={styles.expandExerciseButtonContainer} onPress={() => navigateToExerciseScreen()}>
+                        <View style={styles.expandExerciseButtonContainer}>
                             <AntDesign name="right" size={20} color="white" />
-                        </TouchableOpacity>
+                        </View>
                     </View>
 
                 </View>
             }
-        </View>
+        </TouchableOpacity>
 
     )
 }

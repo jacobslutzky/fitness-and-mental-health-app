@@ -94,7 +94,8 @@ export default function CurrentProgram({ navigation, route }) {
         <ScrollView>
             {/* Header */}
             <ScrollView horizontal={true}>
-                <View style={styles.buttonsContainer}>
+            
+                <View style={title == 'mensfullbody' ? styles.buttonsContainerBugged : styles.buttonsContainer}>
                     {
                         dataR ? Array(8).fill().map((weekNum, index) => (
 
@@ -142,12 +143,18 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
 
+    buttonsContainerBugged: {
+        //   alignItems: 'center',
+        justifyContent: 'flex-start',
+        flexDirection: "row",
+        marginTop: 20,
+        height: 150
+    },
     buttonsContainer: {
         //   alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: "row",
-        marginTop: 20
-
+        marginTop: 20,
     },
     programHeader:
     {

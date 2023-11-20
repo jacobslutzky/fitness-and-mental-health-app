@@ -165,11 +165,14 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
       <ScrollView style={{ marginHorizontal: 20 }}>
         <View style={styles.cardsContainer}>
+          {isFiltered ? 
           <ImageBackground source={'../../../assets/quickWorkouts1.jpeg'} style={styles.communityCard} imageStyle={{ opacity: 0.2 }}>
             <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToCreateProgram(createdPrograms, setCreatedPrograms)}>
               <Text style={styles.cardText}>CREATE A PROGRAM</Text>
             </TouchableOpacity>
           </ImageBackground>
+          : <></>
+          }
           {tasksSearched ? tasksSearched.map((item, index) => (
             <>
             {item ?
