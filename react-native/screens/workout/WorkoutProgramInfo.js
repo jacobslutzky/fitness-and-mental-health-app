@@ -20,7 +20,7 @@ export default function WorkoutProgramInfo({ route, navigation }) {
         "mensfullbody": "This is a beginner three day a week program designed for male identified students. Feel free to change the workouts around to fit your schedule.",
         "mensPPL": "This is an advanced six day a week program designed for male identified students. Feel free to change the workouts around to fit your schedule.",
         "womensbeginner": "This is a beginner three day a week program designed for female identified students. Feel free to change the workouts around to fit your schedule.",
-        "womenintermediate": "This is an intermediate four day a week program designed for female identified students. Feel free to change the workouts around to fit your schedule.",
+        "womensintermediate": "This is an intermediate four day a week program designed for female identified students. Feel free to change the workouts around to fit your schedule.",
     }
 
     const navigateToPreviewSplit = () => {
