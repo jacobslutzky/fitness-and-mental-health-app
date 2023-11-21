@@ -28,7 +28,7 @@ const Exercise = (props) => {
                 <Text style={styles.exerciseNumber}>{index + 1}</Text>
               </View>
               <View style={styles.exerciseDetails}>
-                <Text style={styles.exerciseName}>{data.getExercise.name.substring(data.getExercise.name.indexOf(')') + 2)}</Text>
+                <Text style={styles.exerciseName}>{data.getExercise.name.substring(data.getExercise.name.indexOf(')') + 2).substring(data.getExercise.name.indexOf('.') + 1)}</Text>
                 <View style={styles.exerciseStats}>
                   <Text style={styles.exerciseStat}>Sets: {data.getExercise.sets}</Text>
                   <Text style={styles.exerciseStat}>Reps: {data.getExercise.repRange}</Text>

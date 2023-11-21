@@ -26,7 +26,7 @@ export default function Mindfulness() {
             author: "John Astin",
             img: require("../../../assets/extraordinary_moment.jpeg"),
             time: "10 min",
-            stars: "4.9",
+            stars: "5.0",
         },
     ];
 
