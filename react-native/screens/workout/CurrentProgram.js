@@ -9,16 +9,20 @@ import WorkoutPreviewPopUp from '../../components/WorkoutPreviewPopUp';
 
 
 const Workout = (props) => {
-    const dataR = props.dataR
-    const title = props.title
+    // const dataR = props.dataR
+    // const title = props.title
     const togglePopup = props.togglePopup
-    const { data, loading, error, refetch } = useQuery(gql`${queries.getWorkout}`, {
-        variables: { id: `${props.workout}-week1-${title}` },
-        variables: { id: title != "womenintermediate4xweek" ? `${title}::1::${props.workout}` : `${props.workout}-week1-${title}` },
-        enabled: dataR
-    });
+   
 
-    const workout = props.workout
+    // const { data, loading, error, refetch } = useQuery(gql`${queries.getWorkout}`, {
+    //     variables: { id: `${props.workout}-week1-${title}` },
+    //     variables: { id: title != "womenintermediate4xweek" ? `${title}::1::${props.workout}` : `${props.workout}-week1-${title}` },
+    //     enabled: dataR
+    // });
+
+    const workout = {...props.workout  }
+    
+    workout.userExercises.items = props.workout.userExercises.items.slice().sort((a, b) => a.exerciseNum - b.exerciseNum);
 
     return (
         <View key={workout} style={styles.card}>
@@ -27,11 +31,11 @@ const Workout = (props) => {
             </View>
             <View style={styles.cardInnerContent}>
                 <View style={styles.cardHeader}>
-                    <Text style={styles.header}>{data && data.getWorkout ? data.getWorkout.title : ""}</Text>
-                    <Text style={styles.workoutStatus}>{data && data.getWorkout ? data.getWorkout.status : ""}</Text>
+                    <Text style={styles.header}>{workout.title}</Text>
+                    <Text style={styles.workoutStatus}>{workout.status}</Text>
                 </View>
             </View>
-            <TouchableOpacity style={styles.overviewButton} onPress={() => togglePopup(data ? data.getWorkout.title : workoutBeingPreviewed)}>
+            <TouchableOpacity style={styles.overviewButton} onPress={() => togglePopup(workout)}>
                 <Text style={styles.buttonText}>Preview</Text>
             </TouchableOpacity>
         </View>
@@ -43,50 +47,104 @@ export default function CurrentProgram({ navigation, route }) {
     const colors = useTheme().colors;
     const title = route.params.title
     const titleToNameMap = route.params.titleToNameMap
+    const [program,setProgram] = useState(null)
+    const [workoutBeingPreviewed, setWorkoutBeingPreviewed] = useState(null);
 
+    const [currentWeek, setCurrentWeek] = useState(null)
+    const [currentWorkout, setCurrentWorkout] = useState(null)
+    const getUserProgram = /* GraphQL */ `
+    query GetUserProgram($id: ID!) {
+        getUserProgram(id: $id) {
+        id
+        title
+        userProgramWeeks {
+          items {
+            id
+            weekNumber
+            userWorkouts {
+              items {
+                id
+                workoutNumber
+                title
+                status
+                notes
+                userExercises{
+                  items {
+                    id
+                    sets
+                    RIR
+                    restMinutes
+                    repRange
+                    exerciseNum
+                    notes
+                    completed
+                    exerciseInfoID
+                    exerciseInfo {
+                        id
+                        name
+                        muscleWorked
+                        workoutType
+                        createdAt
+                        updatedAt
+                        __typename
+                      }
+                  }
+                }
+              }
+            }
+          }
+        }
+        
+      }
+    }
+  `;
+  const { data, loading, error, refetch } = useQuery(gql`${getUserProgram}`, {
+    variables: { id: route.params.userProgramID}
+});
 
-    const [workouts, setWorkouts] = useState({})
-
-
-    const { data: dataR, error: errorR, loading: loadingR, refetch } = useQuery(gql`${queries.getProgramWeek}`, {
-        variables: { id: title != "womenintermediate4xweek" ? `${title}::1` : `week1-${title}` },
-        notifyOnNetworkStatusChange: true,
-        onCompleted: setWorkouts
-    });
-
-
-
-    const { data: dataWorkout, loading: loadingWorkout, error: errorWorkout, refetch: refetchWorkout } = useQuery(gql`${queries.getWorkout}`, {
-        variables: { id: title != "womenintermediate4xweek" ? `${title}::1::${dataR ? dataR.getProgramWeek.workoutLabels[0] : ""}` : `${dataR ? dataR.getProgramWeek.workoutLabels[0] : ""}-week1-${title}` },
-        enabled: false
-    });
+useEffect(() => {
+    if(data!=null){
+    console.log(data.getUserProgram.userProgramWeeks.items[0].userWorkouts.items)
+    const userProgram = data.getUserProgram
+    const sortedUserProgramWeeks = [...userProgram.userProgramWeeks.items];
+    sortedUserProgramWeeks.sort((a, b) => a.weekNumber - b.weekNumber);
+    setProgram({ ...userProgram, userProgramWeeks: { items: sortedUserProgramWeeks } });
+    handleWeekClick(sortedUserProgramWeeks[0])
+    }
+}, [data]);
 
     const navigateToSelectProgram = () => {
         navigation.navigate("SelectWorkoutProgram")
     }
     const navigatedToWorkout = () => {
-        refetchWorkout()
-        if (dataWorkout) navigation.navigate("DuringWorkout", { workout: dataR.getProgramWeek.workoutLabels[0], title: title, exerciseLabels: dataWorkout.getWorkout.exerciseLabels, weekNumber: dataR.getProgramWeek.weekNumber, titleToNameMap: titleToNameMap,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
+        //refetchWorkout()
+        console.log("the office")
+        console.log(currentWorkout)
+         navigation.navigate("DuringWorkout", { workout: currentWorkout, title: title, taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
     }
 
-    const handleWeekClick = (weekNumber) => {
-        refetch({ id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}` : `week1-${title}` })
+    const handleWeekClick = (week) => {
+        const newWeek = {...week }
+        newWeek.userWorkouts.items =week.userWorkouts.items.slice().sort((a, b) => a.workoutNumber - b.workoutNumber);
+
+        setCurrentWeek(week)
+
+        const earliestIncompleteWorkout = week.userWorkouts.items.find(workout => workout.status === "incomplete");
+        
+        console.log(earliestIncompleteWorkout)
+        setCurrentWorkout(earliestIncompleteWorkout)
     }
 
     const [isModalVisible, setModalVisible] = useState(false);
-    const [workoutBeingPreviewed, setWorkoutBeingPreviewed] = useState(dataWorkout && dataWorkout.getWorkout ? dataWorkout.getWorkout.title : "");
 
-    useEffect(() => {
-        if (dataWorkout) {
-            setWorkoutBeingPreviewed(dataWorkout.getWorkout)
-        }
-    }, [dataWorkout])
-
+   
     const togglePopup = (workout) => {
         setModalVisible(!isModalVisible)
-        setWorkoutBeingPreviewed(workout)
+        const newWorkout = {...workout  }
+    
+        newWorkout.userExercises.items = workout.userExercises.items.slice().sort((a, b) => a.exerciseNum - b.exerciseNum);
+        setWorkoutBeingPreviewed(newWorkout)
     };
-
 
 
     return (
@@ -95,25 +153,24 @@ export default function CurrentProgram({ navigation, route }) {
             {/* Header */}
             <ScrollView horizontal={true}>
             
-                <View style={title == 'mensfullbody' ? styles.buttonsContainerBugged : styles.buttonsContainer}>
+                <View style={ styles.buttonsContainerBugged }>
                     {
-                        dataR ? Array(8).fill().map((weekNum, index) => (
-
-                            <TouchableOpacity style={[styles.weekButton, { backgroundColor: dataR && dataR.getProgramWeek.weekNumber == index + 1 ? colors.primary : "#4c4c4c" }]} key={index} onPress={() => handleWeekClick(index + 1)} >
+                      program!=null?(program.userProgramWeeks.items.map((week, index) => (
+                            <TouchableOpacity style={[styles.weekButton, { backgroundColor: currentWeek!=null && currentWeek.weekNumber == index + 1 ? colors.primary : "#4c4c4c" }]} key={index} onPress={() => handleWeekClick(week)} >
                                 <Text style={styles.buttonText}> Week {index + 1}</Text>
                             </TouchableOpacity>
 
-                        ))
-                            : <View></View>
+                        )))
+                            : (<View></View>)
                     }
                 </View>
             </ScrollView>
             <View style={{ marginTop: 40, height: "70%" }}>
-                <Text style={styles.programHeader}>{titleToNameMap[title]}</Text>
+                <Text style={styles.programHeader}> {program!=null?(program.title):"loading"}</Text>
                 <View style={{ flexDirection: "column",  }}>
                     {
-                        dataR ? dataR.getProgramWeek.workoutLabels.map((workout, index) => (
-                            <Workout key={workout} dataR={dataR} title={title} workout={workout} togglePopup={togglePopup} workoutBeingPreviewed={workoutBeingPreviewed} index={index + 1}></Workout>
+                        currentWeek!=null ? currentWeek.userWorkouts.items.map((workout, index) => (
+                            <Workout key={index} workout={workout} togglePopup={togglePopup} workoutBeingPreviewed={workoutBeingPreviewed} index={index + 1}></Workout>
                         ))
                             : <View></View>
                     }
@@ -128,7 +185,7 @@ export default function CurrentProgram({ navigation, route }) {
                 </TouchableOpacity>
             </View>
 
-            {dataWorkout ? <WorkoutPreviewPopUp isVisible={isModalVisible} workout={workoutBeingPreviewed} togglePopup={togglePopup} title={title} weekNumber={dataR && dataR.getProgramWeek ? dataR.getProgramWeek.weekNumber : 0} />
+            {program ? <WorkoutPreviewPopUp isVisible={isModalVisible} workout={workoutBeingPreviewed} togglePopup={togglePopup} title={title} />
                 : <View></View>}
         </ScrollView>
         </View>

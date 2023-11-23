@@ -503,7 +503,6 @@ export const onCreateUser = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -526,30 +525,98 @@ export const onCreateUser = /* GraphQL */ `
       exerciseLogs {
         items {
           id
-          exercise
+          userID
+          userExerciseID
+          exerciseInfoID
           entryLabels
           createdAt
           updatedAt
-          userExerciseLogsId
-          userExerciseExerciseLogsId
           __typename
         }
         nextToken
         __typename
       }
-      currentProgram
-      userPrograms {
-        items {
+      currentProgram {
+        id
+        user {
           id
-          author
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        userID
+        image
+        title
+        introVideo
+        description
+        programID
+        program {
+          id
+          authorID
           image
           title
           introVideo
           description
           createdAt
           updatedAt
-          userUserProgramsId
-          programUserProgramsId
+          __typename
+        }
+        userProgramWeeks {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      completedPrograms {
+        items {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdPrograms {
+        items {
+          id
+          authorID
+          image
+          title
+          introVideo
+          description
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdWorkouts {
+        items {
+          id
+          programWeekWorkoutsId
+          workoutNumber
+          title
+          status
+          exerciseLabels
+          authorID
+          notes
+          createdAt
+          updatedAt
           __typename
         }
         nextToken
@@ -578,7 +645,6 @@ export const onUpdateUser = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -601,30 +667,98 @@ export const onUpdateUser = /* GraphQL */ `
       exerciseLogs {
         items {
           id
-          exercise
+          userID
+          userExerciseID
+          exerciseInfoID
           entryLabels
           createdAt
           updatedAt
-          userExerciseLogsId
-          userExerciseExerciseLogsId
           __typename
         }
         nextToken
         __typename
       }
-      currentProgram
-      userPrograms {
-        items {
+      currentProgram {
+        id
+        user {
           id
-          author
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        userID
+        image
+        title
+        introVideo
+        description
+        programID
+        program {
+          id
+          authorID
           image
           title
           introVideo
           description
           createdAt
           updatedAt
-          userUserProgramsId
-          programUserProgramsId
+          __typename
+        }
+        userProgramWeeks {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      completedPrograms {
+        items {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdPrograms {
+        items {
+          id
+          authorID
+          image
+          title
+          introVideo
+          description
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdWorkouts {
+        items {
+          id
+          programWeekWorkoutsId
+          workoutNumber
+          title
+          status
+          exerciseLabels
+          authorID
+          notes
+          createdAt
+          updatedAt
           __typename
         }
         nextToken
@@ -653,7 +787,6 @@ export const onDeleteUser = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -676,30 +809,98 @@ export const onDeleteUser = /* GraphQL */ `
       exerciseLogs {
         items {
           id
-          exercise
+          userID
+          userExerciseID
+          exerciseInfoID
           entryLabels
           createdAt
           updatedAt
-          userExerciseLogsId
-          userExerciseExerciseLogsId
           __typename
         }
         nextToken
         __typename
       }
-      currentProgram
-      userPrograms {
-        items {
+      currentProgram {
+        id
+        user {
           id
-          author
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        userID
+        image
+        title
+        introVideo
+        description
+        programID
+        program {
+          id
+          authorID
           image
           title
           introVideo
           description
           createdAt
           updatedAt
-          userUserProgramsId
-          programUserProgramsId
+          __typename
+        }
+        userProgramWeeks {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      completedPrograms {
+        items {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdPrograms {
+        items {
+          id
+          authorID
+          image
+          title
+          introVideo
+          description
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdWorkouts {
+        items {
+          id
+          programWeekWorkoutsId
+          workoutNumber
+          title
+          status
+          exerciseLabels
+          authorID
+          notes
+          createdAt
+          updatedAt
           __typename
         }
         nextToken
@@ -740,8 +941,27 @@ export const onCreateUserStats = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        userPrograms {
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
           nextToken
           __typename
         }
@@ -803,8 +1023,27 @@ export const onUpdateUserStats = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        userPrograms {
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
           nextToken
           __typename
         }
@@ -866,8 +1105,27 @@ export const onDeleteUserStats = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        userPrograms {
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
           nextToken
           __typename
         }
@@ -915,7 +1173,6 @@ export const onCreateAchievementProgress = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -958,7 +1215,6 @@ export const onUpdateAchievementProgress = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -1001,7 +1257,6 @@ export const onDeleteAchievementProgress = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -1087,9 +1342,60 @@ export const onCreateExerciseEntry = /* GraphQL */ `
       workout
       programWeek
       program
+      setNumber
+      exerciseLog {
+        id
+        user {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        userID
+        userExercise {
+          id
+          exerciseID
+          exerciseInfoID
+          userWorkoutID
+          exerciseNum
+          repRange
+          sets
+          restMinutes
+          RIR
+          completed
+          notes
+          createdAt
+          updatedAt
+          __typename
+        }
+        userExerciseID
+        exerciseInfo {
+          id
+          name
+          muscleWorked
+          workoutType
+          createdAt
+          updatedAt
+          __typename
+        }
+        exerciseInfoID
+        entries {
+          nextToken
+          __typename
+        }
+        entryLabels
+        createdAt
+        updatedAt
+        __typename
+      }
+      exerciseLogID
       createdAt
       updatedAt
-      exerciseLogEntriesId
       __typename
     }
   }
@@ -1106,9 +1412,60 @@ export const onUpdateExerciseEntry = /* GraphQL */ `
       workout
       programWeek
       program
+      setNumber
+      exerciseLog {
+        id
+        user {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        userID
+        userExercise {
+          id
+          exerciseID
+          exerciseInfoID
+          userWorkoutID
+          exerciseNum
+          repRange
+          sets
+          restMinutes
+          RIR
+          completed
+          notes
+          createdAt
+          updatedAt
+          __typename
+        }
+        userExerciseID
+        exerciseInfo {
+          id
+          name
+          muscleWorked
+          workoutType
+          createdAt
+          updatedAt
+          __typename
+        }
+        exerciseInfoID
+        entries {
+          nextToken
+          __typename
+        }
+        entryLabels
+        createdAt
+        updatedAt
+        __typename
+      }
+      exerciseLogID
       createdAt
       updatedAt
-      exerciseLogEntriesId
       __typename
     }
   }
@@ -1125,9 +1482,60 @@ export const onDeleteExerciseEntry = /* GraphQL */ `
       workout
       programWeek
       program
+      setNumber
+      exerciseLog {
+        id
+        user {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        userID
+        userExercise {
+          id
+          exerciseID
+          exerciseInfoID
+          userWorkoutID
+          exerciseNum
+          repRange
+          sets
+          restMinutes
+          RIR
+          completed
+          notes
+          createdAt
+          updatedAt
+          __typename
+        }
+        userExerciseID
+        exerciseInfo {
+          id
+          name
+          muscleWorked
+          workoutType
+          createdAt
+          updatedAt
+          __typename
+        }
+        exerciseInfoID
+        entries {
+          nextToken
+          __typename
+        }
+        entryLabels
+        createdAt
+        updatedAt
+        __typename
+      }
+      exerciseLogID
       createdAt
       updatedAt
-      exerciseLogEntriesId
       __typename
     }
   }
@@ -1160,8 +1568,27 @@ export const onCreateExerciseLog = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        userPrograms {
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
           nextToken
           __typename
         }
@@ -1170,7 +1597,80 @@ export const onCreateExerciseLog = /* GraphQL */ `
         userUserStatsId
         __typename
       }
-      exercise
+      userID
+      userExercise {
+        id
+        exercise {
+          id
+          workoutID
+          name
+          sets
+          RIR
+          restMinutes
+          exercise
+          repRange
+          exerciseNum
+          exerciseInfoID
+          notes
+          createdAt
+          updatedAt
+          workoutBankExercisesId
+          __typename
+        }
+        exerciseID
+        exerciseInfo {
+          id
+          name
+          muscleWorked
+          workoutType
+          createdAt
+          updatedAt
+          __typename
+        }
+        exerciseInfoID
+        userWorkout {
+          id
+          title
+          status
+          workoutID
+          workoutNumber
+          notes
+          userProgramWeekID
+          createdAt
+          updatedAt
+          __typename
+        }
+        userWorkoutID
+        exerciseLogs {
+          nextToken
+          __typename
+        }
+        exerciseNum
+        repRange
+        sets
+        restMinutes
+        RIR
+        completed
+        notes
+        createdAt
+        updatedAt
+        __typename
+      }
+      userExerciseID
+      exerciseInfo {
+        id
+        name
+        muscleWorked
+        workoutType
+        exercises {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      exerciseInfoID
       entries {
         items {
           id
@@ -1180,9 +1680,10 @@ export const onCreateExerciseLog = /* GraphQL */ `
           workout
           programWeek
           program
+          setNumber
+          exerciseLogID
           createdAt
           updatedAt
-          exerciseLogEntriesId
           __typename
         }
         nextToken
@@ -1191,8 +1692,6 @@ export const onCreateExerciseLog = /* GraphQL */ `
       entryLabels
       createdAt
       updatedAt
-      userExerciseLogsId
-      userExerciseExerciseLogsId
       __typename
     }
   }
@@ -1225,8 +1724,27 @@ export const onUpdateExerciseLog = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        userPrograms {
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
           nextToken
           __typename
         }
@@ -1235,7 +1753,80 @@ export const onUpdateExerciseLog = /* GraphQL */ `
         userUserStatsId
         __typename
       }
-      exercise
+      userID
+      userExercise {
+        id
+        exercise {
+          id
+          workoutID
+          name
+          sets
+          RIR
+          restMinutes
+          exercise
+          repRange
+          exerciseNum
+          exerciseInfoID
+          notes
+          createdAt
+          updatedAt
+          workoutBankExercisesId
+          __typename
+        }
+        exerciseID
+        exerciseInfo {
+          id
+          name
+          muscleWorked
+          workoutType
+          createdAt
+          updatedAt
+          __typename
+        }
+        exerciseInfoID
+        userWorkout {
+          id
+          title
+          status
+          workoutID
+          workoutNumber
+          notes
+          userProgramWeekID
+          createdAt
+          updatedAt
+          __typename
+        }
+        userWorkoutID
+        exerciseLogs {
+          nextToken
+          __typename
+        }
+        exerciseNum
+        repRange
+        sets
+        restMinutes
+        RIR
+        completed
+        notes
+        createdAt
+        updatedAt
+        __typename
+      }
+      userExerciseID
+      exerciseInfo {
+        id
+        name
+        muscleWorked
+        workoutType
+        exercises {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      exerciseInfoID
       entries {
         items {
           id
@@ -1245,9 +1836,10 @@ export const onUpdateExerciseLog = /* GraphQL */ `
           workout
           programWeek
           program
+          setNumber
+          exerciseLogID
           createdAt
           updatedAt
-          exerciseLogEntriesId
           __typename
         }
         nextToken
@@ -1256,8 +1848,6 @@ export const onUpdateExerciseLog = /* GraphQL */ `
       entryLabels
       createdAt
       updatedAt
-      userExerciseLogsId
-      userExerciseExerciseLogsId
       __typename
     }
   }
@@ -1290,8 +1880,27 @@ export const onDeleteExerciseLog = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        userPrograms {
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
           nextToken
           __typename
         }
@@ -1300,7 +1909,80 @@ export const onDeleteExerciseLog = /* GraphQL */ `
         userUserStatsId
         __typename
       }
-      exercise
+      userID
+      userExercise {
+        id
+        exercise {
+          id
+          workoutID
+          name
+          sets
+          RIR
+          restMinutes
+          exercise
+          repRange
+          exerciseNum
+          exerciseInfoID
+          notes
+          createdAt
+          updatedAt
+          workoutBankExercisesId
+          __typename
+        }
+        exerciseID
+        exerciseInfo {
+          id
+          name
+          muscleWorked
+          workoutType
+          createdAt
+          updatedAt
+          __typename
+        }
+        exerciseInfoID
+        userWorkout {
+          id
+          title
+          status
+          workoutID
+          workoutNumber
+          notes
+          userProgramWeekID
+          createdAt
+          updatedAt
+          __typename
+        }
+        userWorkoutID
+        exerciseLogs {
+          nextToken
+          __typename
+        }
+        exerciseNum
+        repRange
+        sets
+        restMinutes
+        RIR
+        completed
+        notes
+        createdAt
+        updatedAt
+        __typename
+      }
+      userExerciseID
+      exerciseInfo {
+        id
+        name
+        muscleWorked
+        workoutType
+        exercises {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      exerciseInfoID
       entries {
         items {
           id
@@ -1310,9 +1992,10 @@ export const onDeleteExerciseLog = /* GraphQL */ `
           workout
           programWeek
           program
+          setNumber
+          exerciseLogID
           createdAt
           updatedAt
-          exerciseLogEntriesId
           __typename
         }
         nextToken
@@ -1321,8 +2004,6 @@ export const onDeleteExerciseLog = /* GraphQL */ `
       entryLabels
       createdAt
       updatedAt
-      userExerciseLogsId
-      userExerciseExerciseLogsId
       __typename
     }
   }
@@ -1355,6 +2036,18 @@ export const onCreateExercise = /* GraphQL */ `
           nextToken
           __typename
         }
+        author {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        authorID
         notes
         createdAt
         updatedAt
@@ -1365,6 +2058,7 @@ export const onCreateExercise = /* GraphQL */ `
       sets
       RIR
       restMinutes
+      exercise
       repRange
       exerciseNum
       exerciseInfo {
@@ -1384,15 +2078,18 @@ export const onCreateExercise = /* GraphQL */ `
       UserExercises {
         items {
           id
-          reps
+          exerciseID
+          exerciseInfoID
+          userWorkoutID
+          exerciseNum
+          repRange
           sets
           restMinutes
           RIR
           completed
+          notes
           createdAt
           updatedAt
-          exerciseUserExercisesId
-          userWorkoutUserExercisesId
           __typename
         }
         nextToken
@@ -1434,6 +2131,18 @@ export const onUpdateExercise = /* GraphQL */ `
           nextToken
           __typename
         }
+        author {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        authorID
         notes
         createdAt
         updatedAt
@@ -1444,6 +2153,7 @@ export const onUpdateExercise = /* GraphQL */ `
       sets
       RIR
       restMinutes
+      exercise
       repRange
       exerciseNum
       exerciseInfo {
@@ -1463,15 +2173,18 @@ export const onUpdateExercise = /* GraphQL */ `
       UserExercises {
         items {
           id
-          reps
+          exerciseID
+          exerciseInfoID
+          userWorkoutID
+          exerciseNum
+          repRange
           sets
           restMinutes
           RIR
           completed
+          notes
           createdAt
           updatedAt
-          exerciseUserExercisesId
-          userWorkoutUserExercisesId
           __typename
         }
         nextToken
@@ -1513,6 +2226,18 @@ export const onDeleteExercise = /* GraphQL */ `
           nextToken
           __typename
         }
+        author {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        authorID
         notes
         createdAt
         updatedAt
@@ -1523,6 +2248,7 @@ export const onDeleteExercise = /* GraphQL */ `
       sets
       RIR
       restMinutes
+      exercise
       repRange
       exerciseNum
       exerciseInfo {
@@ -1542,15 +2268,18 @@ export const onDeleteExercise = /* GraphQL */ `
       UserExercises {
         items {
           id
-          reps
+          exerciseID
+          exerciseInfoID
+          userWorkoutID
+          exerciseNum
+          repRange
           sets
           restMinutes
           RIR
           completed
+          notes
           createdAt
           updatedAt
-          exerciseUserExercisesId
-          userWorkoutUserExercisesId
           __typename
         }
         nextToken
@@ -1581,6 +2310,7 @@ export const onCreateExerciseInfo = /* GraphQL */ `
           sets
           RIR
           restMinutes
+          exercise
           repRange
           exerciseNum
           exerciseInfoID
@@ -1616,6 +2346,7 @@ export const onUpdateExerciseInfo = /* GraphQL */ `
           sets
           RIR
           restMinutes
+          exercise
           repRange
           exerciseNum
           exerciseInfoID
@@ -1651,6 +2382,7 @@ export const onDeleteExerciseInfo = /* GraphQL */ `
           sets
           RIR
           restMinutes
+          exercise
           repRange
           exerciseNum
           exerciseInfoID
@@ -1678,7 +2410,7 @@ export const onCreateWorkout = /* GraphQL */ `
         programID
         program {
           id
-          author
+          authorID
           image
           title
           introVideo
@@ -1693,7 +2425,7 @@ export const onCreateWorkout = /* GraphQL */ `
           __typename
         }
         workoutLabels
-        UserProgramWeeks {
+        userProgramWeeks {
           nextToken
           __typename
         }
@@ -1713,6 +2445,7 @@ export const onCreateWorkout = /* GraphQL */ `
           sets
           RIR
           restMinutes
+          exercise
           repRange
           exerciseNum
           exerciseInfoID
@@ -1730,16 +2463,70 @@ export const onCreateWorkout = /* GraphQL */ `
         items {
           id
           title
+          status
+          workoutID
+          workoutNumber
           notes
+          userProgramWeekID
           createdAt
           updatedAt
-          workoutUserWorkoutsId
-          userProgramWeeksUserWorkoutsId
           __typename
         }
         nextToken
         __typename
       }
+      author {
+        id
+        name
+        email
+        profilePicture
+        taskCompletionList
+        userStats {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
+        exerciseLogs {
+          nextToken
+          __typename
+        }
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        userUserStatsId
+        __typename
+      }
+      authorID
       notes
       createdAt
       updatedAt
@@ -1756,7 +2543,7 @@ export const onUpdateWorkout = /* GraphQL */ `
         programID
         program {
           id
-          author
+          authorID
           image
           title
           introVideo
@@ -1771,7 +2558,7 @@ export const onUpdateWorkout = /* GraphQL */ `
           __typename
         }
         workoutLabels
-        UserProgramWeeks {
+        userProgramWeeks {
           nextToken
           __typename
         }
@@ -1791,6 +2578,7 @@ export const onUpdateWorkout = /* GraphQL */ `
           sets
           RIR
           restMinutes
+          exercise
           repRange
           exerciseNum
           exerciseInfoID
@@ -1808,16 +2596,70 @@ export const onUpdateWorkout = /* GraphQL */ `
         items {
           id
           title
+          status
+          workoutID
+          workoutNumber
           notes
+          userProgramWeekID
           createdAt
           updatedAt
-          workoutUserWorkoutsId
-          userProgramWeeksUserWorkoutsId
           __typename
         }
         nextToken
         __typename
       }
+      author {
+        id
+        name
+        email
+        profilePicture
+        taskCompletionList
+        userStats {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
+        exerciseLogs {
+          nextToken
+          __typename
+        }
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        userUserStatsId
+        __typename
+      }
+      authorID
       notes
       createdAt
       updatedAt
@@ -1834,7 +2676,7 @@ export const onDeleteWorkout = /* GraphQL */ `
         programID
         program {
           id
-          author
+          authorID
           image
           title
           introVideo
@@ -1849,7 +2691,7 @@ export const onDeleteWorkout = /* GraphQL */ `
           __typename
         }
         workoutLabels
-        UserProgramWeeks {
+        userProgramWeeks {
           nextToken
           __typename
         }
@@ -1869,6 +2711,7 @@ export const onDeleteWorkout = /* GraphQL */ `
           sets
           RIR
           restMinutes
+          exercise
           repRange
           exerciseNum
           exerciseInfoID
@@ -1886,16 +2729,70 @@ export const onDeleteWorkout = /* GraphQL */ `
         items {
           id
           title
+          status
+          workoutID
+          workoutNumber
           notes
+          userProgramWeekID
           createdAt
           updatedAt
-          workoutUserWorkoutsId
-          userProgramWeeksUserWorkoutsId
           __typename
         }
         nextToken
         __typename
       }
+      author {
+        id
+        name
+        email
+        profilePicture
+        taskCompletionList
+        userStats {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
+        exerciseLogs {
+          nextToken
+          __typename
+        }
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        userUserStatsId
+        __typename
+      }
+      authorID
       notes
       createdAt
       updatedAt
@@ -1919,6 +2816,7 @@ export const onCreateWorkoutBank = /* GraphQL */ `
           sets
           RIR
           restMinutes
+          exercise
           repRange
           exerciseNum
           exerciseInfoID
@@ -1954,6 +2852,7 @@ export const onUpdateWorkoutBank = /* GraphQL */ `
           sets
           RIR
           restMinutes
+          exercise
           repRange
           exerciseNum
           exerciseInfoID
@@ -1989,6 +2888,7 @@ export const onDeleteWorkoutBank = /* GraphQL */ `
           sets
           RIR
           restMinutes
+          exercise
           repRange
           exerciseNum
           exerciseInfoID
@@ -2017,7 +2917,18 @@ export const onCreateProgramWeek = /* GraphQL */ `
       programID
       program {
         id
-        author
+        author {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        authorID
         image
         title
         introVideo
@@ -2043,6 +2954,7 @@ export const onCreateProgramWeek = /* GraphQL */ `
           title
           status
           exerciseLabels
+          authorID
           notes
           createdAt
           updatedAt
@@ -2052,14 +2964,14 @@ export const onCreateProgramWeek = /* GraphQL */ `
         __typename
       }
       workoutLabels
-      UserProgramWeeks {
+      userProgramWeeks {
         items {
           id
           weekNumber
+          programWeekID
+          userProgramID
           createdAt
           updatedAt
-          programWeekUserProgramWeeksId
-          userProgramUserProgramWeeksId
           __typename
         }
         nextToken
@@ -2080,7 +2992,18 @@ export const onUpdateProgramWeek = /* GraphQL */ `
       programID
       program {
         id
-        author
+        author {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        authorID
         image
         title
         introVideo
@@ -2106,6 +3029,7 @@ export const onUpdateProgramWeek = /* GraphQL */ `
           title
           status
           exerciseLabels
+          authorID
           notes
           createdAt
           updatedAt
@@ -2115,14 +3039,14 @@ export const onUpdateProgramWeek = /* GraphQL */ `
         __typename
       }
       workoutLabels
-      UserProgramWeeks {
+      userProgramWeeks {
         items {
           id
           weekNumber
+          programWeekID
+          userProgramID
           createdAt
           updatedAt
-          programWeekUserProgramWeeksId
-          userProgramUserProgramWeeksId
           __typename
         }
         nextToken
@@ -2143,7 +3067,18 @@ export const onDeleteProgramWeek = /* GraphQL */ `
       programID
       program {
         id
-        author
+        author {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        authorID
         image
         title
         introVideo
@@ -2169,6 +3104,7 @@ export const onDeleteProgramWeek = /* GraphQL */ `
           title
           status
           exerciseLabels
+          authorID
           notes
           createdAt
           updatedAt
@@ -2178,14 +3114,14 @@ export const onDeleteProgramWeek = /* GraphQL */ `
         __typename
       }
       workoutLabels
-      UserProgramWeeks {
+      userProgramWeeks {
         items {
           id
           weekNumber
+          programWeekID
+          userProgramID
           createdAt
           updatedAt
-          programWeekUserProgramWeeksId
-          userProgramUserProgramWeeksId
           __typename
         }
         nextToken
@@ -2201,7 +3137,58 @@ export const onCreateProgram = /* GraphQL */ `
   subscription OnCreateProgram($filter: ModelSubscriptionProgramFilterInput) {
     onCreateProgram(filter: $filter) {
       id
-      author
+      author {
+        id
+        name
+        email
+        profilePicture
+        taskCompletionList
+        userStats {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
+        exerciseLogs {
+          nextToken
+          __typename
+        }
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        userUserStatsId
+        __typename
+      }
+      authorID
       image
       title
       introVideo
@@ -2222,15 +3209,14 @@ export const onCreateProgram = /* GraphQL */ `
       userPrograms {
         items {
           id
-          author
+          userID
           image
           title
           introVideo
           description
+          programID
           createdAt
           updatedAt
-          userUserProgramsId
-          programUserProgramsId
           __typename
         }
         nextToken
@@ -2246,7 +3232,58 @@ export const onUpdateProgram = /* GraphQL */ `
   subscription OnUpdateProgram($filter: ModelSubscriptionProgramFilterInput) {
     onUpdateProgram(filter: $filter) {
       id
-      author
+      author {
+        id
+        name
+        email
+        profilePicture
+        taskCompletionList
+        userStats {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
+        exerciseLogs {
+          nextToken
+          __typename
+        }
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        userUserStatsId
+        __typename
+      }
+      authorID
       image
       title
       introVideo
@@ -2267,15 +3304,14 @@ export const onUpdateProgram = /* GraphQL */ `
       userPrograms {
         items {
           id
-          author
+          userID
           image
           title
           introVideo
           description
+          programID
           createdAt
           updatedAt
-          userUserProgramsId
-          programUserProgramsId
           __typename
         }
         nextToken
@@ -2291,7 +3327,58 @@ export const onDeleteProgram = /* GraphQL */ `
   subscription OnDeleteProgram($filter: ModelSubscriptionProgramFilterInput) {
     onDeleteProgram(filter: $filter) {
       id
-      author
+      author {
+        id
+        name
+        email
+        profilePicture
+        taskCompletionList
+        userStats {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
+        exerciseLogs {
+          nextToken
+          __typename
+        }
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        userUserStatsId
+        __typename
+      }
+      authorID
       image
       title
       introVideo
@@ -2312,15 +3399,14 @@ export const onDeleteProgram = /* GraphQL */ `
       userPrograms {
         items {
           id
-          author
+          userID
           image
           title
           introVideo
           description
+          programID
           createdAt
           updatedAt
-          userUserProgramsId
-          programUserProgramsId
           __typename
         }
         nextToken
@@ -2338,30 +3424,6 @@ export const onCreateUserProgram = /* GraphQL */ `
   ) {
     onCreateUserProgram(filter: $filter) {
       id
-      author
-      image
-      title
-      introVideo
-      description
-      program {
-        id
-        author
-        image
-        title
-        introVideo
-        description
-        weeks {
-          nextToken
-          __typename
-        }
-        userPrograms {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
       user {
         id
         name
@@ -2384,8 +3446,27 @@ export const onCreateUserProgram = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        userPrograms {
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
           nextToken
           __typename
         }
@@ -2394,14 +3475,50 @@ export const onCreateUserProgram = /* GraphQL */ `
         userUserStatsId
         __typename
       }
-      UserProgramWeeks {
+      userID
+      image
+      title
+      introVideo
+      description
+      programID
+      program {
+        id
+        author {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        authorID
+        image
+        title
+        introVideo
+        description
+        weeks {
+          nextToken
+          __typename
+        }
+        userPrograms {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      userProgramWeeks {
         items {
           id
           weekNumber
+          programWeekID
+          userProgramID
           createdAt
           updatedAt
-          programWeekUserProgramWeeksId
-          userProgramUserProgramWeeksId
           __typename
         }
         nextToken
@@ -2409,8 +3526,6 @@ export const onCreateUserProgram = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      userUserProgramsId
-      programUserProgramsId
       __typename
     }
   }
@@ -2421,30 +3536,6 @@ export const onUpdateUserProgram = /* GraphQL */ `
   ) {
     onUpdateUserProgram(filter: $filter) {
       id
-      author
-      image
-      title
-      introVideo
-      description
-      program {
-        id
-        author
-        image
-        title
-        introVideo
-        description
-        weeks {
-          nextToken
-          __typename
-        }
-        userPrograms {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
       user {
         id
         name
@@ -2467,8 +3558,27 @@ export const onUpdateUserProgram = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        userPrograms {
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
           nextToken
           __typename
         }
@@ -2477,14 +3587,50 @@ export const onUpdateUserProgram = /* GraphQL */ `
         userUserStatsId
         __typename
       }
-      UserProgramWeeks {
+      userID
+      image
+      title
+      introVideo
+      description
+      programID
+      program {
+        id
+        author {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        authorID
+        image
+        title
+        introVideo
+        description
+        weeks {
+          nextToken
+          __typename
+        }
+        userPrograms {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      userProgramWeeks {
         items {
           id
           weekNumber
+          programWeekID
+          userProgramID
           createdAt
           updatedAt
-          programWeekUserProgramWeeksId
-          userProgramUserProgramWeeksId
           __typename
         }
         nextToken
@@ -2492,8 +3638,6 @@ export const onUpdateUserProgram = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      userUserProgramsId
-      programUserProgramsId
       __typename
     }
   }
@@ -2504,30 +3648,6 @@ export const onDeleteUserProgram = /* GraphQL */ `
   ) {
     onDeleteUserProgram(filter: $filter) {
       id
-      author
-      image
-      title
-      introVideo
-      description
-      program {
-        id
-        author
-        image
-        title
-        introVideo
-        description
-        weeks {
-          nextToken
-          __typename
-        }
-        userPrograms {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
       user {
         id
         name
@@ -2550,8 +3670,27 @@ export const onDeleteUserProgram = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        userPrograms {
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        completedPrograms {
+          nextToken
+          __typename
+        }
+        createdPrograms {
+          nextToken
+          __typename
+        }
+        createdWorkouts {
           nextToken
           __typename
         }
@@ -2560,14 +3699,50 @@ export const onDeleteUserProgram = /* GraphQL */ `
         userUserStatsId
         __typename
       }
-      UserProgramWeeks {
+      userID
+      image
+      title
+      introVideo
+      description
+      programID
+      program {
+        id
+        author {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        authorID
+        image
+        title
+        introVideo
+        description
+        weeks {
+          nextToken
+          __typename
+        }
+        userPrograms {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      userProgramWeeks {
         items {
           id
           weekNumber
+          programWeekID
+          userProgramID
           createdAt
           updatedAt
-          programWeekUserProgramWeeksId
-          userProgramUserProgramWeeksId
           __typename
         }
         nextToken
@@ -2575,8 +3750,6 @@ export const onDeleteUserProgram = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      userUserProgramsId
-      programUserProgramsId
       __typename
     }
   }
@@ -2593,7 +3766,7 @@ export const onCreateUserProgramWeeks = /* GraphQL */ `
         programID
         program {
           id
-          author
+          authorID
           image
           title
           introVideo
@@ -2608,7 +3781,7 @@ export const onCreateUserProgramWeeks = /* GraphQL */ `
           __typename
         }
         workoutLabels
-        UserProgramWeeks {
+        userProgramWeeks {
           nextToken
           __typename
         }
@@ -2616,16 +3789,29 @@ export const onCreateUserProgramWeeks = /* GraphQL */ `
         updatedAt
         __typename
       }
+      programWeekID
       userProgram {
         id
-        author
+        user {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        userID
         image
         title
         introVideo
         description
+        programID
         program {
           id
-          author
+          authorID
           image
           title
           introVideo
@@ -2634,46 +3820,55 @@ export const onCreateUserProgramWeeks = /* GraphQL */ `
           updatedAt
           __typename
         }
-        user {
-          id
-          name
-          email
-          profilePicture
-          taskCompletionList
-          currentProgram
-          createdAt
-          updatedAt
-          userUserStatsId
-          __typename
-        }
-        UserProgramWeeks {
+        userProgramWeeks {
           nextToken
           __typename
         }
         createdAt
         updatedAt
-        userUserProgramsId
-        programUserProgramsId
         __typename
       }
+      userProgramID
       userWorkouts {
-        items {
+        id
+        title
+        status
+        workout {
           id
+          programWeekWorkoutsId
+          workoutNumber
           title
+          status
+          exerciseLabels
+          authorID
           notes
           createdAt
           updatedAt
-          workoutUserWorkoutsId
-          userProgramWeeksUserWorkoutsId
           __typename
         }
-        nextToken
+        workoutID
+        workoutNumber
+        notes
+        userProgramWeek {
+          id
+          weekNumber
+          programWeekID
+          userProgramID
+          createdAt
+          updatedAt
+          __typename
+        }
+        userProgramWeekID
+        userExercises {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
         __typename
       }
       createdAt
       updatedAt
-      programWeekUserProgramWeeksId
-      userProgramUserProgramWeeksId
       __typename
     }
   }
@@ -2690,7 +3885,7 @@ export const onUpdateUserProgramWeeks = /* GraphQL */ `
         programID
         program {
           id
-          author
+          authorID
           image
           title
           introVideo
@@ -2705,7 +3900,7 @@ export const onUpdateUserProgramWeeks = /* GraphQL */ `
           __typename
         }
         workoutLabels
-        UserProgramWeeks {
+        userProgramWeeks {
           nextToken
           __typename
         }
@@ -2713,16 +3908,29 @@ export const onUpdateUserProgramWeeks = /* GraphQL */ `
         updatedAt
         __typename
       }
+      programWeekID
       userProgram {
         id
-        author
+        user {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        userID
         image
         title
         introVideo
         description
+        programID
         program {
           id
-          author
+          authorID
           image
           title
           introVideo
@@ -2731,46 +3939,55 @@ export const onUpdateUserProgramWeeks = /* GraphQL */ `
           updatedAt
           __typename
         }
-        user {
-          id
-          name
-          email
-          profilePicture
-          taskCompletionList
-          currentProgram
-          createdAt
-          updatedAt
-          userUserStatsId
-          __typename
-        }
-        UserProgramWeeks {
+        userProgramWeeks {
           nextToken
           __typename
         }
         createdAt
         updatedAt
-        userUserProgramsId
-        programUserProgramsId
         __typename
       }
+      userProgramID
       userWorkouts {
-        items {
+        id
+        title
+        status
+        workout {
           id
+          programWeekWorkoutsId
+          workoutNumber
           title
+          status
+          exerciseLabels
+          authorID
           notes
           createdAt
           updatedAt
-          workoutUserWorkoutsId
-          userProgramWeeksUserWorkoutsId
           __typename
         }
-        nextToken
+        workoutID
+        workoutNumber
+        notes
+        userProgramWeek {
+          id
+          weekNumber
+          programWeekID
+          userProgramID
+          createdAt
+          updatedAt
+          __typename
+        }
+        userProgramWeekID
+        userExercises {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
         __typename
       }
       createdAt
       updatedAt
-      programWeekUserProgramWeeksId
-      userProgramUserProgramWeeksId
       __typename
     }
   }
@@ -2787,7 +4004,7 @@ export const onDeleteUserProgramWeeks = /* GraphQL */ `
         programID
         program {
           id
-          author
+          authorID
           image
           title
           introVideo
@@ -2802,7 +4019,7 @@ export const onDeleteUserProgramWeeks = /* GraphQL */ `
           __typename
         }
         workoutLabels
-        UserProgramWeeks {
+        userProgramWeeks {
           nextToken
           __typename
         }
@@ -2810,16 +4027,29 @@ export const onDeleteUserProgramWeeks = /* GraphQL */ `
         updatedAt
         __typename
       }
+      programWeekID
       userProgram {
         id
-        author
+        user {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        userID
         image
         title
         introVideo
         description
+        programID
         program {
           id
-          author
+          authorID
           image
           title
           introVideo
@@ -2828,37 +4058,145 @@ export const onDeleteUserProgramWeeks = /* GraphQL */ `
           updatedAt
           __typename
         }
+        userProgramWeeks {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      userProgramID
+      userWorkouts {
+        id
+        title
+        status
+        workout {
+          id
+          programWeekWorkoutsId
+          workoutNumber
+          title
+          status
+          exerciseLabels
+          authorID
+          notes
+          createdAt
+          updatedAt
+          __typename
+        }
+        workoutID
+        workoutNumber
+        notes
+        userProgramWeek {
+          id
+          weekNumber
+          programWeekID
+          userProgramID
+          createdAt
+          updatedAt
+          __typename
+        }
+        userProgramWeekID
+        userExercises {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onCreateUserProgWeek = /* GraphQL */ `
+  subscription OnCreateUserProgWeek(
+    $filter: ModelSubscriptionUserProgWeekFilterInput
+  ) {
+    onCreateUserProgWeek(filter: $filter) {
+      id
+      weekNumber
+      programWeek {
+        id
+        programID
+        program {
+          id
+          authorID
+          image
+          title
+          introVideo
+          description
+          createdAt
+          updatedAt
+          __typename
+        }
+        weekNumber
+        workouts {
+          nextToken
+          __typename
+        }
+        workoutLabels
+        userProgramWeeks {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      programWeekID
+      userProgram {
+        id
         user {
           id
           name
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
           __typename
         }
-        UserProgramWeeks {
+        userID
+        image
+        title
+        introVideo
+        description
+        programID
+        program {
+          id
+          authorID
+          image
+          title
+          introVideo
+          description
+          createdAt
+          updatedAt
+          __typename
+        }
+        userProgramWeeks {
           nextToken
           __typename
         }
         createdAt
         updatedAt
-        userUserProgramsId
-        programUserProgramsId
         __typename
       }
+      userProgramID
       userWorkouts {
         items {
           id
           title
+          status
+          workoutID
+          workoutNumber
           notes
+          userProgramWeekID
           createdAt
           updatedAt
-          workoutUserWorkoutsId
-          userProgramWeeksUserWorkoutsId
           __typename
         }
         nextToken
@@ -2866,8 +4204,200 @@ export const onDeleteUserProgramWeeks = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      programWeekUserProgramWeeksId
-      userProgramUserProgramWeeksId
+      __typename
+    }
+  }
+`;
+export const onUpdateUserProgWeek = /* GraphQL */ `
+  subscription OnUpdateUserProgWeek(
+    $filter: ModelSubscriptionUserProgWeekFilterInput
+  ) {
+    onUpdateUserProgWeek(filter: $filter) {
+      id
+      weekNumber
+      programWeek {
+        id
+        programID
+        program {
+          id
+          authorID
+          image
+          title
+          introVideo
+          description
+          createdAt
+          updatedAt
+          __typename
+        }
+        weekNumber
+        workouts {
+          nextToken
+          __typename
+        }
+        workoutLabels
+        userProgramWeeks {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      programWeekID
+      userProgram {
+        id
+        user {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        userID
+        image
+        title
+        introVideo
+        description
+        programID
+        program {
+          id
+          authorID
+          image
+          title
+          introVideo
+          description
+          createdAt
+          updatedAt
+          __typename
+        }
+        userProgramWeeks {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      userProgramID
+      userWorkouts {
+        items {
+          id
+          title
+          status
+          workoutID
+          workoutNumber
+          notes
+          userProgramWeekID
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteUserProgWeek = /* GraphQL */ `
+  subscription OnDeleteUserProgWeek(
+    $filter: ModelSubscriptionUserProgWeekFilterInput
+  ) {
+    onDeleteUserProgWeek(filter: $filter) {
+      id
+      weekNumber
+      programWeek {
+        id
+        programID
+        program {
+          id
+          authorID
+          image
+          title
+          introVideo
+          description
+          createdAt
+          updatedAt
+          __typename
+        }
+        weekNumber
+        workouts {
+          nextToken
+          __typename
+        }
+        workoutLabels
+        userProgramWeeks {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      programWeekID
+      userProgram {
+        id
+        user {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        userID
+        image
+        title
+        introVideo
+        description
+        programID
+        program {
+          id
+          authorID
+          image
+          title
+          introVideo
+          description
+          createdAt
+          updatedAt
+          __typename
+        }
+        userProgramWeeks {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      userProgramID
+      userWorkouts {
+        items {
+          id
+          title
+          status
+          workoutID
+          workoutNumber
+          notes
+          userProgramWeekID
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
       __typename
     }
   }
@@ -2879,6 +4409,7 @@ export const onCreateUserWorkout = /* GraphQL */ `
     onCreateUserWorkout(filter: $filter) {
       id
       title
+      status
       workout {
         id
         programWeek {
@@ -2903,11 +4434,25 @@ export const onCreateUserWorkout = /* GraphQL */ `
           nextToken
           __typename
         }
+        author {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        authorID
         notes
         createdAt
         updatedAt
         __typename
       }
+      workoutID
+      workoutNumber
       notes
       userProgramWeek {
         id
@@ -2921,41 +4466,44 @@ export const onCreateUserWorkout = /* GraphQL */ `
           updatedAt
           __typename
         }
+        programWeekID
         userProgram {
           id
-          author
+          userID
           image
           title
           introVideo
           description
+          programID
           createdAt
           updatedAt
-          userUserProgramsId
-          programUserProgramsId
           __typename
         }
+        userProgramID
         userWorkouts {
           nextToken
           __typename
         }
         createdAt
         updatedAt
-        programWeekUserProgramWeeksId
-        userProgramUserProgramWeeksId
         __typename
       }
+      userProgramWeekID
       userExercises {
         items {
           id
-          reps
+          exerciseID
+          exerciseInfoID
+          userWorkoutID
+          exerciseNum
+          repRange
           sets
           restMinutes
           RIR
           completed
+          notes
           createdAt
           updatedAt
-          exerciseUserExercisesId
-          userWorkoutUserExercisesId
           __typename
         }
         nextToken
@@ -2963,8 +4511,6 @@ export const onCreateUserWorkout = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      workoutUserWorkoutsId
-      userProgramWeeksUserWorkoutsId
       __typename
     }
   }
@@ -2976,6 +4522,7 @@ export const onUpdateUserWorkout = /* GraphQL */ `
     onUpdateUserWorkout(filter: $filter) {
       id
       title
+      status
       workout {
         id
         programWeek {
@@ -3000,11 +4547,25 @@ export const onUpdateUserWorkout = /* GraphQL */ `
           nextToken
           __typename
         }
+        author {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        authorID
         notes
         createdAt
         updatedAt
         __typename
       }
+      workoutID
+      workoutNumber
       notes
       userProgramWeek {
         id
@@ -3018,41 +4579,44 @@ export const onUpdateUserWorkout = /* GraphQL */ `
           updatedAt
           __typename
         }
+        programWeekID
         userProgram {
           id
-          author
+          userID
           image
           title
           introVideo
           description
+          programID
           createdAt
           updatedAt
-          userUserProgramsId
-          programUserProgramsId
           __typename
         }
+        userProgramID
         userWorkouts {
           nextToken
           __typename
         }
         createdAt
         updatedAt
-        programWeekUserProgramWeeksId
-        userProgramUserProgramWeeksId
         __typename
       }
+      userProgramWeekID
       userExercises {
         items {
           id
-          reps
+          exerciseID
+          exerciseInfoID
+          userWorkoutID
+          exerciseNum
+          repRange
           sets
           restMinutes
           RIR
           completed
+          notes
           createdAt
           updatedAt
-          exerciseUserExercisesId
-          userWorkoutUserExercisesId
           __typename
         }
         nextToken
@@ -3060,8 +4624,6 @@ export const onUpdateUserWorkout = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      workoutUserWorkoutsId
-      userProgramWeeksUserWorkoutsId
       __typename
     }
   }
@@ -3073,6 +4635,7 @@ export const onDeleteUserWorkout = /* GraphQL */ `
     onDeleteUserWorkout(filter: $filter) {
       id
       title
+      status
       workout {
         id
         programWeek {
@@ -3097,11 +4660,25 @@ export const onDeleteUserWorkout = /* GraphQL */ `
           nextToken
           __typename
         }
+        author {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        authorID
         notes
         createdAt
         updatedAt
         __typename
       }
+      workoutID
+      workoutNumber
       notes
       userProgramWeek {
         id
@@ -3115,41 +4692,44 @@ export const onDeleteUserWorkout = /* GraphQL */ `
           updatedAt
           __typename
         }
+        programWeekID
         userProgram {
           id
-          author
+          userID
           image
           title
           introVideo
           description
+          programID
           createdAt
           updatedAt
-          userUserProgramsId
-          programUserProgramsId
           __typename
         }
+        userProgramID
         userWorkouts {
           nextToken
           __typename
         }
         createdAt
         updatedAt
-        programWeekUserProgramWeeksId
-        userProgramUserProgramWeeksId
         __typename
       }
+      userProgramWeekID
       userExercises {
         items {
           id
-          reps
+          exerciseID
+          exerciseInfoID
+          userWorkoutID
+          exerciseNum
+          repRange
           sets
           restMinutes
           RIR
           completed
+          notes
           createdAt
           updatedAt
-          exerciseUserExercisesId
-          userWorkoutUserExercisesId
           __typename
         }
         nextToken
@@ -3157,8 +4737,6 @@ export const onDeleteUserWorkout = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      workoutUserWorkoutsId
-      userProgramWeeksUserWorkoutsId
       __typename
     }
   }
@@ -3178,6 +4756,7 @@ export const onCreateUserExercise = /* GraphQL */ `
           title
           status
           exerciseLabels
+          authorID
           notes
           createdAt
           updatedAt
@@ -3188,6 +4767,7 @@ export const onCreateUserExercise = /* GraphQL */ `
         sets
         RIR
         restMinutes
+        exercise
         repRange
         exerciseNum
         exerciseInfo {
@@ -3210,9 +4790,25 @@ export const onCreateUserExercise = /* GraphQL */ `
         workoutBankExercisesId
         __typename
       }
+      exerciseID
+      exerciseInfo {
+        id
+        name
+        muscleWorked
+        workoutType
+        exercises {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      exerciseInfoID
       userWorkout {
         id
         title
+        status
         workout {
           id
           programWeekWorkoutsId
@@ -3220,54 +4816,57 @@ export const onCreateUserExercise = /* GraphQL */ `
           title
           status
           exerciseLabels
+          authorID
           notes
           createdAt
           updatedAt
           __typename
         }
+        workoutID
+        workoutNumber
         notes
         userProgramWeek {
           id
           weekNumber
+          programWeekID
+          userProgramID
           createdAt
           updatedAt
-          programWeekUserProgramWeeksId
-          userProgramUserProgramWeeksId
           __typename
         }
+        userProgramWeekID
         userExercises {
           nextToken
           __typename
         }
         createdAt
         updatedAt
-        workoutUserWorkoutsId
-        userProgramWeeksUserWorkoutsId
         __typename
       }
+      userWorkoutID
       exerciseLogs {
         items {
           id
-          exercise
+          userID
+          userExerciseID
+          exerciseInfoID
           entryLabels
           createdAt
           updatedAt
-          userExerciseLogsId
-          userExerciseExerciseLogsId
           __typename
         }
         nextToken
         __typename
       }
-      reps
+      exerciseNum
+      repRange
       sets
       restMinutes
       RIR
       completed
+      notes
       createdAt
       updatedAt
-      exerciseUserExercisesId
-      userWorkoutUserExercisesId
       __typename
     }
   }
@@ -3287,6 +4886,7 @@ export const onUpdateUserExercise = /* GraphQL */ `
           title
           status
           exerciseLabels
+          authorID
           notes
           createdAt
           updatedAt
@@ -3297,6 +4897,7 @@ export const onUpdateUserExercise = /* GraphQL */ `
         sets
         RIR
         restMinutes
+        exercise
         repRange
         exerciseNum
         exerciseInfo {
@@ -3319,9 +4920,25 @@ export const onUpdateUserExercise = /* GraphQL */ `
         workoutBankExercisesId
         __typename
       }
+      exerciseID
+      exerciseInfo {
+        id
+        name
+        muscleWorked
+        workoutType
+        exercises {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      exerciseInfoID
       userWorkout {
         id
         title
+        status
         workout {
           id
           programWeekWorkoutsId
@@ -3329,54 +4946,57 @@ export const onUpdateUserExercise = /* GraphQL */ `
           title
           status
           exerciseLabels
+          authorID
           notes
           createdAt
           updatedAt
           __typename
         }
+        workoutID
+        workoutNumber
         notes
         userProgramWeek {
           id
           weekNumber
+          programWeekID
+          userProgramID
           createdAt
           updatedAt
-          programWeekUserProgramWeeksId
-          userProgramUserProgramWeeksId
           __typename
         }
+        userProgramWeekID
         userExercises {
           nextToken
           __typename
         }
         createdAt
         updatedAt
-        workoutUserWorkoutsId
-        userProgramWeeksUserWorkoutsId
         __typename
       }
+      userWorkoutID
       exerciseLogs {
         items {
           id
-          exercise
+          userID
+          userExerciseID
+          exerciseInfoID
           entryLabels
           createdAt
           updatedAt
-          userExerciseLogsId
-          userExerciseExerciseLogsId
           __typename
         }
         nextToken
         __typename
       }
-      reps
+      exerciseNum
+      repRange
       sets
       restMinutes
       RIR
       completed
+      notes
       createdAt
       updatedAt
-      exerciseUserExercisesId
-      userWorkoutUserExercisesId
       __typename
     }
   }
@@ -3396,6 +5016,7 @@ export const onDeleteUserExercise = /* GraphQL */ `
           title
           status
           exerciseLabels
+          authorID
           notes
           createdAt
           updatedAt
@@ -3406,6 +5027,7 @@ export const onDeleteUserExercise = /* GraphQL */ `
         sets
         RIR
         restMinutes
+        exercise
         repRange
         exerciseNum
         exerciseInfo {
@@ -3428,9 +5050,25 @@ export const onDeleteUserExercise = /* GraphQL */ `
         workoutBankExercisesId
         __typename
       }
+      exerciseID
+      exerciseInfo {
+        id
+        name
+        muscleWorked
+        workoutType
+        exercises {
+          nextToken
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      exerciseInfoID
       userWorkout {
         id
         title
+        status
         workout {
           id
           programWeekWorkoutsId
@@ -3438,54 +5076,57 @@ export const onDeleteUserExercise = /* GraphQL */ `
           title
           status
           exerciseLabels
+          authorID
           notes
           createdAt
           updatedAt
           __typename
         }
+        workoutID
+        workoutNumber
         notes
         userProgramWeek {
           id
           weekNumber
+          programWeekID
+          userProgramID
           createdAt
           updatedAt
-          programWeekUserProgramWeeksId
-          userProgramUserProgramWeeksId
           __typename
         }
+        userProgramWeekID
         userExercises {
           nextToken
           __typename
         }
         createdAt
         updatedAt
-        workoutUserWorkoutsId
-        userProgramWeeksUserWorkoutsId
         __typename
       }
+      userWorkoutID
       exerciseLogs {
         items {
           id
-          exercise
+          userID
+          userExerciseID
+          exerciseInfoID
           entryLabels
           createdAt
           updatedAt
-          userExerciseLogsId
-          userExerciseExerciseLogsId
           __typename
         }
         nextToken
         __typename
       }
-      reps
+      exerciseNum
+      repRange
       sets
       restMinutes
       RIR
       completed
+      notes
       createdAt
       updatedAt
-      exerciseUserExercisesId
-      userWorkoutUserExercisesId
       __typename
     }
   }

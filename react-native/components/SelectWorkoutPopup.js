@@ -120,8 +120,6 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
                 programWeekWorkoutsId :  {attributeExists: false}
            },
            limit: 1000, 
-        
-
         }
     })
     

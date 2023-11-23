@@ -58,9 +58,12 @@ type User @model @auth(rules: [{ allow: private }]) {
   profilePicture: String
   taskCompletionList: [Int] 
   userStats: UserStats @hasOne
-  exerciseLogs: [ExerciseLog] @hasMany
-  currentProgram: String
-  userPrograms: [UserProgram] @hasMany
+  exerciseLogs: [ExerciseLog] @hasMany(indexName: "byUser", fields: ["id"])
+  currentProgram: UserProgram @hasOne(fields: ["id"]) 
+  completedPrograms: [UserProgram] @hasMany(indexName: "byUser", fields: ["id"])
+  createdPrograms: [Program] @hasMany(indexName: "byUser", fields: ["id"])
+  createdWorkouts: [Workout] @hasMany(indexName: "byUser", fields: ["id"])
+
 }
 
 
@@ -106,13 +109,21 @@ type ExerciseEntry @model @auth(rules: [{ allow: private }]) {
   workout: String
   programWeek: String
   program: String
+  setNumber: Int
+  exerciseLog: ExerciseLog @belongsTo(fields: ["exerciseLogID"])
+  exerciseLogID: ID @index(name: "byExerciseLog")
+
 }
 
 type ExerciseLog @model @auth(rules: [{ allow: private }]) {
   id: ID!
-  user: User @belongsTo
-  exercise: String!
-  entries: [ExerciseEntry] @hasMany
+  user: User @belongsTo(fields: ["userID"])
+  userID: ID @index(name: "byUser")
+  userExercise: UserExercise @belongsTo(fields: ["userExerciseID"])
+  userExerciseID: ID @index(name:"byUserExercise")
+  exerciseInfo: ExerciseInfo @hasOne(fields: ["exerciseInfoID"])
+  exerciseInfoID: ID
+  entries: [ExerciseEntry] @hasMany(indexName: "byExerciseLog", fields: ["id"])
   entryLabels: [String]
 }
 
@@ -124,11 +135,12 @@ type Exercise @model @auth(rules: [{ allow: private }]) {
   sets: Int!
   RIR: String
   restMinutes: Float!
+  exercise: String
   repRange: String!
   exerciseNum: Int
   exerciseInfo: ExerciseInfo @belongsTo(fields: ["exerciseInfoID"])
   exerciseInfoID: ID @index(name: "byExerciseInfo")
-  UserExercises: [UserExercise] @hasMany
+  UserExercises: [UserExercise] @hasMany(indexName: "byExercise", fields: ["id"])
   notes: String
 }
 
@@ -149,7 +161,9 @@ type Workout @model @auth(rules: [{ allow: private }]) {
   status: String
   exercises: [Exercise] @hasMany(indexName: "byWorkout", fields: ["id"])
   exerciseLabels: [String]
-  userWorkouts: [UserWorkout] @hasMany
+  userWorkouts: [UserWorkout] @hasMany(indexName: "byWorkout", fields: ["id"])
+  author: User @belongsTo(fields: ["authorID"])
+  authorID: ID @index(name: "byUser")
   notes: String
 }
 
@@ -163,64 +177,88 @@ type WorkoutBank @model @auth(rules: [{ allow: private }]) {
 
 type ProgramWeek @model @auth(rules: [{ allow: private }]) {
   id: ID!
-  programID: ID @index(name: "byProgram")
-  program: Program @belongsTo(fields: ["programID"])
+  programID: ID! @index(name: "byProgram")
+  program: Program! @belongsTo(fields: ["programID"])
   weekNumber: Int!
   workouts: [Workout] @hasMany(indexName: "byProgramWeek", fields: ["id"])
   workoutLabels: [String]
-  UserProgramWeeks: [UserProgramWeeks] @hasMany
+  userProgramWeeks: [UserProgWeek] @hasMany(indexName: "byProgramWeek", fields: ["id"])
 }
 
 type Program @model @auth(rules: [{ allow: private }]) {
   id: ID!
-  author: String!
+  author: User @belongsTo(fields: ["authorID"])
+  authorID: ID @index(name: "byUser")
   image: String!
   title: String!
   introVideo: String!
   description: String
   weeks: [ProgramWeek!]! @hasMany(indexName: "byProgram", fields: ["id"])
-  userPrograms: [UserProgram] @hasMany
+  userPrograms: [UserProgram] @hasMany(indexName: "byProgram", fields: ["id"])
 }
 
-type UserProgram @model @auth(rules: [{ allow: private }]) {
+type UserProgram @model  @auth(rules: [{ allow: private }]) {
   id: ID!
-  author: String!
+  user: User @belongsTo(fields: ["userID"])
+  userID: ID! @index(name: "byUser")
   image: String!
   title: String!
   introVideo: String!
   description: String
-  program: Program @belongsTo
-  user: User @belongsTo
-  UserProgramWeeks:[UserProgramWeeks] @hasMany
+  programID: ID! @index(name: "byProgram")
+  program: Program @belongsTo(fields: ["programID"])
+  userProgramWeeks:[UserProgWeek] @hasMany(indexName: "byUserProgram", fields: ["id"])
 }
 
-type UserProgramWeeks @model @auth (rules: [{ allow: private }]) {
+type UserProgramWeeks @model @auth(rules: [{ allow: private }]) {
   id: ID!
   weekNumber: Int!
-  programWeek: ProgramWeek @belongsTo
-  userProgram: UserProgram @belongsTo
-  userWorkouts: [UserWorkout] @hasMany
+  programWeek: ProgramWeek #@belongsTo(fields: ["programWeekID"])
+  programWeekID: ID! #@index(name: "byProgramWeek")
+  userProgram: UserProgram #@belongsTo(fields: ["userProgramID"])
+  userProgramID: ID! #@index(name: "byUserProgram")
+  userWorkouts: [UserWorkout]# @hasMany(indexName: "byUserProgramWeeks", fields: ["id"])
 }
+
+type UserProgWeek @model @auth(rules: [{ allow: private }]) {
+  id: ID!
+  weekNumber: Int!
+  programWeek: ProgramWeek @belongsTo(fields: ["programWeekID"])
+  programWeekID: ID! @index(name: "byProgramWeek")
+  userProgram: UserProgram @belongsTo(fields: ["userProgramID"])
+  userProgramID: ID! @index(name: "byUserProgram")
+  userWorkouts: [UserWorkout] @hasMany(indexName: "byUserProgramWeeks", fields: ["id"])
+}
+
 type UserWorkout @model @auth (rules: [{ allow: private }]) {
   id: ID!
   title: String!
-  workout: Workout @belongsTo
-  notes: String!
-  userProgramWeek: UserProgramWeeks @belongsTo
-  userExercises: [UserExercise] @hasMany
+  status: String!
+  workout: Workout @belongsTo(fields: ["workoutID"])
+  workoutID: ID @index(name: "byWorkout")
+  workoutNumber: Int!
+  notes: String
+  userProgramWeek: UserProgWeek @belongsTo(fields: ["userProgramWeekID"])
+  userProgramWeekID: ID @index(name: "byUserProgramWeeks")
+  userExercises: [UserExercise] @hasMany(indexName: "byUserWorkout", fields: ["id"])
 }
 
-type UserExercise @model @auth (rules: [{ allow: private }]) {
+type UserExercise @model  @auth (rules: [{ allow: private }]) {
   id: ID!
-  exercise: Exercise @belongsTo
-  userWorkout: UserWorkout @belongsTo
-  exerciseLogs: [ExerciseLog] @hasMany
-  reps: Int!
+  exercise: Exercise @belongsTo(fields: ["exerciseID"])
+  exerciseID: ID @index(name: "byExercise")
+  exerciseInfo: ExerciseInfo @hasOne(fields: ["exerciseInfoID"])
+  exerciseInfoID: ID!
+  userWorkout: UserWorkout @belongsTo(fields: ["userWorkoutID"])
+  userWorkoutID: ID @index(name: "byUserWorkout")
+  exerciseLogs: [ExerciseLog] @hasMany(indexName: "byUserExercise", fields: ["id"])
+  exerciseNum: Int!
+  repRange: String!
   sets: Int!
-  restMinutes: Int
+  restMinutes: Float!
   RIR: Int
   completed: Boolean!
-
+  notes: String!
 }
 
 """

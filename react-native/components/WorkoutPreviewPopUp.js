@@ -11,28 +11,28 @@ const Exercise = (props) => {
 
 
   const label = props.label
-  const workout = props.workout
+  const exercise = props.exercise
   const title = props.title
   const weekNumber = props.weekNumber
   const index = props.index
 
-  const { data, loading, error } = useQuery(gql`${queries.getExercise}`, {
-    variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}::${label}` : `${label}-${workout}-week${weekNumber}-${title}`}
-  }); 
-
+  // const { data, loading, error } = useQuery(gql`${queries.getExercise}`, {
+  //   variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}::${label}` : `${label}-${workout}-week${weekNumber}-${title}`}
+  // }); 
+  
   return (
     <View key={index}>
-      {data && data.getExercise ?
+      {exercise!=null?
         <View style={styles.exercise}>
               <View style={styles.exerciseNumberBox}>
                 <Text style={styles.exerciseNumber}>{index + 1}</Text>
               </View>
               <View style={styles.exerciseDetails}>
-                <Text style={styles.exerciseName}>{data.getExercise.name.substring(data.getExercise.name.indexOf(')') + 2).substring(data.getExercise.name.indexOf('.') + 1)}</Text>
+                <Text style={styles.exerciseName}>{exercise.exerciseInfo.name}</Text>
                 <View style={styles.exerciseStats}>
-                  <Text style={styles.exerciseStat}>Sets: {data.getExercise.sets}</Text>
-                  <Text style={styles.exerciseStat}>Reps: {data.getExercise.repRange}</Text>
-                  <Text style={styles.exerciseStat}>Rest: {data.getExercise.restMinutes} min</Text>
+                  <Text style={styles.exerciseStat}>Sets: {exercise.sets}</Text>
+                  <Text style={styles.exerciseStat}>Reps: {exercise.repRange}</Text>
+                  <Text style={styles.exerciseStat}>Rest: {exercise.restMinutes} min</Text>
                 </View>
               </View>
           </View>
@@ -45,25 +45,24 @@ const Exercise = (props) => {
 
 function WorkoutPreviewPopUp({ isVisible, workout, togglePopup, title, weekNumber }) {
 
- const { data : dataWorkout, loading: loadingWorkout, error: errorWorkout, refetch: refetchWorkout } = useQuery(gql`${queries.getWorkout}`, {
-  variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}` : `${workout}-week${weekNumber}-${title}`},
-  enabled: false
-}); 
+//  const { data : dataWorkout, loading: loadingWorkout, error: errorWorkout, refetch: refetchWorkout } = useQuery(gql`${queries.getWorkout}`, {
+//   variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}` : `${workout}-week${weekNumber}-${title}`},
+//   enabled: false
+// }); 
 
 
-console.log(workout, title, weekNumber)
 
 
  return (
   
     <Modal isVisible={isVisible}>
-      {dataWorkout && dataWorkout.getWorkout ? 
+      {workout!=null ? 
       <View style={styles.popupContainer}>
         <View style={{margin: 10}}>
-        <Text style={styles.title}>{workout}</Text>
+        <Text style={styles.title}>{workout.title}</Text>
         <ScrollView style={styles.exerciseList}>
-          {dataWorkout.getWorkout.exerciseLabels.map((exercise, index) => (
-            <Exercise title={title} label={exercise} workout={workout} weekNumber={weekNumber} index={index}/>
+          {workout.userExercises.items.map((exercise, index) => (
+            <Exercise title={title} exercise={exercise} key={index} index={index}/>
           ))}
         </ScrollView>
         

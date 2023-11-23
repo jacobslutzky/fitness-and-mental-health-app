@@ -17,31 +17,48 @@ export default function SelectWorkoutProgram({ route, navigation }) {
     navigation.navigate("CreateProgram", {createdPrograms: createdPrograms, setCreatedPrograms: setCreatedPrograms})
   }
 
-  const navigateToWorkoutInfo = (title, titleToNameMap) => {
+  const navigateToWorkoutInfo = (program, setCurrentProgram) => {
 
-    navigation.navigate("WorkoutProgramInfo", { title: title, titleToNameMap: titleToNameMap, setCurrentProgram: setCurrentProgram, taskCompletionList: route.params ? route.params.taskCompletionList : null, taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null})
+    navigation.navigate("WorkoutProgramInfo", { program: program,  setCurrentProgram: setCurrentProgram, taskCompletionList: route.params ? route.params.taskCompletionList : null, taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null})
   }
-
-  const { data, loading, error, refetch } = useQuery(gql`${queries.listPrograms}`)
+  
+  const { data, loading, error, refetch } = useQuery(gql`${queries.listPrograms}`,
+    {
+        variables: {
+            filter: 
+              {
+              or: [
+              
+              { authorID: {eq: "77df6292-ccb3-44b0-ab30-b2764e3c52af" } },
+              {authorID: {attributeExists: false}}
+              ]
+              },
+            
+          
+            limit: 100,
+        }
+    });
 
   let communityCards = []
-  if (data) {
-    communityCards = data.listPrograms.items.map((program) => { return { title: program.id, img: require('../../../assets/quickWorkouts1.jpeg') } })
-  }
+  
   useEffect(() => {
-    setGymindPrograms(communityCards)
-    setTasksSearched(communityCards)
+    if (data) {
+      const sortedCommunityCards = data.listPrograms.items.slice().sort((a, b) => {
+        // Assuming createdAt is a timestamp, if it's a string, convert it to Date
+        const dateA = new Date(a.createdAt);
+        const dateB = new Date(b.createdAt);
+  
+        // Sort in descending order (newest first)
+        return dateB - dateA;
+      });
+  
+      setGymindPrograms(sortedCommunityCards.filter(communityCard => communityCard.authorID == null));
+      setCreatedPrograms(sortedCommunityCards.filter(communityCard => communityCard.authorID != null));
+      setTasksSearched(sortedCommunityCards);
+    }
   }, [data]);
 
-  const titleToNameMap = {
-    "womensintermediateglute": "Women's Intermediate to Advanced Glute Focused ",
-    "menslvl3PPL": "Men's Intermediate 2.0 Push, Pull, Legs, Upper, Lower",
-    "menslvl2UL": "Men's Intermediate Upper, Lower",
-    "mensfullbody": "Men's Full Body",
-    "mensPPL": "Men's Advanced PPL",
-    "womensbeginner": "Women's Beginner Foundation",
-    "womensintermediate": "Women's Intermediate Foundation ",
-  }
+
 
   const [gymindPrograms, setGymindPrograms] = useState(communityCards);
   const [createdPrograms, setCreatedPrograms] = useState([]);
@@ -50,14 +67,14 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   const [search, setSearch] = useState("")
   const [currentProgram, setCurrentProgram] = useState("")
 
-  useEffect(() => {
-    if (newProgram) {
-      let testProgram = gymindPrograms[0]
-      testProgram.title = newProgram
-      setGymindPrograms(gymindPrograms => [...gymindPrograms, testProgram])
-      setTasksSearched(tasksSearched => [...tasksSearched, testProgram])
-    }
-  }, [newProgram])
+  // useEffect(() => {
+  //   if (newProgram) {
+  //     let testProgram = gymindPrograms[0]
+  //     testProgram.title = newProgram
+  //     setGymindPrograms(gymindPrograms => [...gymindPrograms, testProgram])
+  //     setTasksSearched(tasksSearched => [...tasksSearched, testProgram])
+  //   }
+  // }, [newProgram])
 
   const updateSearch = (text) => {
     console.log("tasks filtered ", tasksSearched)
@@ -75,12 +92,10 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   };
 
   useEffect(() => {
-    setTasksSearched(tasksSearched => [...tasksSearched, createdPrograms[createdPrograms.length - 1]])
+    refetch()
   }, [createdPrograms])
 
   useEffect(() => {
-    console.log(gymindPrograms)
-    console.log("jake")
     if(tasksSearched.length == 0) return
     let tempProgram = tasksSearched[0]
     for(let i = 0; i < tasksSearched.length; i++){
@@ -116,17 +131,15 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
   const toggleFilter = (key) => {
     if(key == 'gymind' && isFiltered != 0){
-        console.log(gymindPrograms)
         setTasksSearched(gymindPrograms)
         setIsFiltered(0)
     }
     else if(key == 'user' && isFiltered != 1){
-        console.log(createdPrograms)
         setTasksSearched(createdPrograms)
         setIsFiltered(1)
     }
     else{
-      console.log(gymindPrograms.concat(createdPrograms))
+      
       setTasksSearched(gymindPrograms.concat(createdPrograms))
       setIsFiltered(2)
     }
@@ -175,10 +188,10 @@ export default function SelectWorkoutProgram({ route, navigation }) {
           }
           {tasksSearched ? tasksSearched.map((item, index) => (
             <>
-            {item ?
-            <ImageBackground source={item.img} style={styles.communityCard} key={index} imageStyle={{ opacity: 0.2 }}>
-              <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToWorkoutInfo(item.title, titleToNameMap, setCurrentProgram)}>
-                <Text style={styles.cardText}>{titleToNameMap[item.title] ? titleToNameMap[item.title].toUpperCase() : item.title.toUpperCase()}</Text>
+            {item?
+            <ImageBackground source={ require('../../../assets/quickWorkouts1.jpeg')} style={styles.communityCard} key={index} imageStyle={{ opacity: 0.2 }}>
+              <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToWorkoutInfo(item, setCurrentProgram)}>
+                <Text style={styles.cardText}>{item.title.toUpperCase()}</Text>
               </TouchableOpacity>
             </ImageBackground>
             :

@@ -72,10 +72,11 @@ const Set = (props) => {
 */
 
 export default function ExerciseDuringWorkout({ navigation, route }) {
-
+    const exercise = route.params.exercise
+    
     const colors = useTheme().colors;
     const title = route.params.title
-    const label = route.params.label.substring(3)
+   // const label = route.params.label.substring(3)
     const workout = route.params.workout
     const weekNumber = route.params.weekNumber
     const isFocused = useIsFocused()
@@ -83,13 +84,13 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
     const [updateLogEntry, { data: dataLogEntryUpdate, loading: loadingLogEntryUpdate, error: errorLogEntryUpdate }] = useMutation(gql`${mutations.updateExerciseEntry}`);
 
     const { data, loading, error } = useQuery(gql`${queries.getExercise}`, {
-        variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}::${label}` : `${label}-${workout}-week${weekNumber}-${title}` }
+        variables: { id: `mensPPL::1::LowerA::Seated hamstring curl` }
     });
 
 
     const { data: dataLog, loading: loadingLog, error: errorLog, refetch: refetchLog } = useQuery(gql`${queries.getExerciseLog}`, {
         skip: !data,
-        variables: { id: data && data.getExercise ? `${global.userId}::${data.getExercise.name}` : "" }
+        variables: { id:`0e11e067-85b5-497c-b212-82feb30d4205::1. Seated hamstring curl`}
     });
 
 
@@ -207,14 +208,14 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
         <ScrollView style={styles.container}>
             <View style={{marginHorizontal: 25}}>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>{label ? label : " "}</Text>
+                    <Text style={styles.title}>{exercise.exerciseInfo.name}</Text>
                 </View>
-                {Array(data && data.getExercise ? data.getExercise.sets : 0).fill().map((item, index) => (
+                {Array(exercise.sets).fill().map((item, index) => (
                     <Set key={index} index={index} updateReps={updateReps} updateWeights={updateWeights} handleSubmit={handleSubmit} colors={colors} lastEntries={lastEntries} exercise={data && data.getExercise ? data.getExercise.name : ""} />
                 ))}
             </View>
             {/* Build in graphs */}
-            <ExerciseLineChart exercise={data && data.getExercise ? data.getExercise.name : ""}/>
+            <ExerciseLineChart navigation={navigation} exercise={data && data.getExercise ? data.getExercise.name : ""}/>
         </ScrollView>
     )
 

@@ -219,7 +219,7 @@ export default function CreateProgram({ route, navigation }) {
         
         const programInput = {
             id: programID,
-            author: global.userId,
+            authorID: global.userId,
             image: "",
             title: title,
             introVideo: "",
@@ -227,12 +227,6 @@ export default function CreateProgram({ route, navigation }) {
         }
         createProgram({ variables: { input: programInput } }) 
         
-        //for program week in weeks
-            //create programWeek with newProgramID
-            //for workout in programWeek
-                //create workout with programWeekID
-                //for exercise in workout
-                    //create exercise with workoutid
         const newWeeks = weeks
         newWeeks.forEach((weekInput,index) => {
             weekInput.weekNumber = index+1

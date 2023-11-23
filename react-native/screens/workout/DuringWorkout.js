@@ -12,71 +12,69 @@ import { AntDesign } from '@expo/vector-icons';
 const Exercise = (props) => {
     const colors = useTheme().colors;
     const title = props.title
-    const label = props.label
+    const exercise = props.exercise
     const workout = props.workout
     const weekNumber = props.weekNumber
     const navigation = props.navigation
 
 
-    const { data, loading, error } = useQuery(gql`${queries.getExercise}`, {
-        variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}::${label}` : `${label}-${workout}-week${weekNumber}-${title}` }
-    });
+    // const { data, loading, error } = useQuery(gql`${queries.getExercise}`, {
+    //     variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}::${label}` : `${label}-${workout}-week${weekNumber}-${title}` }
+    // });
 
-    const { data: dataLog, loading: loadingLog, error: errorLog, refetch: refetchLog } = useQuery(gql`${queries.getExerciseLog}`, {
-        skip: !data,
-        variables: { id: data && data.getExercise ? `${global.userId}::${data.getExercise.name}` : "" }
-    });
+    // const { data: dataLog, loading: loadingLog, error: errorLog, refetch: refetchLog } = useQuery(gql`${queries.getExerciseLog}`, {
+    //     skip: !data,
+    //     variables: { id: data && data.getExercise ? `${global.userId}::${data.getExercise.name}` : "" }
+    // });
 
 
     const [createLog] = useMutation(gql`${mutations.createExerciseLog}`);
 
     const [lastEntries, setLastEntries] = useState({})
-    useEffect(() => {
-        refetchLog()
-        if (dataLog && !dataLog.getExerciseLog) {
-            const input = {
-                id: `${global.userId}::${data.getExercise.name}`,
-                exercise: title,
-                entryLabels: [],
-                userExerciseLogsId: global.userId
-            }
-            createLog({ variables: { input: input, id: `${global.userId}::${data.getExercise.name}` } })
-            refetchLog()
-        }
-        else if (data && dataLog && dataLog.getExerciseLog) {
-            const entryLabels2 = dataLog.getExerciseLog.entryLabels
-            const numSets = data.getExercise.sets
-            for (let j = Math.min(entryLabels2.length - 1, numSets - 1); j >= 0; j--) {
-                let setNum = '';
-                for (let k = entryLabels2[j].length - 1; k >= 0; k--) {
-                    if (entryLabels2[j][k] == ':') break
-                    setNum += entryLabels2[j][k]
-                }
-                setNum.split('').reverse().join('')
+    // useEffect(() => {
+    //     refetchLog()
+    //     if (dataLog && !dataLog.getExerciseLog) {
+    //         const input = {
+    //             id: `${global.userId}::${data.getExercise.name}`,
+    //             exercise: title,
+    //             entryLabels: [],
+    //             userExerciseLogsId: global.userId
+    //         }
+    //         createLog({ variables: { input: input, id: `${global.userId}::${data.getExercise.name}` } })
+    //         refetchLog()
+    //     }
+    //     else if (data && dataLog && dataLog.getExerciseLog) {
+    //         const entryLabels2 = dataLog.getExerciseLog.entryLabels
+    //         const numSets = data.getExercise.sets
+    //         for (let j = Math.min(entryLabels2.length - 1, numSets - 1); j >= 0; j--) {
+    //             let setNum = '';
+    //             for (let k = entryLabels2[j].length - 1; k >= 0; k--) {
+    //                 if (entryLabels2[j][k] == ':') break
+    //                 setNum += entryLabels2[j][k]
+    //             }
+    //             setNum.split('').reverse().join('')
 
-                let copyEntries = lastEntries
-                copyEntries[parseInt(setNum)] = entryLabels2[j]
-                setLastEntries(copyEntries)
+    //             let copyEntries = lastEntries
+    //             copyEntries[parseInt(setNum)] = entryLabels2[j]
+    //             setLastEntries(copyEntries)
 
-            }
-            refetchLog()
-        }
-    }, [data, dataLog, props.isFocused]);
+    //         }
+    //         refetchLog()
+    //     }
+    // }, [data, dataLog, props.isFocused]);
 
     const navigateToExerciseScreen = () => {
-        navigation.navigate("ExerciseDuringWorkout", { label: data ? data.getExercise.name : "", weekNumber: weekNumber, workout: workout, title: title })
+        navigation.navigate("ExerciseDuringWorkout", {exercise: exercise, weekNumber: weekNumber, workout: workout, title: title })
     }
 
     return (
 
         <TouchableOpacity style={{ justifyContent: "center", marginHorizontal: 30, borderBottomColor: '#CFB87C', borderBottomWidth: 2, paddingVertical: 10 }} onPress={() => navigateToExerciseScreen()}>
-            {!data ? <View><Text>Loading</Text></View>
-                :
                 <View>
                     <View style={styles.exerciseHeader}>
                         <View style={styles.exerciseHeaderText}>
-                            <Text style={{ color: colors.text, fontSize: 16, marginBottom: 5 }}>{data && data.getExercise ? data.getExercise.name : ""}</Text>
-                            <Text style={{ color: "grey" }}>{data.getExercise ? data.getExercise.sets : ""} sets x 5-7,8-10</Text>
+                            <Text style={{ color: colors.text, fontSize: 16, marginBottom: 5 }}>{exercise.exerciseInfo.name}</Text>
+                            <Text style={{ color: "grey" }}>{exercise.sets} sets x {exercise.repRange} reps</Text>
                         </View>
                         <View style={styles.expandExerciseButtonContainer}>
                             <AntDesign name="right" size={20} color="white" />
@@ -84,7 +82,6 @@ const Exercise = (props) => {
                     </View>
 
                 </View>
-            }
         </TouchableOpacity>
 
     )
@@ -154,11 +151,11 @@ export default function DuringWorkout({ navigation, route }) {
 
         <ScrollView style={styles.container}>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>{titleToNameMap[title]}</Text>
+                <Text style={styles.title}>{workout.title}</Text>
             </View>
             <View style={{ marginBottom: 150 }}>
-                {exerciseLabels.map((exercise, index) => (
-                    <Exercise key={index} label={exercise} title={title} workout={workout} weekNumber={weekNumber} isFocused={isFocused} navigation={navigation} />
+                {workout.userExercises.items.map((exercise, index) => (
+                    <Exercise key={index} exercise={exercise} title={title} workout={workout} weekNumber={weekNumber} isFocused={isFocused} navigation={navigation} />
                 ))}
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.bottomButton} onPress={() => navigateToSelectProgram()} >

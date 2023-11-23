@@ -117,7 +117,7 @@ export default function VideoOverview({ route, navigation }) {
           })}
           onIndexChange={index => state.index = index}
           initialLayout={{}}
-          style={[styles.tabsContainer, { height: 150 * sections.length }]}
+          style={[styles.tabsContainer, { height: 120 * sections.length }]}
           sceneContainerStyle={{ height: '100%', flex: 1, width: '100%', alignItems: 'center' }}
           renderTabBar={renderTabBar}
         />
@@ -131,8 +131,7 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    marginTop: 20,
-    height: 1000
+    marginTop: 20
   },
   tabsContainer: {
     marginTop: 10,
