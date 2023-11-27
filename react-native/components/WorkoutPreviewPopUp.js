@@ -7,8 +7,6 @@ import * as queries from "../../src/graphql/queries";
 import * as mutations from "../../src/graphql/mutations";
 
 const Exercise = (props) => {
-  console.log("exercise reached")
-
 
   const label = props.label
   const exercise = props.exercise

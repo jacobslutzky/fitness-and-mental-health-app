@@ -158,7 +158,6 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
         const updatedData = workouts.filter((item) => {
         const item_data = `${item.title.toLowerCase()})`;
         const text_data = text.toLowerCase();
-        console.log(text_data)
         return item_data.indexOf(text_data) > -1;
         });
         

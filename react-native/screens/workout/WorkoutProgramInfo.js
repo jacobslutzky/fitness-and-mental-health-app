@@ -150,8 +150,6 @@ export default function WorkoutProgramInfo({ route, navigation }) {
             id: `stats-${global.userId}`,
             currentProgramID: program.id
         }
-        console.log(statsInput)
-        console.log("aia")
         updateUserStats({ variables: { input: statsInput } })
 
        navigation.navigate("CurrentProgram", { program: newProgram,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })

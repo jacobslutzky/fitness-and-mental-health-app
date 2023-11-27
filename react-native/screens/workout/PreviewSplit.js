@@ -15,8 +15,6 @@ const Week = (props) => {
   const index = props.index
   const setToggle = props.setToggle
   
-  console.log("hi")
-  console.log(week)
   const week = {...props.week }
   week.workouts.items = props.week.workouts.items.slice().sort((a, b) => a.workoutNumber - b.workoutNumber);
   // const { data, loading, error, refetch } = useQuery(gql`${queries.getProgramWeek}`, {

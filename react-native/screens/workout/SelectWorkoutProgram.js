@@ -116,7 +116,6 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   useEffect(()=> {
    
     if(dataProgram?.getUserStats?.currentProgram != null){
-      console.log(dataProgram.getUserStats.currentProgram)
       navigation.navigate("CurrentProgram", { program: dataProgram.getUserStats.currentProgram,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
     }
 
@@ -139,7 +138,6 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   // }, [newProgram])
 
   const updateSearch = (text) => {
-    console.log("tasks filtered ", tasksSearched)
     if (!gymindPrograms) return;
 
     const updatedData = gymindPrograms.filter((item) => {

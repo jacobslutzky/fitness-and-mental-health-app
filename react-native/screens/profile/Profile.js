@@ -73,7 +73,6 @@ export default function Profile({ navigation }) {
   });
 
   useEffect(() => {
-    console.log("eeeee")
     console.log(dataAchievementProgresses ? dataAchievementProgresses.listAchievementProgresses : "not available")
     const achievementProgresses = dataAchievementProgresses ? dataAchievementProgresses.listAchievementProgresses.items : []
     console.log('lengths', achievements.length, achievementProgresses.length)

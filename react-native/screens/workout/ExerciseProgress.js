@@ -24,8 +24,6 @@ const ExerciseEntry = (props) => {
 const Log = (props) => {
 
     const exerciseEntries = props.item
-    console.log("entries", exerciseEntries)
-
     return (
         <View style={styles.log}>
             <View style={styles.dataContainer}>
@@ -69,7 +67,6 @@ export default function ExerciseProgress({ navigation, route }) {
                 tempEntriesGroupedByDate[dateConverted] = [data[i]]
             }
         }
-        console.log("Data: ", tempEntriesGroupedByDate)
         setEntriesGroupedByDate(tempEntriesGroupedByDate)
     }, [])
 

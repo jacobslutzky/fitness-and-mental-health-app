@@ -136,9 +136,6 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
             mostRecentEntries.sort((a, b) => a.setNumber - b.setNumber);
         
             setLastEntries(mostRecentEntries);
-
-            console.log("heho")
-            console.log(currentEntryIDs)
         }
     }
     }, [ dataLog]);
@@ -163,8 +160,6 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
        
     }
     const handleSubmit = (index) => {
-        console.log("hehe")
-        console.log(currentEntryIDs)
         if (reps[index] && weight[index]) {
             const date = new Date();
             if (currentEntryIDs[index]) {

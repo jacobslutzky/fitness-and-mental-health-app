@@ -44,7 +44,6 @@ const Workout = (props) => {
 
 
 export default function CurrentProgram({ navigation, route }) {
-    console.log(route.params)
     const colors = useTheme().colors;
     const title = route.params.title
     const titleToNameMap = route.params.titleToNameMap
