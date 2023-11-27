@@ -8,6 +8,59 @@ import { SearchBar } from 'react-native-elements';
 
 
 export default function SelectWorkoutProgram({ route, navigation }) {
+      const getCurrentProgram = /* GraphQL */ `
+    query GetUserStats($id: ID!) {
+      getUserStats(id: $id) {
+        id
+        currentProgram { 
+          id
+          title
+          userProgramWeeks {
+            items {
+              id
+              weekNumber
+              userWorkouts {
+                items {
+                  id
+                  workoutNumber
+                  title
+                  status
+                  notes
+                  userExercises{
+                    items {
+                      id
+                      sets
+                      RIR
+                      restMinutes
+                      repRange
+                      exerciseNum
+                      notes
+                      completed
+                      exerciseInfoID
+                      exerciseInfo {
+                          id
+                          name
+                          muscleWorked
+                          workoutType
+                          createdAt
+                          updatedAt
+                          __typename
+                        }
+                    }
+                  }
+                }
+                }
+              }
+            }
+          }
+          
+        }
+    }
+  `;
+  const { data: dataProgram, loading: loadingProgram, error: errorProgram } = useQuery(gql`${getCurrentProgram}`, {
+    variables: { id: "stats-" + global.userId}
+});
+
   const colors = useTheme().colors;
 
   const newProgram = route.params ? route.params.newProgram : null
@@ -29,7 +82,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
               {
               or: [
               
-              { authorID: {eq: "77df6292-ccb3-44b0-ab30-b2764e3c52af" } },
+              { authorID: {eq: global.userId } },
               {authorID: {attributeExists: false}}
               ]
               },
@@ -38,6 +91,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
             limit: 100,
         }
     });
+
 
   let communityCards = []
   
@@ -59,6 +113,14 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   }, [data]);
 
 
+  useEffect(()=> {
+   
+    if(dataProgram?.getUserStats?.currentProgram != null){
+      console.log(dataProgram.getUserStats.currentProgram)
+      navigation.navigate("CurrentProgram", { program: dataProgram.getUserStats.currentProgram,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
+    }
+
+  }, [dataProgram])
 
   const [gymindPrograms, setGymindPrograms] = useState(communityCards);
   const [createdPrograms, setCreatedPrograms] = useState([]);
@@ -148,7 +210,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
 
   return (
-    <View style={styles.container}>
+    !loadingProgram?(<View style={styles.container}>
 
       <Text style={[styles.header, { color: colors.text }]}>Select Your Program</Text>
 
@@ -204,7 +266,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
         </View>
       </ScrollView>
 
-    </View>
+    </View>):(<></>)
   )
 };
 

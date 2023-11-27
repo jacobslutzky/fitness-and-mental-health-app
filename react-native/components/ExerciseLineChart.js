@@ -10,26 +10,13 @@ import * as scale from 'd3-scale'
 import * as shape from 'd3-shape'
 
 
-export default function ExerciseLineChart({exercise, navigation}) {
+export default function ExerciseLineChart({entries, exercise, navigation}) {
 
-  //Query all exercise entries with appropriate filters
-  const { data: dataExerciseLog, loading, error, refetch } = useQuery(gql`${queries.listExerciseEntries}`, {
-    variables: { 
-      filter: {
-        id: {
-          contains: `${global.userId}::${exercise}`
-        }
-      }
-     }
-  });
-
-  let data = dataExerciseLog ? dataExerciseLog.listExerciseEntries.items.map((entry) => {
+  let data = entries!=null ? entries.map((entry) => {
     return {repsCompleted: entry.repsCompleted, weight: entry.weight, volume: entry.repsCompleted * entry.weight, date: entry.updatedAt, workout: entry.workout}
   }) : []
-
-  data = data.reverse()
-
-
+  
+  data.sort((a, b) => new Date(a.date) - new Date(b.date));
 
   /*
   data = [
@@ -54,12 +41,12 @@ export default function ExerciseLineChart({exercise, navigation}) {
     const xAxisHeight = 30
 
   const navigateToAllProgress = () => {
-      navigation.navigate("ExerciseProgress", {exercise: exercise, data: dataExerciseLog})
+      navigation.navigate("ExerciseProgress", {exercise: exercise, data: data})
   }
 
   return (
     <View>
-      {data.length ?
+      {data.length>0 ?
 
       <View style={styles.container}>
         <View style={styles.allTimeProgressButtonContainer}>
@@ -99,7 +86,7 @@ export default function ExerciseLineChart({exercise, navigation}) {
                 <XAxis
                     style={{ marginHorizontal: -10, height: xAxisHeight }}
                     data={data.map((entry) => {return entry.date})}
-                    formatLabel={(value, index) => value}
+                    formatLabel={(value, index) => value+1}
                     contentInset={{ left: 10, right: 10 }}
                     svg={axesSvg}
                 />

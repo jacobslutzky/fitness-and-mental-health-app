@@ -19,6 +19,7 @@ export default function WorkoutProgramInfo({ route, navigation }) {
     const [createUserProgramWeeks] = useMutation(gql`${mutations.createUserProgWeek}`);
     const [createUserWorkout] = useMutation(gql`${mutations.createUserWorkout}`);
     const [createUserExercise] = useMutation(gql`${mutations.createUserExercise}`);
+    const [updateUserStats] = useMutation(gql`${mutations.updateUserStats}`);
     const [program,setProgram] = useState(null)
 
     const getProgram = /* GraphQL */ `
@@ -48,6 +49,15 @@ export default function WorkoutProgramInfo({ route, navigation }) {
                     repRange
                     exerciseNum
                     exerciseInfoID
+                    exerciseInfo {
+                        id
+                        name
+                        muscleWorked
+                        workoutType
+                        createdAt
+                        updatedAt
+                        __typename
+                      }
                     notes
                   }
                 }
@@ -59,6 +69,8 @@ export default function WorkoutProgramInfo({ route, navigation }) {
       }
     }
   `;
+
+
 
     const { data, loading, error, refetch } = useQuery(gql`${getProgram}`, {
         variables: { id: programID}
@@ -76,18 +88,19 @@ export default function WorkoutProgramInfo({ route, navigation }) {
         navigation.navigate("PreviewSplit", {program: program, navigateToProgram:navigateToProgram, taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
     }
 
-    const navigateToProgram = async() => {
+    const navigateToProgram = () => {
         
-        const newProgram = program 
-        newProgram.programID = newProgram.id
-        newProgram.id = uuid.v4()
-        newProgram.userID = global.userId
-        const programWeeks = newProgram.weeks.items
-        delete newProgram.weeks
-        delete newProgram.__typename
+        program.programID = program.id
+        program.id = uuid.v4()
+        program.userID = global.userId
+        const programWeeks = program.weeks.items
+        delete program.weeks
+        delete program.__typename
+        createUserProgram({ variables: { input: program } });
+        const newProgram = {...program}
+        newProgram.userProgramWeeks = { items: [] };
         
-         createUserProgram({ variables: { input: newProgram } });
-        for (const programWeek of programWeeks) {
+          for (const programWeek of programWeeks) { 
             programWeek.programWeekID = programWeek.id
             programWeek.id = uuid.v4()
             programWeek.weekNumber = Number(programWeek.weekNumber)
@@ -97,9 +110,12 @@ export default function WorkoutProgramInfo({ route, navigation }) {
             delete programWeek.workouts
             delete programWeek.__typename
         
-          createUserProgramWeeks({ variables: { input: programWeek } });
-        
-            workouts.forEach((workout)=>{
+     createUserProgramWeeks({ variables: { input: programWeek } });
+          const newProgramWeek = {...programWeek}
+          newProgram.userProgramWeeks.items.push(newProgramWeek)
+          newProgramWeek.userWorkouts = { items: [] };
+
+          for (const workout of workouts){
                 workout.workoutID = workout.id
                 workout.id = uuid.v4()
                 workout.userProgramWeekID = programWeek.id
@@ -107,24 +123,38 @@ export default function WorkoutProgramInfo({ route, navigation }) {
                 const exercises = workout.exercises.items
                 delete workout.exercises
                 delete workout.__typename
-                
-              createUserWorkout({ variables: { input: workout } })
-                exercises.forEach((exercise)=>{
+            createUserWorkout({ variables: { input: workout } })
+              const newWorkout = {...workout}
+              newProgramWeek.userWorkouts.items.push(newWorkout)
+              newWorkout.userExercises = { items: [] };
+
+              for (const exercise of exercises){
                     exercise.exerciseID = exercise.id
                     exercise.id = uuid.v4()
                     exercise.userWorkoutID = workout.id
                     exercise.completed=false
-                    
+                    const exerciseInfo = {... exercise.exerciseInfo}
+                    delete exercise.exerciseInfo
                     delete exercise.__typename
-                    createUserExercise({variables: { input: exercise }})
+                    
+                  createUserExercise({variables: { input: exercise }})
+                    const newExercise = {...exercise}
+                    newExercise.exerciseInfo = exerciseInfo
+                    newWorkout.userExercises.items.push(newExercise)
                 }
-                )
-            })
-        
+               
+            }
+        }
 
-        };
-        route.params.setCurrentProgram(newProgram.id)
-       navigation.navigate("CurrentProgram", { userProgramID: newProgram.id,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
+        const statsInput = {
+            id: `stats-${global.userId}`,
+            currentProgramID: program.id
+        }
+        console.log(statsInput)
+        console.log("aia")
+        updateUserStats({ variables: { input: statsInput } })
+
+       navigation.navigate("CurrentProgram", { program: newProgram,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
     }
 
     return (
@@ -160,6 +190,7 @@ export default function WorkoutProgramInfo({ route, navigation }) {
                 </Svg>
             </ImageBackground>
         </ScrollView>
+        
     )
 }
 

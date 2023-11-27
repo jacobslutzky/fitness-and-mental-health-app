@@ -28,9 +28,9 @@ const Exercise = (props) => {
     // });
 
 
-    const [createLog] = useMutation(gql`${mutations.createExerciseLog}`);
+    // const [createLog] = useMutation(gql`${mutations.createExerciseLog}`);
 
-    const [lastEntries, setLastEntries] = useState({})
+    // const [lastEntries, setLastEntries] = useState({})
     // useEffect(() => {
     //     refetchLog()
     //     if (dataLog && !dataLog.getExerciseLog) {
@@ -120,16 +120,16 @@ export default function DuringWorkout({ navigation, route }) {
 
 
     const navigateToSelectProgram = () => {
-        const userInput = {
-            id: `${global.userId}`,
-            name: dataUser.getUser.name,
-            email: global.userId,
-            profilePicture: dataUser.getUser.profilePicture,
-            currentProgram: dataUser.getUser.currentProgram,
-            taskCompletionList: [1,0]
-        }
+        // const userInput = {
+        //     id: `${global.userId}`,
+        //     name: dataUser.getUser.name,
+        //     email: global.userId,
+        //     profilePicture: dataUser.getUser.profilePicture,
+        //     currentProgram: dataUser.getUser.currentProgram,
+        //     taskCompletionList: [1,0]
+        // }
         
-        updateUser({ variables: { input: userInput } })
+        // updateUser({ variables: { input: userInput } })
 
 
         const statsInput = {

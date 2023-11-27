@@ -409,7 +409,7 @@ export default function Home({ navigation }) {
         id: `${global.userId}`,
         name: dataUser.getUser.name,
         profilePicture: dataUser.getUser.profilePicture,
-        currentProgram: dataUser.getUser.currentProgram,
+       // currentProgram: dataUser.getUser.currentProgram,
         taskCompletionList: isPressed
       }
 
@@ -422,7 +422,7 @@ export default function Home({ navigation }) {
         id: `${global.userId}`,
         name: dataUser.getUser.name,
         profilePicture: dataUser.getUser.profilePicture,
-        currentProgram: dataUser.getUser.currentProgram,
+        //: dataUser.getUser.currentProgram,
         taskCompletionList: isPressed
       }
 

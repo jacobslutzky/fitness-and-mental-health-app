@@ -44,94 +44,42 @@ const Workout = (props) => {
 
 
 export default function CurrentProgram({ navigation, route }) {
+    console.log(route.params)
     const colors = useTheme().colors;
     const title = route.params.title
     const titleToNameMap = route.params.titleToNameMap
-    const [program,setProgram] = useState(null)
     const [workoutBeingPreviewed, setWorkoutBeingPreviewed] = useState(null);
-
+    const [program, setProgram] = useState(null)
     const [currentWeek, setCurrentWeek] = useState(null)
     const [currentWorkout, setCurrentWorkout] = useState(null)
-    const getUserProgram = /* GraphQL */ `
-    query GetUserProgram($id: ID!) {
-        getUserProgram(id: $id) {
-        id
-        title
-        userProgramWeeks {
-          items {
-            id
-            weekNumber
-            userWorkouts {
-              items {
-                id
-                workoutNumber
-                title
-                status
-                notes
-                userExercises{
-                  items {
-                    id
-                    sets
-                    RIR
-                    restMinutes
-                    repRange
-                    exerciseNum
-                    notes
-                    completed
-                    exerciseInfoID
-                    exerciseInfo {
-                        id
-                        name
-                        muscleWorked
-                        workoutType
-                        createdAt
-                        updatedAt
-                        __typename
-                      }
-                  }
-                }
-              }
-            }
-          }
-        }
-        
-      }
-    }
-  `;
-  const { data, loading, error, refetch } = useQuery(gql`${getUserProgram}`, {
-    variables: { id: route.params.userProgramID}
-});
+    
 
-useEffect(() => {
-    if(data!=null){
-    console.log(data.getUserProgram.userProgramWeeks.items[0].userWorkouts.items)
-    const userProgram = data.getUserProgram
-    const sortedUserProgramWeeks = [...userProgram.userProgramWeeks.items];
-    sortedUserProgramWeeks.sort((a, b) => a.weekNumber - b.weekNumber);
-    setProgram({ ...userProgram, userProgramWeeks: { items: sortedUserProgramWeeks } });
-    handleWeekClick(sortedUserProgramWeeks[0])
-    }
-}, [data]);
+    useEffect(() => {
+        const userProgram = route.params.program
+        const sortedUserProgramWeeks = [...userProgram.userProgramWeeks.items];
+        sortedUserProgramWeeks.sort((a, b) => a.weekNumber - b.weekNumber);
+        setProgram({ ...userProgram, userProgramWeeks: { items: sortedUserProgramWeeks } });
+        handleWeekClick(sortedUserProgramWeeks[0])
+    }, []);
+   
+
 
     const navigateToSelectProgram = () => {
         navigation.navigate("SelectWorkoutProgram")
     }
     const navigatedToWorkout = () => {
-        //refetchWorkout()
-        console.log("the office")
-        console.log(currentWorkout)
          navigation.navigate("DuringWorkout", { workout: currentWorkout, title: title, taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
     }
 
-    const handleWeekClick = (week) => {
+
+const handleWeekClick = (week) => {
         const newWeek = {...week }
         newWeek.userWorkouts.items =week.userWorkouts.items.slice().sort((a, b) => a.workoutNumber - b.workoutNumber);
-
+       
         setCurrentWeek(week)
 
         const earliestIncompleteWorkout = week.userWorkouts.items.find(workout => workout.status === "incomplete");
         
-        console.log(earliestIncompleteWorkout)
         setCurrentWorkout(earliestIncompleteWorkout)
     }
 
