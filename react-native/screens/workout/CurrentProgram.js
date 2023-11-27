@@ -57,8 +57,20 @@ export default function CurrentProgram({ navigation, route }) {
         const userProgram = route.params.program
         const sortedUserProgramWeeks = [...userProgram.userProgramWeeks.items];
         sortedUserProgramWeeks.sort((a, b) => a.weekNumber - b.weekNumber);
-        setProgram({ ...userProgram, userProgramWeeks: { items: sortedUserProgramWeeks } });
-        handleWeekClick(sortedUserProgramWeeks[0])
+        const sortedProgram = {
+            ...userProgram,
+            userProgramWeeks: {
+                items: sortedUserProgramWeeks.map((week) => ({
+                    ...week,
+                    userWorkouts: {
+                        items: week.userWorkouts.items.slice().sort((a, b) => a.workoutNumber - b.workoutNumber),
+                    },
+                })),
+            },
+        };
+
+        setProgram(sortedProgram);
+        setWorkoutToCurrent(sortedProgram)
     }, []);
    
 
@@ -67,20 +79,28 @@ export default function CurrentProgram({ navigation, route }) {
         navigation.navigate("SelectWorkoutProgram")
     }
     const navigatedToWorkout = () => {
-         navigation.navigate("DuringWorkout", { workout: currentWorkout, title: title, taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
+         navigation.navigate("DuringWorkout", { workout: currentWorkout, onWorkoutComplete: onWorkoutComplete, title: title, taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
     }
 
 
-const handleWeekClick = (week) => {
-        const newWeek = {...week }
-        newWeek.userWorkouts.items =week.userWorkouts.items.slice().sort((a, b) => a.workoutNumber - b.workoutNumber);
-       
-        setCurrentWeek(week)
+const setWorkoutToCurrent = (program) => {
+    let earliestIncompleteWorkout = null;
+    let weekOfEarliestIncompleteWorkout = null;
 
-        const earliestIncompleteWorkout = week.userWorkouts.items.find(workout => workout.status === "incomplete");
-        
-        setCurrentWorkout(earliestIncompleteWorkout)
+    for (const week of program.userProgramWeeks.items) {
+        const incompleteWorkout = week.userWorkouts.items.find((workout) => workout.status === "incomplete");
+
+        if (incompleteWorkout) {
+            earliestIncompleteWorkout = incompleteWorkout;
+            weekOfEarliestIncompleteWorkout = week;
+            break
+        }
     }
+    setCurrentWorkout(earliestIncompleteWorkout)
+    setCurrentWeek(weekOfEarliestIncompleteWorkout);
+
+    
+}
 
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -93,6 +113,13 @@ const handleWeekClick = (week) => {
         setWorkoutBeingPreviewed(newWorkout)
     };
 
+    
+    const onWorkoutComplete = (completedWorkout) => {
+        completedWorkout.status = "complete";
+      //  setCurrentWorkout({ ...completedWorkout });
+         setWorkoutToCurrent(program)
+
+    };
 
     return (
         <View style={styles.container}>
@@ -103,7 +130,7 @@ const handleWeekClick = (week) => {
                 <View style={ styles.buttonsContainerBugged }>
                     {
                       program!=null?(program.userProgramWeeks.items.map((week, index) => (
-                            <TouchableOpacity style={[styles.weekButton, { backgroundColor: currentWeek!=null && currentWeek.weekNumber == index + 1 ? colors.primary : "#4c4c4c" }]} key={index} onPress={() => handleWeekClick(week)} >
+                            <TouchableOpacity style={[styles.weekButton, { backgroundColor: currentWeek!=null && currentWeek.weekNumber == index + 1 ? colors.primary : "#4c4c4c" }]} key={index} onPress={() => setCurrentWeek(week)} >
                                 <Text style={styles.buttonText}> Week {index + 1}</Text>
                             </TouchableOpacity>
 

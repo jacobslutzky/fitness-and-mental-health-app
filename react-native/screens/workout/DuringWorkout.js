@@ -87,7 +87,7 @@ const Exercise = (props) => {
     )
 }
 
-export default function DuringWorkout({ navigation, route }) {
+export default function DuringWorkout({ navigation, route}) {
     const colors = useTheme().colors;
     //const exercises2 = route.params.workouts.exercises.items
 
@@ -118,8 +118,9 @@ export default function DuringWorkout({ navigation, route }) {
 
     const [updateUserStats, { data: dataUpdateStats, loading: loadingUpdateStats, error: errorUpdateStats }] = useMutation(gql`${mutations.updateUserStats}`);
 
+    const [updateUserWorkout] = useMutation(gql`${mutations.updateUserWorkout}`)
 
-    const navigateToSelectProgram = () => {
+    const completeWorkout = () => {
         // const userInput = {
         //     id: `${global.userId}`,
         //     name: dataUser.getUser.name,
@@ -134,14 +135,22 @@ export default function DuringWorkout({ navigation, route }) {
 
         const statsInput = {
             id: `stats-${global.userId}`,
-            mindfulMinutes: dataGetStats.getUserStats ? dataGetStats.getUserStats.mindfulMinutes : 0,
-            meditationStreak: dataGetStats.getUserStats ? dataGetStats.getUserStats.meditationStreak : 0,
             workoutsCompleted: dataGetStats.getUserStats ? dataGetStats.getUserStats.workoutsCompleted + 1 : 1,
             points: dataGetStats.getUserStats ? dataGetStats.getUserStats.points + 10 : 0,
-            email: dataGetStats.getUserStats ? dataGetStats.getUserStats.email : "",
         }
 
         updateUserStats({ variables: { input: statsInput } })
+
+        const workoutInput = {
+            id: workout.id,
+            status: "complete"
+        }
+
+        
+        updateUserWorkout({variables: { input: workoutInput }})
+
+        route.params.onWorkoutComplete(workout)
+
         if(route.params.taskCompletionList) route.params.taskCompletionList[route.params.taskCompletionListIndex] = true
 
         navigation.navigate("CurrentProgram", { title: title, titleToNameMap: titleToNameMap })
@@ -158,7 +167,7 @@ export default function DuringWorkout({ navigation, route }) {
                     <Exercise key={index} exercise={exercise} title={title} workout={workout} weekNumber={weekNumber} isFocused={isFocused} navigation={navigation} />
                 ))}
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.bottomButton} onPress={() => navigateToSelectProgram()} >
+                    <TouchableOpacity style={styles.bottomButton} onPress={() => completeWorkout()} >
                         <Text style={styles.buttonText} > Complete Workout </Text>
                     </TouchableOpacity>
                 </View>
