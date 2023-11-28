@@ -82,7 +82,8 @@ export default function SelectWorkoutProgram({ route, navigation }) {
               {
               or: [
               
-              { authorID: {eq: global.userId } }
+              { authorID: {eq: global.userId } },
+              {authorID: {attributeExists: false}}
               ]
               },
             
