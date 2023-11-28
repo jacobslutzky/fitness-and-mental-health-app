@@ -24,7 +24,6 @@ export default function Login({navigation}){
     global.userId = email
     refetch()
     while(loading){}
-    console.log(data, loading, error)
     if(data && data.getUser && data.getUser.password == password){
         navigation.navigate("Main")
     }

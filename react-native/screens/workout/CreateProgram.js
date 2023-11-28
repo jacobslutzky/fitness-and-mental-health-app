@@ -5,67 +5,119 @@ import { AntDesign } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
-import CreateWorkoutPopup from '../../components/CreateWorkoutPopup';
+import SelectWorkoutPopup from '../../components/SelectWorkoutPopup';
+import * as queries from "../../../src/graphql/queries";
+import * as mutations from "../../../src/graphql/mutations";
+import { useQuery, gql, useMutation } from "@apollo/client";
+import uuid from 'react-native-uuid';
+import { ConsoleLogger } from '@aws-amplify/core';
 
-const Exercise = (props) => {
+
+const Workout = (props) => {
     const [updateParent, setUpdateParent] = useState(false)
-
     useEffect(() => {
         setUpdateParent(false)
     })
-
+    
     useEffect(() => {
         if (updateParent) {
-            if (props.exercises.length == 1 && props.exercises[0] == props.exercise) {
-                props.setExercises(props.exercises.filter(function (exercise) {
-                    return exercise === ""
+            if (props.workouts.length == 1 && props.workouts[0] == props.workouts) {
+                props.setWorkouts(props.workouts.filter(function (workout) {
+                    return workout === ""
                 }))
             }
-            else props.setExercises(props.exercises.filter(function (exercise) {
-                return exercise !== props.exercise
+            else props.setWorkouts(props.workouts.filter(function (workout) {
+                return workout !== props.workout
             }))
         }
     }, [updateParent])
 
 
+    const handleWorkoutPressed = () => {
 
+        props.navigation.navigate("ViewWorkout",  {
+            workout: props.workout,
+            saveWorkout: props.handleWorkoutChanged,
+            isNewWorkout:false,
+            index: props.index
+        })
+    }
     return (
-        <View style={styles.exerciseCard}>
+        <TouchableOpacity style={styles.exerciseCard} onPress={() => handleWorkoutPressed()}>
             {/* Exercise Icon */}
             <Image source={require("../../../assets/workoutBackground.png")} style={styles.exerciseIcon}></Image>
 
             {/* Exercise Text Container */}
             <View style={styles.exerciseTextContainer}>
-                <Text style={styles.bodyText}>{props.exercise}</Text>
+                <Text style={styles.bodyText}>{props.workout.title}</Text>
             </View>
-
-            {/* Information Container */}
-            <View style={styles.informationContainer}>
-                <TouchableOpacity style={styles.informationButton}>
-                    <Ionicons name="information-circle-outline" size={24} color="white" />
-                </TouchableOpacity>
-            </View>
-
             {/* Trash Container */}
             <View style={styles.trashContainer}>
                 <TouchableOpacity style={styles.trashButton} onPress={() => setUpdateParent(true)}>
                     <EvilIcons name="trash" size={24} color="white" />
                 </TouchableOpacity>
             </View>
-        </View>
+           
+        </TouchableOpacity>
     )
 }
 
 const Week = (props) => {
-    const [exercises, setExercises] = useState(["Push", "Pull", "Legs"])
-
+    const [workouts, setWorkouts] = useState([])
+    const [createWorkout] = useMutation(gql`${mutations.createWorkout}`);
+    const [createExercise] = useMutation(gql`${mutations.createExercise}`);
+    
     useEffect(() => {
-        console.log(props.weekToChange, props.index, props.workout)
-        if (props.weekToChange == props.index && exercises) {
-            setExercises(exercises => [...exercises, props.workout])
+        if (props.weekToChange == props.week.id) {
+            
+            setWorkouts(workouts => [...workouts, props.workout])
         }
     }, [props.workout])
 
+    useEffect(()=> {
+        if(props.saveWorkouts){
+            const newWorkouts = workouts
+            newWorkouts.forEach((workout,index) => {
+                const workoutID = uuid.v4()
+                const workoutInput = {
+                    id: workoutID,
+                    programWeekWorkoutsId: props.week.id,
+                    title: workout.title,
+                    status: "incomplete",
+                    workoutNumber: index+1
+                }
+                
+            createWorkout({ variables: { input: workoutInput } });
+            
+            const newExercises = workout.exercises
+
+                newExercises.forEach((exercise,index) => {
+                    const exerciseInput = {
+                        id: uuid.v4(),
+                        workoutID: workoutID,
+                        sets: exercise.sets,
+                        RIR: exercise.RIR,
+                        repRange: exercise.repRange,
+                        restMinutes: exercise.restMinutes,
+                        exerciseNum: index+1,
+                        exerciseInfoID: exercise.exerciseInfoID,
+                        notes: exercise.notes
+                    }
+                    createExercise({ variables: { input: exerciseInput } });
+                });
+
+            });
+
+        }
+    },[props.saveWorkouts])
+    const handleWorkoutChanged = (index, workout) => {
+        setWorkouts(prevWorkout=> {
+            const newWorkouts = [...prevWorkout];
+            newWorkouts[index] = workout;
+            return newWorkouts;
+          });
+
+    }
 
     return (
         <View style={styles.weekContainer}>
@@ -90,51 +142,102 @@ const Week = (props) => {
 
                 {/* Duration Container */}
                 <View style={styles.durationContainer}>
-                    <Text style={[styles.bodyText, { marginBottom: 0, marginTop: 5 }]}>Duration:</Text>
+                    <Text style={[styles.bodyText, { marginBottom: 0,
+                         marginTop: 5 }]}>Duration:</Text>
                     <Text style={styles.bodyText}>--</Text>
                 </View>
             </View>
 
-            {/* Exercise List */}
-            <View style={styles.exerciseList}>
+            {/* workout List */}
+            <View style={styles.wourkoutsList}>
                 {
-                    exercises && exercises.map((item, index) => (
-                        <Exercise index={index} exercise={item} setExercises={setExercises} exercises={exercises} />
+                    workouts && workouts.map((workout, index) => (
+                        <Workout index={index} workout={workout} setWorkouts={setWorkouts} handleWorkoutChanged={handleWorkoutChanged} workouts={workouts} navigation={props.navigation}/>
                     ))
                 }
             </View>
 
-            {/* Add Exercise */}
-            <TouchableOpacity style={styles.addContainer} onPress={() => {props.togglePopup(); props.setWeekNumber(props.index) }}>
+            {/* Add Workout */}
+            <TouchableOpacity style={styles.addContainer} onPress={() => { props.setWeekToChange(props.week.id); props.togglePopup();}}>
                 <AntDesign name="pluscircle" size={16} color={Colors.primary} />
                 <View style={styles.addTextContainer}>
                     <Text style={{ color: Colors.primary }}>Add</Text>
                 </View>
             </TouchableOpacity>
+              
         </View>
     )
 }
 
-export default function CreateWorkout({ route, navigation }) {
+export default function CreateProgram({ route, navigation }) {
     const [section, setSection] = useState(1)
-    const [weeks, setWeeks] = useState(2)
-    const [weekToChange, setWeekToChange] = useState(-1)
+    const [weeks, setWeeks] = useState([])
+    const [weekToChange, setWeekToChange] = useState(null)
     const [workout, setWorkout] = useState("")
     const [isModalVisible, setModalVisible] = useState(false);
     const [title, setTitle] = useState("")
-    const [weekNumber, setWeekNumber] = useState(0)
+    const [description, setDescription] = useState("")
+    const [saveWorkouts, setSaveWorkouts] =useState(false)
 
+    const [createProgram] = useMutation(gql`${mutations.createProgram}`);
+    const [createProgramWeek] = useMutation(gql`${mutations.createProgramWeek}`);
     const setCreatedPrograms = route.params.setCreatedPrograms
     const createdPrograms = route.params.createdPrograms
+    
 
-    const applySetWorkout = (workout, weekNumber) => {
-        console.log(weekNumber)
-        setWorkout(workout)
-        setWeekToChange(weekNumber)
+    const handleProgramInitialized = () => {
+        setSection(2)
+        addWeek()
+    
     }
 
-    const navigateToSelectProgram = () => {
+ const addWeek = () => {
+        const programWeekId = uuid.v4()
+        const programWeekInput = {
+                id: programWeekId,
+            }
+        //createProgramWeek({variables: {input: programWeekInput}})
+        setWeeks(prevWeeks => [...prevWeeks, programWeekInput]);
+    }
+
+
+    const applySetWorkout = (weekID, workoutInput) => {
+        setWorkout(workoutInput)
+        setWeekToChange(weekID)
+    }
+
+  
+    const handleSetWeekToChange = (weekID) => {
+        setWeekToChange(weekID)
+    }
+    
+
+    const saveProgram = () => {
         setCreatedPrograms(createdPrograms.length > 0 ? [...createdPrograms, createdPrograms[0]] : createdPrograms)
+        
+        const programID = uuid.v4()
+        
+        const programInput = {
+            id: programID,
+            authorID: global.userId,
+            image: "",
+            title: title,
+            introVideo: "",
+            description: description
+        }
+        createProgram({ variables: { input: programInput } }) 
+        
+        const newWeeks = weeks
+        newWeeks.forEach((weekInput,index) => {
+            weekInput.weekNumber = index+1
+            weekInput.programID = programID
+            createProgramWeek({ variables: { input: weekInput } });
+        });
+        setSaveWorkouts(true)
+        
+
+
+
         navigation.navigate("SelectWorkoutProgram", { newProgram: title })
     }
 
@@ -142,10 +245,9 @@ export default function CreateWorkout({ route, navigation }) {
     const togglePopup = () => {
         setModalVisible(!isModalVisible)
     };
-
+   
     return (
         <ScrollView style={styles.container}>
-
             {section == 1 ?
                 <View>
                     {/* Section Title */}
@@ -169,7 +271,6 @@ export default function CreateWorkout({ route, navigation }) {
                             style={styles.programTitleField}
                             onChangeText={setTitle}
                             placeholder="My great workout program..."
-                            keyboardType="numeric"
                             placeholderTextColor="rgba(255, 255, 255, 0.4)" />
                     </View>
 
@@ -183,10 +284,12 @@ export default function CreateWorkout({ route, navigation }) {
                         <TextInput
                             style={styles.programDescriptionField}
                             placeholder="I plan to do..."
-                            keyboardType="numeric"
+                            
                             placeholderTextColor="rgba(255, 255, 255, 0.4)"
                             multiline={true}
-                            textAlignVertical='top' />
+                            textAlignVertical='top'
+                            onChangeText={setDescription} />
+                            
                     </View>
 
                     {/* Cover Image Text */}
@@ -207,7 +310,7 @@ export default function CreateWorkout({ route, navigation }) {
 
                     {/* Continue Button */}
                     <View style={styles.continueContainer}>
-                        <TouchableOpacity style={styles.continueButton} onPress={() => setSection(2)}>
+                        <TouchableOpacity style={styles.continueButton} onPress={handleProgramInitialized}>
                             <Text>Continue</Text>
                         </TouchableOpacity>
                     </View>
@@ -227,34 +330,34 @@ export default function CreateWorkout({ route, navigation }) {
                         {/* Weeks */}
                         <View style={styles.weeksContainer}>
                             {
-                                Array(weeks).fill().map((item, index) => (
-                                    <Week index={index} togglePopup={togglePopup} workout={workout} weekToChange={weekToChange} setWeekNumber={setWeekNumber} />
-                                ))
+                                weeks.map((item, index) => (
+                                    <Week index={index} key={item.id} week = {item} weekToChange={weekToChange} saveWorkouts={saveWorkouts} togglePopup={togglePopup} navigation={navigation} workout={workout} setWeekToChange={handleSetWeekToChange}/>
+                                )) 
                             }
                         </View>
 
                         {/* Create New Week Button */}
                         <View style={styles.addWeekContainer}>
-                            <TouchableOpacity style={styles.addWeekButton} onPress={() => setWeeks(weeks + 1)}>
+                            <TouchableOpacity style={styles.addWeekButton} onPress={() => addWeek()}>
                                 <Text style={{ color: 'white' }}>Create New Week</Text>
                             </TouchableOpacity>
                         </View>
 
                         {/* Continue Button */}
                         <View style={styles.continueContainer}>
-                            <TouchableOpacity style={styles.continueButton} onPress={() => navigateToSelectProgram()}>
+                            <TouchableOpacity style={styles.continueButton} onPress={() => saveProgram()}>
                                 <Text style={{ color: 'white' }}>Continue</Text>
                             </TouchableOpacity>
                         </View>
 
                         {/* Pop up */}
-                        <CreateWorkoutPopup isVisible={isModalVisible} setWorkout={applySetWorkout} togglePopup={togglePopup} title={""} weekNumber={weekNumber} />
-
+                        <SelectWorkoutPopup isVisible={isModalVisible} setWorkout={applySetWorkout} weekToChange={weekToChange} togglePopup={togglePopup} title={""} navigation={navigation}/>
                     </View>
                     :
                     <View>
                     </View>
             }
+            
         </ScrollView>
 
     )
@@ -352,7 +455,7 @@ const styles = StyleSheet.create({
         width: '80%',
         height: 50,
         borderRadius: 10,
-        marginTop: 50,
+        marginTop: 20,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -371,7 +474,7 @@ const styles = StyleSheet.create({
         width: '80%',
         height: 50,
         borderRadius: 10,
-        marginBottom: -30,
+        
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -443,7 +546,7 @@ const styles = StyleSheet.create({
     exerciseTextContainer: {
         justifyContent: 'center',
         marginLeft: 10,
-        width: '70%',
+        width: '80%',
     },
     informationContainer: {
         alignItems: 'center',

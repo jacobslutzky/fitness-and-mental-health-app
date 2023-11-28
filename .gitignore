@@ -1,5 +1,15 @@
 vscode/
 
+
+.vscode
+.expo/
+.easignore
+
+### EASINCLUDE! ###
+### BELOW THIS LINE WILL NOT BE IGNORED BY EAS ###
+aws-exports.js
+src/aws-exports.js
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -11,6 +21,7 @@ amplify/backend/.temp
 build/
 dist/
 node_modules/
+aws-exports.js
 awsconfiguration.json
 amplifyconfiguration.json
 amplifyconfiguration.dart
@@ -20,12 +31,3 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
-
-.vscode
-.expo/
-.easignore
-
-### EASINCLUDE! ###
-### BELOW THIS LINE WILL NOT BE IGNORED BY EAS ###
-aws-exports.js
-src/aws-exports.js

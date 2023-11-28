@@ -8,40 +8,118 @@ import { SearchBar } from 'react-native-elements';
 
 
 export default function SelectWorkoutProgram({ route, navigation }) {
+      const getCurrentProgram = /* GraphQL */ `
+    query GetUserStats($id: ID!) {
+      getUserStats(id: $id) {
+        id
+        currentProgram { 
+          id
+          title
+          userProgramWeeks {
+            items {
+              id
+              weekNumber
+              userWorkouts {
+                items {
+                  id
+                  workoutNumber
+                  title
+                  status
+                  notes
+                  userExercises{
+                    items {
+                      id
+                      sets
+                      RIR
+                      restMinutes
+                      repRange
+                      exerciseNum
+                      notes
+                      completed
+                      exerciseInfoID
+                      exerciseInfo {
+                          id
+                          name
+                          muscleWorked
+                          workoutType
+                          createdAt
+                          updatedAt
+                          __typename
+                        }
+                    }
+                  }
+                }
+                }
+              }
+            }
+          }
+          
+        }
+    }
+  `;
+  const { data: dataProgram, loading: loadingProgram, error: errorProgram } = useQuery(gql`${getCurrentProgram}`, {
+    variables: { id: "stats-" + global.userId}
+});
+
   const colors = useTheme().colors;
 
   const newProgram = route.params ? route.params.newProgram : null
 
-  const navigateToCreateWorkout = (createdPrograms, setCreatedPrograms) => {
+  const navigateToCreateProgram = (createdPrograms, setCreatedPrograms) => {
 
-    navigation.navigate("CreateWorkout", {createdPrograms: createdPrograms, setCreatedPrograms: setCreatedPrograms})
+    navigation.navigate("CreateProgram", {createdPrograms: createdPrograms, setCreatedPrograms: setCreatedPrograms})
   }
 
-  const navigateToWorkoutInfo = (title, titleToNameMap) => {
+  const navigateToWorkoutInfo = (program, setCurrentProgram) => {
 
-    navigation.navigate("WorkoutProgramInfo", { title: title, titleToNameMap: titleToNameMap, setCurrentProgram: setCurrentProgram, taskCompletionList: route.params ? route.params.taskCompletionList : null, taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null})
+    navigation.navigate("WorkoutProgramInfo", { program: program,  setCurrentProgram: setCurrentProgram, taskCompletionList: route.params ? route.params.taskCompletionList : null, taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null})
   }
+  
+  const { data, loading, error, refetch } = useQuery(gql`${queries.listPrograms}`,
+    {
+        variables: {
+            filter: 
+              {
+              or: [
+              
+              { authorID: {eq: global.userId } },
+              {authorID: {attributeExists: false}}
+              ]
+              },
+            
+          
+            limit: 100,
+        }
+    });
 
-  const { data, loading, error, refetch } = useQuery(gql`${queries.listPrograms}`)
 
   let communityCards = []
-  if (data) {
-    communityCards = data.listPrograms.items.map((program) => { return { title: program.id, img: require('../../../assets/quickWorkouts1.jpeg') } })
-  }
+  
   useEffect(() => {
-    setGymindPrograms(communityCards)
-    setTasksSearched(communityCards)
+    if (data) {
+      const sortedCommunityCards = data.listPrograms.items.slice().sort((a, b) => {
+        // Assuming createdAt is a timestamp, if it's a string, convert it to Date
+        const dateA = new Date(a.createdAt);
+        const dateB = new Date(b.createdAt);
+  
+        // Sort in descending order (newest first)
+        return dateB - dateA;
+      });
+  
+      setGymindPrograms(sortedCommunityCards.filter(communityCard => communityCard.authorID == null));
+      setCreatedPrograms(sortedCommunityCards.filter(communityCard => communityCard.authorID != null));
+      setTasksSearched(sortedCommunityCards);
+    }
   }, [data]);
 
-  const titleToNameMap = {
-    "womensintermediateglute": "Women’s Intermediate to Advanced Glute Focused ",
-    "menslvl3PPL": "Men’s Intermediate 2.0 Push, Pull, Legs, Upper, Lower",
-    "menslvl2UL": "Men’s Intermediate Upper, Lower",
-    "mensfullbody": "Men's Full Body",
-    "mensPPL": "Men’s Advanced PPL",
-    "womensbeginner": "Women’s Beginner Foundation",
-    "womensintermediate": "Women’s Intermediate Foundation ",
-  }
+
+  useEffect(()=> {
+   
+    if(dataProgram?.getUserStats?.currentProgram != null){
+      navigation.navigate("CurrentProgram", { program: dataProgram.getUserStats.currentProgram,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
+    }
+
+  }, [dataProgram])
 
   const [gymindPrograms, setGymindPrograms] = useState(communityCards);
   const [createdPrograms, setCreatedPrograms] = useState([]);
@@ -50,18 +128,16 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   const [search, setSearch] = useState("")
   const [currentProgram, setCurrentProgram] = useState("")
 
-  useEffect(() => {
-    if (newProgram) {
-      console.log("hi")
-      let testProgram = gymindPrograms[0]
-      testProgram.title = newProgram
-      setGymindPrograms(gymindPrograms => [...gymindPrograms, testProgram])
-      setTasksSearched(tasksSearched => [...tasksSearched, testProgram])
-    }
-  }, [newProgram])
+  // useEffect(() => {
+  //   if (newProgram) {
+  //     let testProgram = gymindPrograms[0]
+  //     testProgram.title = newProgram
+  //     setGymindPrograms(gymindPrograms => [...gymindPrograms, testProgram])
+  //     setTasksSearched(tasksSearched => [...tasksSearched, testProgram])
+  //   }
+  // }, [newProgram])
 
   const updateSearch = (text) => {
-    console.log("tasks filtered ", tasksSearched)
     if (!gymindPrograms) return;
 
     const updatedData = gymindPrograms.filter((item) => {
@@ -76,7 +152,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   };
 
   useEffect(() => {
-    setTasksSearched(tasksSearched => [...tasksSearched, createdPrograms[createdPrograms.length - 1]])
+    refetch()
   }, [createdPrograms])
 
   useEffect(() => {
@@ -115,17 +191,15 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
   const toggleFilter = (key) => {
     if(key == 'gymind' && isFiltered != 0){
-        console.log(gymindPrograms)
         setTasksSearched(gymindPrograms)
         setIsFiltered(0)
     }
     else if(key == 'user' && isFiltered != 1){
-        console.log(createdPrograms)
         setTasksSearched(createdPrograms)
         setIsFiltered(1)
     }
     else{
-      console.log(gymindPrograms.concat(createdPrograms))
+      
       setTasksSearched(gymindPrograms.concat(createdPrograms))
       setIsFiltered(2)
     }
@@ -134,7 +208,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
 
   return (
-    <View style={styles.container}>
+    !loadingProgram?(<View style={styles.container}>
 
       <Text style={[styles.header, { color: colors.text }]}>Select Your Program</Text>
 
@@ -164,17 +238,20 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
       <ScrollView style={{ marginHorizontal: 20 }}>
         <View style={styles.cardsContainer}>
+          {isFiltered ? 
           <ImageBackground source={'../../../assets/quickWorkouts1.jpeg'} style={styles.communityCard} imageStyle={{ opacity: 0.2 }}>
-            <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToCreateWorkout(createdPrograms, setCreatedPrograms)}>
+            <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToCreateProgram(createdPrograms, setCreatedPrograms)}>
               <Text style={styles.cardText}>CREATE A PROGRAM</Text>
             </TouchableOpacity>
           </ImageBackground>
+          : <></>
+          }
           {tasksSearched ? tasksSearched.map((item, index) => (
             <>
-            {item ?
-            <ImageBackground source={item.img} style={styles.communityCard} key={index} imageStyle={{ opacity: 0.2 }}>
-              <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToWorkoutInfo(item.title, titleToNameMap, setCurrentProgram)}>
-                <Text style={styles.cardText}>{titleToNameMap[item.title] ? titleToNameMap[item.title].toUpperCase() : item.title.toUpperCase()}</Text>
+            {item?
+            <ImageBackground source={ require('../../../assets/quickWorkouts1.jpeg')} style={styles.communityCard} key={index} imageStyle={{ opacity: 0.2 }}>
+              <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToWorkoutInfo(item, setCurrentProgram)}>
+                <Text style={styles.cardText}>{item.title.toUpperCase()}</Text>
               </TouchableOpacity>
             </ImageBackground>
             :
@@ -187,7 +264,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
         </View>
       </ScrollView>
 
-    </View>
+    </View>):(<></>)
   )
 };
 

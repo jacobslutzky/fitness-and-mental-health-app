@@ -73,7 +73,6 @@ export default function Profile({ navigation }) {
   });
 
   useEffect(() => {
-    console.log("eeeee")
     console.log(dataAchievementProgresses ? dataAchievementProgresses.listAchievementProgresses : "not available")
     const achievementProgresses = dataAchievementProgresses ? dataAchievementProgresses.listAchievementProgresses.items : []
     console.log('lengths', achievements.length, achievementProgresses.length)
@@ -155,11 +154,11 @@ export default function Profile({ navigation }) {
 
         <View style={styles.followerContainer}>
           <View style={styles.followers}>
-            <Text style={[styles.followerCount, { color: colors.text }]}>15</Text>
+            <Text style={[styles.followerCount, { color: colors.text }]}>0</Text>
             <Text style={[styles.followerCount, { color: colors.text }]}>Followers</Text>
           </View>
           <View style={styles.following}>
-            <Text style={[styles.followerCount, { color: colors.text }]}>24</Text>
+            <Text style={[styles.followerCount, { color: colors.text }]}>0</Text>
             <Text style={[styles.followerCount, { color: colors.text }]}>Following</Text>
           </View>
         </View>
@@ -193,9 +192,6 @@ export default function Profile({ navigation }) {
             tabBarInactiveTintColor: 'gray', tabBarIndicatorStyle: { inactiveTintColor: "#55595B", backgroundColor: "white" }
           }}>
             <Tab.Screen name="All time" component={Leaders} />
-            <Tab.Screen name="Today" component={Leaders} />
-            <Tab.Screen name="Week" component={Leaders} />
-            <Tab.Screen name="Month" component={Leaders} />
           </Tab.Navigator>
         </View>
         

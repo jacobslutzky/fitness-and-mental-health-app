@@ -14,11 +14,12 @@ const Week = (props) => {
   const title = props.title
   const index = props.index
   const setToggle = props.setToggle
-
-
-  const { data, loading, error, refetch } = useQuery(gql`${queries.getProgramWeek}`, {
-    variables: { id: title != "womenintermediate4xweek" ? `${title}::${index}` : `week${index}-${title}` }
-  });
+  
+  const week = {...props.week }
+  week.workouts.items = props.week.workouts.items.slice().sort((a, b) => a.workoutNumber - b.workoutNumber);
+  // const { data, loading, error, refetch } = useQuery(gql`${queries.getProgramWeek}`, {
+  //   variables: { id: title != "womenintermediate4xweek" ? `${title}::${index}` : `week${index}-${title}` }
+  // });
 
   /*
 
@@ -40,28 +41,28 @@ const Week = (props) => {
     </View>
 
   */
-
+  
   return (
     <View>
       <TouchableOpacity style={styles.cardContainer} onPress={() => setToggle(props.toggle.map((tog, ind) => index - 1 == ind ? !tog : tog))}>
         <View style={[styles.card, props.toggle[index - 1] ? styles.defaultBackground : styles.primaryBackground]}>
           <View style={styles.cardTextContainer}>
-            <Text style={styles.cardWeekText}>WEEK {data && data.getProgramWeek ? data.getProgramWeek.weekNumber : ""}</Text>
+            <Text style={styles.cardWeekText}>WEEK {index}</Text>
           </View>
           <View style={styles.cardDifficultyContainer}>
             <Text style={styles.cardGoldText}>NUMBER OF WORKOUTS:</Text>
-            <Text style={styles.cardWhiteText}> {data && data.getProgramWeek ? data.getProgramWeek.workoutLabels.length : ""}</Text>
+            <Text style={styles.cardWhiteText}> {week.workouts.items.length}</Text>
           </View>
         </View>
       </TouchableOpacity>
       <Collapsible collapsed={props.toggle[index - 1]} style={styles.dropdown}>
         <View style={styles.dropdownContent}>
-          {data && data.getProgramWeek && data.getProgramWeek.workoutLabels ? data.getProgramWeek.workoutLabels.map((exercise, index) => (
+          { week.workouts.items.map((workout, index) => (
             <View style={styles.workoutContainer} key={index}>
-              <Text style={styles.workoutText}>{exercise}</Text>
+              <Text style={styles.workoutText}>{workout.title}</Text>
             </View>
           ))
-            : <View></View>
+            
           }
         </View>
       </Collapsible>
@@ -70,13 +71,8 @@ const Week = (props) => {
 }
 
 export default function PreviewSplit({ route, navigation }) {
-  const title = route.params.title
-
-  const titleToNameMap = route.params.titleToNameMap
-
-  const navigateToProgram = () => {
-    navigation.navigate("CurrentProgram", { title: title, titleToNameMap: titleToNameMap,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
-  }
+  const program = route.params.program
+  
 
   let weekQueries = []
 
@@ -88,11 +84,11 @@ export default function PreviewSplit({ route, navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={{ marginTop: 30 }}>
-        {Array(8).fill().map((split, index) => (
-          <Week index={index + 1} title={title} toggle={toggle} setToggle={setToggle} key={index} />
+        {program.weeks.items.map((week, index) => (
+          <Week index={index + 1} week={week} title={program.title} toggle={toggle} setToggle={setToggle} key={index} />
         ))}
       </ScrollView>
-      <TouchableOpacity style={styles.button} onPress={() => navigateToProgram()}>
+      <TouchableOpacity style={styles.button} onPress={() => route.params.navigateToProgram()}>
         <Text style={styles.buttonText}>Select Program</Text>
       </TouchableOpacity>
     </View>

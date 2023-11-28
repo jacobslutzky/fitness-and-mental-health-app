@@ -52,9 +52,11 @@
     "react-native-screens": "^3.27.0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-tab-view": "^3.5.1",
+    "react-native-uuid": "^2.0.1",
     "react-router-native": "^6.10.0",
     "use-sound": "^4.0.1",
-    "zen-observable-ts": "^1.2.5"
+    "zen-observable-ts": "^1.2.5",
+    "expo-linear-gradient": "~12.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

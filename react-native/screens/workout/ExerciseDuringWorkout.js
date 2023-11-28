@@ -7,34 +7,28 @@ import * as queries from "../../../src/graphql/queries";
 import * as mutations from "../../../src/graphql/mutations";
 import { useIsFocused } from '@react-navigation/native'
 import ExerciseLineChart from '../../components/ExerciseLineChart';
+import uuid from 'react-native-uuid';
 
 
 const Set = (props) => {
-    const index = props.index + 1
+    const index = props.index
     const updateReps = props.updateReps
     const updateWeights = props.updateWeights
+    const reps = props.reps
+    const weight = props.weight
     const handleSubmit = props.handleSubmit
     const colors = props.colors
-
-    const key = index - 1
+    const exercise = props.exercise
     const date = new Date()
     const month = date.getMonth() + 1
     const day = date.getDate()
-    const keyDate = props.lastEntries[key] ? props.lastEntries[key].split("::")[2] : ""
-    const lastEntryWasToday = `${month}/${day}` !== keyDate
-
-
-    const { data, loading, error, refetch } = useQuery(gql`${queries.getExerciseEntry}`, {
-        variables: { id: props.lastEntries[key] },
-        enabled: props.lastEntries
-    });
-
-
+    const lastEntry = props.lastEntry
+    
     return (
         <View key={index} style={styles.set}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View style={styles.cardNumber}>
-                    <Text style={{color: 'white', fontWeight: 'bold'}}>Set {index}</Text>
+                    <Text style={{color: 'white', fontWeight: 'bold'}}>Set {index+1}</Text>
                 </View>
                 <View style={styles.repsContianer}>
                     <View style={styles.repsTextContainer}>
@@ -42,7 +36,7 @@ const Set = (props) => {
                     </View>
                     <TextInput
                         style={[styles.input, { color: colors.text, marginLeft: 20 }]}
-                        placeholder=""
+                        value={reps !== undefined ? String(reps) : ""}
                         keyboardType="numeric"
                         textAlign='center'
                         onChangeText={text => updateReps(index, text)} />
@@ -53,43 +47,41 @@ const Set = (props) => {
                     </View>
                     <TextInput
                         style={[styles.input, { color: colors.text }]}
-                        placeholder=""
+                        value={weight !== undefined ? String(weight) : ""}
                         keyboardType="numeric"
                         textAlign='center'
                         onChangeText={text => updateWeights(index, text)}
-                        onSubmitEditing={() => handleSubmit(index - 1)} />
+                        onSubmitEditing={() => handleSubmit(index)} />
                 </View>
+                {lastEntry!=null?(<Text style={{ color: "grey" }}>{lastEntry.repsCompleted} x {lastEntry.weight} lbs</Text>):
+                 (<Text style={{ color: "grey" }}>0 x 0 lbs</Text>)}
             </View>
         </View>
     )
 }
 
-/*
-            {data && data.getExerciseEntry && lastEntryWasToday
-                ? <Text style={{ color: "grey" }}>{data.getExerciseEntry.repsCompleted} x {data.getExerciseEntry.weight} lbs</Text>
-                : <Text style={{ color: "grey" }}>0 x 0 lbs</Text>}
 
-*/
 
 export default function ExerciseDuringWorkout({ navigation, route }) {
-
+    
     const colors = useTheme().colors;
     const title = route.params.title
-    const label = route.params.label.substring(3)
     const workout = route.params.workout
     const weekNumber = route.params.weekNumber
+    const exercise = route.params.exercise
+    const exerciseLogID = `${global.userId}-${exercise.exerciseInfoID}`
+
+    
+    const [reps, setReps] = useState({})
+    const [weight, setWeight] = useState({})
+    const [currentEntryIDs, setCurrentEntryIDs] = useState({})
+    const [entries, setEntries] = useState([])
     const isFocused = useIsFocused()
     const [createLogEntry, { data: dataLogEntry, loading: loadingLogEntry, error: errorLogEntry }] = useMutation(gql`${mutations.createExerciseEntry}`);
     const [updateLogEntry, { data: dataLogEntryUpdate, loading: loadingLogEntryUpdate, error: errorLogEntryUpdate }] = useMutation(gql`${mutations.updateExerciseEntry}`);
 
-    const { data, loading, error } = useQuery(gql`${queries.getExercise}`, {
-        variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}::${label}` : `${label}-${workout}-week${weekNumber}-${title}` }
-    });
-
-
     const { data: dataLog, loading: loadingLog, error: errorLog, refetch: refetchLog } = useQuery(gql`${queries.getExerciseLog}`, {
-        skip: !data,
-        variables: { id: data && data.getExercise ? `${global.userId}::${data.getExercise.name}` : "" }
+        variables: {id: exerciseLogID}
     });
 
 
@@ -98,105 +90,105 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
 
     const [entryLabels, setEntryLabels] = useState([])
 
-    const [lastEntries, setLastEntries] = useState({})
+    const [lastEntries, setLastEntries] = useState([])
     useEffect(() => {
-        refetchLog()
-        if (data && data.getExercise && dataLog && !dataLog.getExerciseLog) {
+        
+        if(!loadingLog){
+           
+        if (dataLog && !dataLog.getExerciseLog) {
             const input = {
-                id: `${global.userId}::${data.getExercise.name}`,
-                exercise: title,
-                entryLabels: [],
-                userExerciseLogsId: global.userId
+                id: exerciseLogID,
+                exerciseInfoID: exercise.exerciseInfoID,
+                userID: global.userId
             }
-            setEntryLabels([])
-            createLog({ variables: { input: input, id: `${global.userId}::${data.getExercise.name}` } })
-            refetchLog()
+            
+            createLog({ variables: { input: input } })
         }
-        else if (data && dataLog && dataLog.getExerciseLog) {
-            const entryLabels2 = dataLog.getExerciseLog.entryLabels
-            const numSets = data.getExercise.sets
-            for (let j = Math.min(entryLabels2.length - 1, numSets - 1); j >= 0; j--) {
-                let setNum = '';
-                for (let k = entryLabels2[j].length - 1; k >= 0; k--) {
-                    if (entryLabels2[j][k] == ':') break
-                    setNum += entryLabels2[j][k]
+        else if (dataLog && dataLog.getExerciseLog) {
+            const newEntries = dataLog.getExerciseLog.entries.items;
+            setEntries(newEntries)
+            const exerciseSets = exercise.sets;
+        
+            const recentEntriesMap = new Map();
+        
+            newEntries.forEach((entry) => {
+                const setNumber = entry.setNumber;
+                
+                if(entry.userExerciseID==exercise.id){
+                    updateCurrentExerciseEntryIDs(entry.setNumber-1, entry.id)
+                    updateReps(entry.setNumber-1, entry.repsCompleted)
+                    updateWeights(entry.setNumber-1,entry.weight)
                 }
-                setNum.split('').reverse().join('')
-
-                let copyEntries = lastEntries
-                copyEntries[parseInt(setNum)] = entryLabels2[j]
-                setLastEntries(copyEntries)
-
-            }
-            setEntryLabels(entryLabels2)
-            refetchLog()
+                else if (setNumber <= exerciseSets) {
+                    if (!recentEntriesMap.has(setNumber)) {
+                        recentEntriesMap.set(setNumber, entry);
+                    } else {
+                        const existingEntry = recentEntriesMap.get(setNumber);
+                        if (entry.dateCompleted > existingEntry.dateCompleted) {
+                            recentEntriesMap.set(setNumber, entry);
+                        }
+                    }
+                }
+            });
+        
+            const mostRecentEntries = Array.from(recentEntriesMap.values());
+        
+            mostRecentEntries.sort((a, b) => a.setNumber - b.setNumber);
+        
+            setLastEntries(mostRecentEntries);
         }
-    }, [data, dataLog, isFocused]);
+    }
+    }, [ dataLog]);
 
-
-    const [reps, setReps] = useState({})
-    const [weight, setWeight] = useState({})
 
     const updateReps = (index, text) => {
-        let oldReps = reps
-        oldReps[index - 1] = text
-        setReps(oldReps)
+        setReps(prevReps => {
+            return { ...prevReps, [index]: text };
+        });
     }
-
+    
     const updateWeights = (index, text) => {
-        let oldWeight = weight
-        oldWeight[index - 1] = text
-        setWeight(oldWeight)
+        setWeight(prevWeight => {
+            return { ...prevWeight, [index]: text };
+        });
     }
 
-
+    const updateCurrentExerciseEntryIDs = (index, id) => {
+        setCurrentEntryIDs((prevEntryIDs) => {
+            return { ...prevEntryIDs, [index]: id };
+        });
+       
+    }
     const handleSubmit = (index) => {
-        refetchLog()
-        if (reps[index] && weight[index] && data) {
+        if (reps[index] && weight[index]) {
             const date = new Date();
-            const logEntryId = `${global.userId}::${data.getExercise.name}::${date.getMonth() + 1}/${date.getDate()}::${index}`;
-            if (dataLog && !dataLog.getExerciseLog) {
-                console.log("shouldn't be here")
-                console.log(dataLog)
-            }
-            else {
-                const logInput = {
-                    id: `${global.userId}::${data.getExercise.name}`,
-                    entryLabels: [logEntryId],
-                    userExerciseLogsId: global.userId
-                }
-                console.log('updatingLog')
-
-                updateLog({ variables: { input: logInput } })
-            }
-
-
-            if (entryLabels.find((entry) => entry == logEntryId)) {
+            if (currentEntryIDs[index]) {
                 const input = {
-                    id: logEntryId,
+                    id: currentEntryIDs[index],
                     repsCompleted: parseInt(reps[index]),
                     weight: weight[index],
                     dateCompleted: date,
-                    workout: workout,
-                    programWeek: weekNumber,
-                    program: title,
-                    exerciseLogEntriesId: `${global.userId}::${data.getExercise.name}`
                 }
                 updateLogEntry({ variables: { input: input } })
+        
             }
             else {
+                const new_entry_id = uuid.v4()
+                updateCurrentExerciseEntryIDs(index,new_entry_id)
+                
                 const input = {
-                    id: logEntryId,
+                    id: new_entry_id,
                     repsCompleted: parseInt(reps[index]),
                     weight: weight[index],
                     dateCompleted: date,
-                    workout: workout,
-                    programWeek: weekNumber,
-                    program: title,
-                    exerciseLogEntriesId: `${global.userId}::${data.getExercise.name}`
+                    userExerciseID: exercise.id,
+                    exerciseLogID: exerciseLogID,
+                    setNumber: index+1
                 }
                 createLogEntry({ variables: { input: input } })
             }
+           
+            
         }
     }
 
@@ -207,14 +199,14 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
         <ScrollView style={styles.container}>
             <View style={{marginHorizontal: 25}}>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>{label ? label : " "}</Text>
+                    <Text style={styles.title}>{exercise.exerciseInfo.name}</Text>
                 </View>
-                {Array(data && data.getExercise ? data.getExercise.sets : 0).fill().map((item, index) => (
-                    <Set key={index} index={index} updateReps={updateReps} updateWeights={updateWeights} handleSubmit={handleSubmit} colors={colors} lastEntries={lastEntries} exercise={data && data.getExercise ? data.getExercise.name : ""} />
-                ))}
+                {!loadingLog?( Array(exercise.sets).fill(0).map((item, index) => (
+                    <Set key={index} exerciseEntryID={currentEntryIDs} index={index} updateReps={updateReps} updateWeights={updateWeights} reps={reps[index]} weight={weight[index]} handleSubmit={handleSubmit} colors={colors} lastEntry={lastEntries.length>index?lastEntries[index]:null} exercise={exercise} />
+                ))):(<></>)}
             </View>
             {/* Build in graphs */}
-            <ExerciseLineChart navigation={navigation} exercise={data && data.getExercise ? data.getExercise.name : ""}/>
+            <ExerciseLineChart navigation={navigation} entries={entries} exercise={exercise}/>
         </ScrollView>
     )
 

@@ -16,7 +16,7 @@ const ExerciseEntry = (props) => {
 
     return (
         <View style={styles.exerciseEntry}>
-            <Text style={styles.exerciseEntryText}>Set {index}      {repsCompleted} x {weight} lbs</Text>
+            <Text style={styles.exerciseEntryText}>Set {index+1}      {repsCompleted} x {weight} lbs</Text>
         </View>
     )
 }
@@ -24,8 +24,6 @@ const ExerciseEntry = (props) => {
 const Log = (props) => {
 
     const exerciseEntries = props.item
-    console.log("entries", exerciseEntries)
-
     return (
         <View style={styles.log}>
             <View style={styles.dataContainer}>
@@ -42,14 +40,14 @@ const Log = (props) => {
 }
 
 export default function ExerciseProgress({ navigation, route }) {
-    const dataExerciseLog = route.params.data
+    const entries = route.params.data
     const exercise = route.params.exercise
     const [maxWeight, setMaxWeight] = useState(0)
     const [maxVolume, setMaxVolume] = useState(0)
 
-    let data = dataExerciseLog ? dataExerciseLog.listExerciseEntries.items.map((entry) => {
+    let data = entries.map((entry) => {
         return {repsCompleted: entry.repsCompleted, weight: entry.weight, volume: entry.repsCompleted * entry.weight, date: entry.updatedAt, workout: entry.workout}
-    }) : []
+    })
 
     useEffect(() => {
         setMaxWeight(Math.max(...data.map((entry) => {return entry.weight})))
@@ -69,7 +67,6 @@ export default function ExerciseProgress({ navigation, route }) {
                 tempEntriesGroupedByDate[dateConverted] = [data[i]]
             }
         }
-        console.log("Data: ", tempEntriesGroupedByDate)
         setEntriesGroupedByDate(tempEntriesGroupedByDate)
     }, [])
 

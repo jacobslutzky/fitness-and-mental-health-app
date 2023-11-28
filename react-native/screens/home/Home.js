@@ -129,7 +129,6 @@ export default function Home({ navigation }) {
                 name: user.attributes.name ? user.attributes.name : "",
                 email: user.username,
                 profilePicture: "",
-                currentProgram: "",
                 taskCompletionList: isPressed,
             };
             createUser({ variables: { input: userInput } });
@@ -410,7 +409,7 @@ export default function Home({ navigation }) {
         id: `${global.userId}`,
         name: dataUser.getUser.name,
         profilePicture: dataUser.getUser.profilePicture,
-        currentProgram: dataUser.getUser.currentProgram,
+       // currentProgram: dataUser.getUser.currentProgram,
         taskCompletionList: isPressed
       }
 
@@ -418,12 +417,12 @@ export default function Home({ navigation }) {
     }, [dataUser])
 
     useEffect(() => {
-      if(!dataUser) return
+      if(!dataUser || !dataUser.getUser) return
       const userInput = {
         id: `${global.userId}`,
         name: dataUser.getUser.name,
         profilePicture: dataUser.getUser.profilePicture,
-        currentProgram: dataUser.getUser.currentProgram,
+        //: dataUser.getUser.currentProgram,
         taskCompletionList: isPressed
       }
 
