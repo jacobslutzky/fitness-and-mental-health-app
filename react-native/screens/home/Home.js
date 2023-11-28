@@ -117,7 +117,7 @@ export default function Home({ navigation }) {
                 mindfulMinutes: 0,
                 meditationStreak: 0,
                 workoutsCompleted: 0,
-                email: user.username,
+                email: user.attributes.email,
                 points: 0,
             };
             createUserStats({ variables: { input: statsInput } });

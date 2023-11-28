@@ -13,11 +13,8 @@ export default function VideoCard( {item, index} ) {
     });
   }
 
-    return (
-        <View style={[styles.communityCard]} key={index} >
-          <ImageBackground source = {item.img}>
-          <TouchableOpacity style={{position: 'relative', height: "100%"}} onPress={() => handlePress(item)}>
-            <View style={styles.cardTimeContainer}>
+  /*
+              <View style={styles.cardTimeContainer}>
               <Text style={styles.cardTimeText}>{item.time}</Text>
             </View>
             <View style={styles.cardHeartContainer}>
@@ -27,6 +24,13 @@ export default function VideoCard( {item, index} ) {
               <FontAwesome name="star" size={15} color="white" style = {{marginLeft: 10}}/>
               <Text style={styles.cardStarsText}>{item.stars}</Text>
             </View>
+
+  */
+
+    return (
+        <View style={[styles.communityCard]} key={index} >
+          <ImageBackground source = {item.img}>
+          <TouchableOpacity style={{position: 'relative', height: "100%"}} onPress={() => handlePress(item)}>
             <View style={styles.cardBottom}>
               <Text style={styles.cardTitle}>{item.title}</Text>
               <Text style={styles.cardAuthor}>{item.author}</Text>

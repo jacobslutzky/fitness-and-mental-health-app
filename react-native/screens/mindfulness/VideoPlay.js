@@ -43,7 +43,7 @@ export default function VideoPlay({ navigation, route }) {
         if (isPlaying) {
             const id = setInterval(() => {
                 setCurrentTime((oldTime) => {
-                    if(!dataGetStats) return oldTime
+                    if(!dataGetStats || !dataGetStats.getUserStats) return oldTime
                     if (oldTime > length - 20 && !pointsAdded) {
                         const statsInput = {
                             id: `stats-${global.userId}`,
@@ -185,8 +185,8 @@ export default function VideoPlay({ navigation, route }) {
 
     useEffect(() => {
         LoadAudio();
-        setIsPlaying(!isPlaying)
-        ResumeAudio()
+        //setIsPlaying(!isPlaying)
+        //ResumeAudio()
     }, []);
 
 
