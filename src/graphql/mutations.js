@@ -542,7 +542,6 @@ export const createUser = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -581,23 +580,6 @@ export const createUser = /* GraphQL */ `
           userID
           exerciseInfoID
           entryLabels
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      currentProgram
-      completedPrograms {
-        items {
-          id
-          userID
-          image
-          title
-          introVideo
-          description
-          programID
           createdAt
           updatedAt
           __typename
@@ -663,7 +645,6 @@ export const updateUser = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -702,23 +683,6 @@ export const updateUser = /* GraphQL */ `
           userID
           exerciseInfoID
           entryLabels
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      currentProgram
-      completedPrograms {
-        items {
-          id
-          userID
-          image
-          title
-          introVideo
-          description
-          programID
           createdAt
           updatedAt
           __typename
@@ -784,7 +748,6 @@ export const deleteUser = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -823,23 +786,6 @@ export const deleteUser = /* GraphQL */ `
           userID
           exerciseInfoID
           entryLabels
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      currentProgram
-      completedPrograms {
-        items {
-          id
-          userID
-          image
-          title
-          introVideo
-          description
-          programID
           createdAt
           updatedAt
           __typename
@@ -916,11 +862,6 @@ export const createUserStats = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        completedPrograms {
-          nextToken
-          __typename
-        }
         createdPrograms {
           nextToken
           __typename
@@ -954,6 +895,19 @@ export const createUserStats = /* GraphQL */ `
       }
       currentProgram {
         id
+        user {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          currentProgramID
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
         userID
         image
         title
@@ -1017,11 +971,6 @@ export const updateUserStats = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        completedPrograms {
-          nextToken
-          __typename
-        }
         createdPrograms {
           nextToken
           __typename
@@ -1055,6 +1004,19 @@ export const updateUserStats = /* GraphQL */ `
       }
       currentProgram {
         id
+        user {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          currentProgramID
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
         userID
         image
         title
@@ -1118,11 +1080,6 @@ export const deleteUserStats = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        completedPrograms {
-          nextToken
-          __typename
-        }
         createdPrograms {
           nextToken
           __typename
@@ -1156,6 +1113,19 @@ export const deleteUserStats = /* GraphQL */ `
       }
       currentProgram {
         id
+        user {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          currentProgramID
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
         userID
         image
         title
@@ -1204,7 +1174,6 @@ export const createAchievementProgress = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -1261,7 +1230,6 @@ export const updateAchievementProgress = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -1318,7 +1286,6 @@ export const deleteAchievementProgress = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -1422,41 +1389,6 @@ export const createExerciseEntry = /* GraphQL */ `
       programWeek
       program
       setNumber
-      userExercise {
-        id
-        user {
-          id
-          name
-          email
-          profilePicture
-          taskCompletionList
-          currentProgram
-          createdAt
-          updatedAt
-          userUserStatsId
-          __typename
-        }
-        userID
-        exerciseInfo {
-          id
-          name
-          muscleWorked
-          workoutType
-          createdAt
-          updatedAt
-          __typename
-        }
-        exerciseInfoID
-        entries {
-          nextToken
-          __typename
-        }
-        entryLabels
-        createdAt
-        updatedAt
-        __typename
-      }
-      userExerciseID
       exerciseLog {
         id
         user {
@@ -1465,7 +1397,6 @@ export const createExerciseEntry = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -1492,6 +1423,65 @@ export const createExerciseEntry = /* GraphQL */ `
         __typename
       }
       exerciseLogID
+      userExercise {
+        id
+        exercise {
+          id
+          workoutID
+          name
+          sets
+          RIR
+          restMinutes
+          exercise
+          repRange
+          exerciseNum
+          exerciseInfoID
+          notes
+          createdAt
+          updatedAt
+          workoutBankExercisesId
+          __typename
+        }
+        exerciseID
+        exerciseInfo {
+          id
+          name
+          muscleWorked
+          workoutType
+          createdAt
+          updatedAt
+          __typename
+        }
+        exerciseInfoID
+        userWorkout {
+          id
+          title
+          status
+          workoutID
+          workoutNumber
+          notes
+          userProgramWeekID
+          createdAt
+          updatedAt
+          __typename
+        }
+        userWorkoutID
+        entries {
+          nextToken
+          __typename
+        }
+        exerciseNum
+        repRange
+        sets
+        restMinutes
+        RIR
+        completed
+        notes
+        createdAt
+        updatedAt
+        __typename
+      }
+      userExerciseID
       createdAt
       updatedAt
       __typename
@@ -1512,41 +1502,6 @@ export const updateExerciseEntry = /* GraphQL */ `
       programWeek
       program
       setNumber
-      userExercise {
-        id
-        user {
-          id
-          name
-          email
-          profilePicture
-          taskCompletionList
-          currentProgram
-          createdAt
-          updatedAt
-          userUserStatsId
-          __typename
-        }
-        userID
-        exerciseInfo {
-          id
-          name
-          muscleWorked
-          workoutType
-          createdAt
-          updatedAt
-          __typename
-        }
-        exerciseInfoID
-        entries {
-          nextToken
-          __typename
-        }
-        entryLabels
-        createdAt
-        updatedAt
-        __typename
-      }
-      userExerciseID
       exerciseLog {
         id
         user {
@@ -1555,7 +1510,6 @@ export const updateExerciseEntry = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -1582,6 +1536,65 @@ export const updateExerciseEntry = /* GraphQL */ `
         __typename
       }
       exerciseLogID
+      userExercise {
+        id
+        exercise {
+          id
+          workoutID
+          name
+          sets
+          RIR
+          restMinutes
+          exercise
+          repRange
+          exerciseNum
+          exerciseInfoID
+          notes
+          createdAt
+          updatedAt
+          workoutBankExercisesId
+          __typename
+        }
+        exerciseID
+        exerciseInfo {
+          id
+          name
+          muscleWorked
+          workoutType
+          createdAt
+          updatedAt
+          __typename
+        }
+        exerciseInfoID
+        userWorkout {
+          id
+          title
+          status
+          workoutID
+          workoutNumber
+          notes
+          userProgramWeekID
+          createdAt
+          updatedAt
+          __typename
+        }
+        userWorkoutID
+        entries {
+          nextToken
+          __typename
+        }
+        exerciseNum
+        repRange
+        sets
+        restMinutes
+        RIR
+        completed
+        notes
+        createdAt
+        updatedAt
+        __typename
+      }
+      userExerciseID
       createdAt
       updatedAt
       __typename
@@ -1602,41 +1615,6 @@ export const deleteExerciseEntry = /* GraphQL */ `
       programWeek
       program
       setNumber
-      userExercise {
-        id
-        user {
-          id
-          name
-          email
-          profilePicture
-          taskCompletionList
-          currentProgram
-          createdAt
-          updatedAt
-          userUserStatsId
-          __typename
-        }
-        userID
-        exerciseInfo {
-          id
-          name
-          muscleWorked
-          workoutType
-          createdAt
-          updatedAt
-          __typename
-        }
-        exerciseInfoID
-        entries {
-          nextToken
-          __typename
-        }
-        entryLabels
-        createdAt
-        updatedAt
-        __typename
-      }
-      userExerciseID
       exerciseLog {
         id
         user {
@@ -1645,7 +1623,6 @@ export const deleteExerciseEntry = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -1672,6 +1649,65 @@ export const deleteExerciseEntry = /* GraphQL */ `
         __typename
       }
       exerciseLogID
+      userExercise {
+        id
+        exercise {
+          id
+          workoutID
+          name
+          sets
+          RIR
+          restMinutes
+          exercise
+          repRange
+          exerciseNum
+          exerciseInfoID
+          notes
+          createdAt
+          updatedAt
+          workoutBankExercisesId
+          __typename
+        }
+        exerciseID
+        exerciseInfo {
+          id
+          name
+          muscleWorked
+          workoutType
+          createdAt
+          updatedAt
+          __typename
+        }
+        exerciseInfoID
+        userWorkout {
+          id
+          title
+          status
+          workoutID
+          workoutNumber
+          notes
+          userProgramWeekID
+          createdAt
+          updatedAt
+          __typename
+        }
+        userWorkoutID
+        entries {
+          nextToken
+          __typename
+        }
+        exerciseNum
+        repRange
+        sets
+        restMinutes
+        RIR
+        completed
+        notes
+        createdAt
+        updatedAt
+        __typename
+      }
+      userExerciseID
       createdAt
       updatedAt
       __typename
@@ -1705,11 +1741,6 @@ export const createExerciseLog = /* GraphQL */ `
           __typename
         }
         exerciseLogs {
-          nextToken
-          __typename
-        }
-        currentProgram
-        completedPrograms {
           nextToken
           __typename
         }
@@ -1751,8 +1782,8 @@ export const createExerciseLog = /* GraphQL */ `
           programWeek
           program
           setNumber
-          userExerciseID
           exerciseLogID
+          userExerciseID
           createdAt
           updatedAt
           __typename
@@ -1797,11 +1828,6 @@ export const updateExerciseLog = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        completedPrograms {
-          nextToken
-          __typename
-        }
         createdPrograms {
           nextToken
           __typename
@@ -1840,8 +1866,8 @@ export const updateExerciseLog = /* GraphQL */ `
           programWeek
           program
           setNumber
-          userExerciseID
           exerciseLogID
+          userExerciseID
           createdAt
           updatedAt
           __typename
@@ -1886,11 +1912,6 @@ export const deleteExerciseLog = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        completedPrograms {
-          nextToken
-          __typename
-        }
         createdPrograms {
           nextToken
           __typename
@@ -1929,8 +1950,8 @@ export const deleteExerciseLog = /* GraphQL */ `
           programWeek
           program
           setNumber
-          userExerciseID
           exerciseLogID
+          userExerciseID
           createdAt
           updatedAt
           __typename
@@ -1982,7 +2003,6 @@ export const createExercise = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -2081,7 +2101,6 @@ export const updateExercise = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -2180,7 +2199,6 @@ export const deleteExercise = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -2453,11 +2471,6 @@ export const createWorkout = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        completedPrograms {
-          nextToken
-          __typename
-        }
         createdPrograms {
           nextToken
           __typename
@@ -2579,11 +2592,6 @@ export const updateWorkout = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        completedPrograms {
-          nextToken
-          __typename
-        }
         createdPrograms {
           nextToken
           __typename
@@ -2702,11 +2710,6 @@ export const deleteWorkout = /* GraphQL */ `
           __typename
         }
         exerciseLogs {
-          nextToken
-          __typename
-        }
-        currentProgram
-        completedPrograms {
           nextToken
           __typename
         }
@@ -2858,7 +2861,6 @@ export const createProgramWeek = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -2935,7 +2937,6 @@ export const updateProgramWeek = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -3012,7 +3013,6 @@ export const deleteProgramWeek = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -3103,11 +3103,6 @@ export const createProgram = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        completedPrograms {
-          nextToken
-          __typename
-        }
         createdPrograms {
           nextToken
           __typename
@@ -3188,11 +3183,6 @@ export const updateProgram = /* GraphQL */ `
           __typename
         }
         exerciseLogs {
-          nextToken
-          __typename
-        }
-        currentProgram
-        completedPrograms {
           nextToken
           __typename
         }
@@ -3279,11 +3269,6 @@ export const deleteProgram = /* GraphQL */ `
           nextToken
           __typename
         }
-        currentProgram
-        completedPrograms {
-          nextToken
-          __typename
-        }
         createdPrograms {
           nextToken
           __typename
@@ -3344,6 +3329,46 @@ export const createUserProgram = /* GraphQL */ `
   ) {
     createUserProgram(input: $input, condition: $condition) {
       id
+      user {
+        id
+        user {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        mindfulMinutes
+        meditationStreak
+        workoutsCompleted
+        points
+        email
+        achievementProgresses {
+          nextToken
+          __typename
+        }
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        currentProgramID
+        createdAt
+        updatedAt
+        userStatsUserId
+        __typename
+      }
       userID
       image
       title
@@ -3358,7 +3383,6 @@ export const createUserProgram = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -3407,6 +3431,46 @@ export const updateUserProgram = /* GraphQL */ `
   ) {
     updateUserProgram(input: $input, condition: $condition) {
       id
+      user {
+        id
+        user {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        mindfulMinutes
+        meditationStreak
+        workoutsCompleted
+        points
+        email
+        achievementProgresses {
+          nextToken
+          __typename
+        }
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        currentProgramID
+        createdAt
+        updatedAt
+        userStatsUserId
+        __typename
+      }
       userID
       image
       title
@@ -3421,7 +3485,6 @@ export const updateUserProgram = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -3470,6 +3533,46 @@ export const deleteUserProgram = /* GraphQL */ `
   ) {
     deleteUserProgram(input: $input, condition: $condition) {
       id
+      user {
+        id
+        user {
+          id
+          name
+          email
+          profilePicture
+          taskCompletionList
+          createdAt
+          updatedAt
+          userUserStatsId
+          __typename
+        }
+        mindfulMinutes
+        meditationStreak
+        workoutsCompleted
+        points
+        email
+        achievementProgresses {
+          nextToken
+          __typename
+        }
+        currentProgram {
+          id
+          userID
+          image
+          title
+          introVideo
+          description
+          programID
+          createdAt
+          updatedAt
+          __typename
+        }
+        currentProgramID
+        createdAt
+        updatedAt
+        userStatsUserId
+        __typename
+      }
       userID
       image
       title
@@ -3484,7 +3587,6 @@ export const deleteUserProgram = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -3565,6 +3667,19 @@ export const createUserProgramWeeks = /* GraphQL */ `
       programWeekID
       userProgram {
         id
+        user {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          currentProgramID
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
         userID
         image
         title
@@ -3674,6 +3789,19 @@ export const updateUserProgramWeeks = /* GraphQL */ `
       programWeekID
       userProgram {
         id
+        user {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          currentProgramID
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
         userID
         image
         title
@@ -3783,6 +3911,19 @@ export const deleteUserProgramWeeks = /* GraphQL */ `
       programWeekID
       userProgram {
         id
+        user {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          currentProgramID
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
         userID
         image
         title
@@ -3892,6 +4033,19 @@ export const createUserProgWeek = /* GraphQL */ `
       programWeekID
       userProgram {
         id
+        user {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          currentProgramID
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
         userID
         image
         title
@@ -3979,6 +4133,19 @@ export const updateUserProgWeek = /* GraphQL */ `
       programWeekID
       userProgram {
         id
+        user {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          currentProgramID
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
         userID
         image
         title
@@ -4066,6 +4233,19 @@ export const deleteUserProgWeek = /* GraphQL */ `
       programWeekID
       userProgram {
         id
+        user {
+          id
+          mindfulMinutes
+          meditationStreak
+          workoutsCompleted
+          points
+          email
+          currentProgramID
+          createdAt
+          updatedAt
+          userStatsUserId
+          __typename
+        }
         userID
         image
         title
@@ -4153,7 +4333,6 @@ export const createUserWorkout = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -4268,7 +4447,6 @@ export const updateUserWorkout = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -4383,7 +4561,6 @@ export const deleteUserWorkout = /* GraphQL */ `
           email
           profilePicture
           taskCompletionList
-          currentProgram
           createdAt
           updatedAt
           userUserStatsId
@@ -4563,7 +4740,7 @@ export const createUserExercise = /* GraphQL */ `
         __typename
       }
       userWorkoutID
-      exerciseEntries {
+      entries {
         items {
           id
           repsCompleted
@@ -4573,8 +4750,8 @@ export const createUserExercise = /* GraphQL */ `
           programWeek
           program
           setNumber
-          userExerciseID
           exerciseLogID
+          userExerciseID
           createdAt
           updatedAt
           __typename
@@ -4699,7 +4876,7 @@ export const updateUserExercise = /* GraphQL */ `
         __typename
       }
       userWorkoutID
-      exerciseEntries {
+      entries {
         items {
           id
           repsCompleted
@@ -4709,8 +4886,8 @@ export const updateUserExercise = /* GraphQL */ `
           programWeek
           program
           setNumber
-          userExerciseID
           exerciseLogID
+          userExerciseID
           createdAt
           updatedAt
           __typename
@@ -4835,7 +5012,7 @@ export const deleteUserExercise = /* GraphQL */ `
         __typename
       }
       userWorkoutID
-      exerciseEntries {
+      entries {
         items {
           id
           repsCompleted
@@ -4845,8 +5022,8 @@ export const deleteUserExercise = /* GraphQL */ `
           programWeek
           program
           setNumber
-          userExerciseID
           exerciseLogID
+          userExerciseID
           createdAt
           updatedAt
           __typename

@@ -59,8 +59,8 @@ type User @model @auth(rules: [{ allow: private }]) {
   taskCompletionList: [Int] 
   userStats: UserStats @hasOne
   exerciseLogs: [ExerciseLog] @hasMany(indexName: "byUser", fields: ["id"])
-  currentProgram: UserProgram @hasOne(fields: ["id"]) 
-  completedPrograms: [UserProgram] @hasMany(indexName: "byUser", fields: ["id"])
+# currentProgram: UserProgram @hasOne(fields: ["id"]) 
+ # completedPrograms: [UserProgram] @hasMany(indexName: "byUser", fields: ["id"])
   createdPrograms: [Program] @hasMany(indexName: "byUser", fields: ["id"])
   createdWorkouts: [Workout] @hasMany(indexName: "byUser", fields: ["id"])
 
@@ -80,6 +80,8 @@ type UserStats @model @auth(rules: [{ allow: private }]) {
   points: Int
   email: String
   achievementProgresses: [AchievementProgress] @hasMany
+  currentProgram: UserProgram @hasOne( fields: ["currentProgramID"]) 
+  currentProgramID: ID
 }
 
 
@@ -112,6 +114,8 @@ type ExerciseEntry @model @auth(rules: [{ allow: private }]) {
   setNumber: Int
   exerciseLog: ExerciseLog @belongsTo(fields: ["exerciseLogID"])
   exerciseLogID: ID @index(name: "byExerciseLog")
+  userExercise: UserExercise @belongsTo(fields: ["userExerciseID"])
+  userExerciseID: ID @index(name:"byUserExercise")
 
 }
 
@@ -119,8 +123,6 @@ type ExerciseLog @model @auth(rules: [{ allow: private }]) {
   id: ID!
   user: User @belongsTo(fields: ["userID"])
   userID: ID @index(name: "byUser")
-  userExercise: UserExercise @belongsTo(fields: ["userExerciseID"])
-  userExerciseID: ID @index(name:"byUserExercise")
   exerciseInfo: ExerciseInfo @hasOne(fields: ["exerciseInfoID"])
   exerciseInfoID: ID
   entries: [ExerciseEntry] @hasMany(indexName: "byExerciseLog", fields: ["id"])
@@ -177,8 +179,8 @@ type WorkoutBank @model @auth(rules: [{ allow: private }]) {
 
 type ProgramWeek @model @auth(rules: [{ allow: private }]) {
   id: ID!
-  programID: ID! @index(name: "byProgram")
-  program: Program! @belongsTo(fields: ["programID"])
+  programID: ID @index(name: "byProgram")
+  program: Program @belongsTo(fields: ["programID"])
   weekNumber: Int!
   workouts: [Workout] @hasMany(indexName: "byProgramWeek", fields: ["id"])
   workoutLabels: [String]
@@ -193,14 +195,14 @@ type Program @model @auth(rules: [{ allow: private }]) {
   title: String!
   introVideo: String!
   description: String
-  weeks: [ProgramWeek!]! @hasMany(indexName: "byProgram", fields: ["id"])
+  weeks: [ProgramWeek] @hasMany(indexName: "byProgram", fields: ["id"])
   userPrograms: [UserProgram] @hasMany(indexName: "byProgram", fields: ["id"])
 }
 
 type UserProgram @model  @auth(rules: [{ allow: private }]) {
   id: ID!
-  user: User @belongsTo(fields: ["userID"])
-  userID: ID! @index(name: "byUser")
+  user: UserStats @belongsTo(fields: ["userID"])
+  userID: ID
   image: String!
   title: String!
   introVideo: String!
@@ -251,7 +253,7 @@ type UserExercise @model  @auth (rules: [{ allow: private }]) {
   exerciseInfoID: ID!
   userWorkout: UserWorkout @belongsTo(fields: ["userWorkoutID"])
   userWorkoutID: ID @index(name: "byUserWorkout")
-  exerciseLogs: [ExerciseLog] @hasMany(indexName: "byUserExercise", fields: ["id"])
+  entries: [ExerciseEntry] @hasMany(indexName: "byUserExercise", fields: ["id"])
   exerciseNum: Int!
   repRange: String!
   sets: Int!

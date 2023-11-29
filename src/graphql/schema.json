@@ -1503,10 +1503,10 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "exerciseEntriesByUserExerciseID",
+          "name" : "exerciseEntriesByExerciseLogID",
           "description" : null,
           "args" : [ {
-            "name" : "userExerciseID",
+            "name" : "exerciseLogID",
             "description" : null,
             "type" : {
               "kind" : "NON_NULL",
@@ -1563,10 +1563,10 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "exerciseEntriesByExerciseLogID",
+          "name" : "exerciseEntriesByUserExerciseID",
           "description" : null,
           "args" : [ {
-            "name" : "exerciseLogID",
+            "name" : "userExerciseID",
             "description" : null,
             "type" : {
               "kind" : "NON_NULL",
@@ -2038,66 +2038,6 @@
           "type" : {
             "kind" : "OBJECT",
             "name" : "ModelProgramConnection",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "userProgramsByUserID",
-          "description" : null,
-          "args" : [ {
-            "name" : "userID",
-            "description" : null,
-            "type" : {
-              "kind" : "NON_NULL",
-              "name" : null,
-              "ofType" : {
-                "kind" : "SCALAR",
-                "name" : "ID",
-                "ofType" : null
-              }
-            },
-            "defaultValue" : null
-          }, {
-            "name" : "sortDirection",
-            "description" : null,
-            "type" : {
-              "kind" : "ENUM",
-              "name" : "ModelSortDirection",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          }, {
-            "name" : "filter",
-            "description" : null,
-            "type" : {
-              "kind" : "INPUT_OBJECT",
-              "name" : "ModelUserProgramFilterInput",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          }, {
-            "name" : "limit",
-            "description" : null,
-            "type" : {
-              "kind" : "SCALAR",
-              "name" : "Int",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          }, {
-            "name" : "nextToken",
-            "description" : null,
-            "type" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          } ],
-          "type" : {
-            "kind" : "OBJECT",
-            "name" : "ModelUserProgramConnection",
             "ofType" : null
           },
           "isDeprecated" : false,
@@ -4612,64 +4552,6 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "currentProgram",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "completedPrograms",
-          "description" : null,
-          "args" : [ {
-            "name" : "filter",
-            "description" : null,
-            "type" : {
-              "kind" : "INPUT_OBJECT",
-              "name" : "ModelUserProgramFilterInput",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          }, {
-            "name" : "sortDirection",
-            "description" : null,
-            "type" : {
-              "kind" : "ENUM",
-              "name" : "ModelSortDirection",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          }, {
-            "name" : "limit",
-            "description" : null,
-            "type" : {
-              "kind" : "SCALAR",
-              "name" : "Int",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          }, {
-            "name" : "nextToken",
-            "description" : null,
-            "type" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          } ],
-          "type" : {
-            "kind" : "OBJECT",
-            "name" : "ModelUserProgramConnection",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
           "name" : "createdPrograms",
           "description" : null,
           "args" : [ {
@@ -5254,17 +5136,24 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
+          "name" : "user",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "OBJECT",
+            "name" : "UserStats",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
           "name" : "userID",
           "description" : null,
           "args" : [ ],
           "type" : {
-            "kind" : "NON_NULL",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "ID",
-              "ofType" : null
-            }
+            "kind" : "SCALAR",
+            "name" : "ID",
+            "ofType" : null
           },
           "isDeprecated" : false,
           "deprecationReason" : null
@@ -5721,13 +5610,9 @@
           "description" : null,
           "args" : [ ],
           "type" : {
-            "kind" : "NON_NULL",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "ID",
-              "ofType" : null
-            }
+            "kind" : "SCALAR",
+            "name" : "ID",
+            "ofType" : null
           },
           "isDeprecated" : false,
           "deprecationReason" : null
@@ -5736,13 +5621,9 @@
           "description" : null,
           "args" : [ ],
           "type" : {
-            "kind" : "NON_NULL",
-            "name" : null,
-            "ofType" : {
-              "kind" : "OBJECT",
-              "name" : "Program",
-              "ofType" : null
-            }
+            "kind" : "OBJECT",
+            "name" : "Program",
+            "ofType" : null
           },
           "isDeprecated" : false,
           "deprecationReason" : null
@@ -7024,7 +6905,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "exerciseEntries",
+          "name" : "entries",
           "description" : null,
           "args" : [ {
             "name" : "filter",
@@ -8045,28 +7926,6 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "userExercise",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "OBJECT",
-            "name" : "ExerciseLog",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "userExerciseID",
-          "description" : null,
-          "args" : [ ],
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "ID",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
           "name" : "exerciseLog",
           "description" : null,
           "args" : [ ],
@@ -8079,6 +7938,28 @@
           "deprecationReason" : null
         }, {
           "name" : "exerciseLogID",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "ID",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "userExercise",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "OBJECT",
+            "name" : "UserExercise",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "userExerciseID",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -8361,7 +8242,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "userExerciseID",
+          "name" : "exerciseLogID",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -8370,7 +8251,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "exerciseLogID",
+          "name" : "userExerciseID",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -9220,15 +9101,6 @@
           "type" : {
             "kind" : "INPUT_OBJECT",
             "name" : "ModelIntInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "currentProgram",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -14043,15 +13915,6 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "currentProgram",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "userUserStatsId",
           "description" : null,
           "type" : {
@@ -14102,15 +13965,6 @@
           "type" : {
             "kind" : "INPUT_OBJECT",
             "name" : "ModelIntInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "currentProgram",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelStringInput",
             "ofType" : null
           },
           "defaultValue" : null
@@ -14218,15 +14072,6 @@
               "name" : "Int",
               "ofType" : null
             }
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "currentProgram",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
           },
           "defaultValue" : null
         }, {
@@ -15031,7 +14876,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "userExerciseID",
+          "name" : "exerciseLogID",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -15040,7 +14885,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "exerciseLogID",
+          "name" : "userExerciseID",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -15121,7 +14966,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "userExerciseID",
+          "name" : "exerciseLogID",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -15130,7 +14975,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "exerciseLogID",
+          "name" : "userExerciseID",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -15259,7 +15104,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "userExerciseID",
+          "name" : "exerciseLogID",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -15268,7 +15113,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "exerciseLogID",
+          "name" : "userExerciseID",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -16635,13 +16480,9 @@
           "name" : "programID",
           "description" : null,
           "type" : {
-            "kind" : "NON_NULL",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "ID",
-              "ofType" : null
-            }
+            "kind" : "SCALAR",
+            "name" : "ID",
+            "ofType" : null
           },
           "defaultValue" : null
         }, {
@@ -17091,13 +16932,9 @@
           "name" : "userID",
           "description" : null,
           "type" : {
-            "kind" : "NON_NULL",
-            "name" : null,
-            "ofType" : {
-              "kind" : "SCALAR",
-              "name" : "ID",
-              "ofType" : null
-            }
+            "kind" : "SCALAR",
+            "name" : "ID",
+            "ofType" : null
           },
           "defaultValue" : null
         }, {
@@ -20886,15 +20723,6 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "currentProgram",
-          "description" : null,
-          "type" : {
-            "kind" : "INPUT_OBJECT",
-            "name" : "ModelSubscriptionStringInput",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
           "name" : "and",
           "description" : null,
           "type" : {
@@ -21233,7 +21061,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "userExerciseID",
+          "name" : "exerciseLogID",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -21242,7 +21070,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "exerciseLogID",
+          "name" : "userExerciseID",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -23387,6 +23215,23 @@
         "onFragment" : false,
         "onField" : false
       }, {
+        "name" : "deprecated",
+        "description" : null,
+        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
+        "args" : [ {
+          "name" : "reason",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : "\"No longer supported\""
+        } ],
+        "onOperation" : false,
+        "onFragment" : false,
+        "onField" : false
+      }, {
         "name" : "aws_lambda",
         "description" : "Tells the service this field/object has access authorized by a Lambda Authorizer.",
         "locations" : [ "OBJECT", "FIELD_DEFINITION" ],
@@ -23440,23 +23285,6 @@
             }
           },
           "defaultValue" : null
-        } ],
-        "onOperation" : false,
-        "onFragment" : false,
-        "onField" : false
-      }, {
-        "name" : "deprecated",
-        "description" : null,
-        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
-        "args" : [ {
-          "name" : "reason",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : "\"No longer supported\""
         } ],
         "onOperation" : false,
         "onFragment" : false,

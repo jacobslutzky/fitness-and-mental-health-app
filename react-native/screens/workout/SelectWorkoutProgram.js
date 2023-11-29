@@ -65,9 +65,15 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
   const newProgram = route.params ? route.params.newProgram : null
 
-  const navigateToCreateProgram = (createdPrograms, setCreatedPrograms) => {
+  const handleProgramCreated = () => {
+    
+    refetch()
+  }
 
-    navigation.navigate("CreateProgram", {createdPrograms: createdPrograms, setCreatedPrograms: setCreatedPrograms})
+
+  const navigateToCreateProgram = (createdPrograms) => {
+
+    navigation.navigate("CreateProgram", {createdPrograms: createdPrograms, handleProgramCreated:handleProgramCreated})
   }
 
   const navigateToWorkoutInfo = (program, setCurrentProgram) => {
@@ -96,7 +102,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   let communityCards = []
   
   useEffect(() => {
-    if (data) {
+    if (!loading) {
       const sortedCommunityCards = data.listPrograms.items.slice().sort((a, b) => {
         // Assuming createdAt is a timestamp, if it's a string, convert it to Date
         const dateA = new Date(a.createdAt);
@@ -115,7 +121,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
   useEffect(()=> {
    
-    if(dataProgram?.getUserStats?.currentProgram != null){
+    if(dataProgram?.getUserStats?.currentProgram != undefined){
       navigation.navigate("CurrentProgram", { program: dataProgram.getUserStats.currentProgram,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
     }
 
@@ -151,9 +157,6 @@ export default function SelectWorkoutProgram({ route, navigation }) {
     setSearch(text)
   };
 
-  useEffect(() => {
-    refetch()
-  }, [createdPrograms])
 
   useEffect(() => {
     if(tasksSearched.length == 0) return

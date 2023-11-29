@@ -181,8 +181,6 @@ export default function CreateProgram({ route, navigation }) {
 
     const [createProgram] = useMutation(gql`${mutations.createProgram}`);
     const [createProgramWeek] = useMutation(gql`${mutations.createProgramWeek}`);
-    const setCreatedPrograms = route.params.setCreatedPrograms
-    const createdPrograms = route.params.createdPrograms
     
 
     const handleProgramInitialized = () => {
@@ -196,7 +194,6 @@ export default function CreateProgram({ route, navigation }) {
         const programWeekInput = {
                 id: programWeekId,
             }
-        //createProgramWeek({variables: {input: programWeekInput}})
         setWeeks(prevWeeks => [...prevWeeks, programWeekInput]);
     }
 
@@ -212,8 +209,8 @@ export default function CreateProgram({ route, navigation }) {
     }
     
 
-    const saveProgram = () => {
-        setCreatedPrograms(createdPrograms.length > 0 ? [...createdPrograms, createdPrograms[0]] : createdPrograms)
+    const saveProgram = async() => {
+      
         
         const programID = uuid.v4()
         
@@ -225,19 +222,17 @@ export default function CreateProgram({ route, navigation }) {
             introVideo: "",
             description: description
         }
-        createProgram({ variables: { input: programInput } }) 
+        await createProgram({ variables: { input: programInput } }) 
         
         const newWeeks = weeks
-        newWeeks.forEach((weekInput,index) => {
+        newWeeks.forEach(async(weekInput,index) => {
             weekInput.weekNumber = index+1
             weekInput.programID = programID
-            createProgramWeek({ variables: { input: weekInput } });
+            await createProgramWeek({ variables: { input: weekInput } });
         });
         setSaveWorkouts(true)
         
-
-
-
+        route.params.handleProgramCreated()
         navigation.navigate("SelectWorkoutProgram", { newProgram: title })
     }
 
