@@ -217,7 +217,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     expandExerciseButtonContainer: {
-        alignItems: 'end',
         width: "40%",
         justifyContent: 'center',
         marginLeft: 15
