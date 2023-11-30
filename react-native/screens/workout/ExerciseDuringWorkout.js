@@ -39,7 +39,9 @@ const Set = (props) => {
                         value={reps !== undefined ? String(reps) : ""}
                         keyboardType="numeric"
                         textAlign='center'
-                        onChangeText={text => updateReps(index, text)} />
+                        onChangeText={text => updateReps(index, text)} 
+                        onBlur={() => handleSubmit(index)} 
+                        />
                 </View>
                 <View style={styles.weightContainer}>
                     <View style={styles.weightTextContainer}>
@@ -51,7 +53,8 @@ const Set = (props) => {
                         keyboardType="numeric"
                         textAlign='center'
                         onChangeText={text => updateWeights(index, text)}
-                        onSubmitEditing={() => handleSubmit(index)} />
+                        onBlur={() => handleSubmit(index)} 
+                        />
                 </View>
                 {lastEntry!=null?(<Text style={{ color: "grey" }}>{lastEntry.repsCompleted} x {lastEntry.weight} lbs</Text>):
                  (<Text style={{ color: "grey" }}>0 x 0 lbs</Text>)}
