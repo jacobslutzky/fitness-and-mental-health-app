@@ -5,14 +5,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SelectWorkoutProgram from '../screens/workout/SelectWorkoutProgram';
 import WorkoutProgramInfo from '../screens/workout/WorkoutProgramInfo';
 import PreviewSplit from '../screens/workout/PreviewSplit';
-import CurrentProgram from '../screens/workout/CurrentProgram';
+import {CurrentProgramNavigator} from '../screens/workout/CurrentProgram';
 import DuringWorkout from '../screens/workout/DuringWorkout';
 import ExerciseDuringWorkout from '../screens/workout/ExerciseDuringWorkout';
 import CreateProgram from '../screens/workout/CreateProgram';
 import ExerciseProgress from '../screens/workout/ExerciseProgress';
 import { Ionicons } from '@expo/vector-icons';
 import ViewWorkout from '../screens/workout/ViewWorkout';
-
+import InitialScreenRouter from '../screens/workout/InitialScreenRouter';
 const Stack = createStackNavigator();
 
 export default function FitnessPageNavigator({route, navigation}) {
@@ -26,8 +26,9 @@ export default function FitnessPageNavigator({route, navigation}) {
             <Ionicons name="arrow-back" size={24} marginLeft={"10%"} color={colors.primary}/>
           ),
           }}>
+          <Stack.Screen name = "InitialScreenRouter" component={InitialScreenRouter} />
           <Stack.Screen name = "SelectWorkoutProgram" component={SelectWorkoutProgram} />
-          <Stack.Screen name = "CurrentProgram" component={CurrentProgram}/>
+          <Stack.Screen name = "CurrentProgramNavigator" component={CurrentProgramNavigator}/>
               <Stack.Screen name = "WorkoutProgramInfo" component={WorkoutProgramInfo} options={{ title: "",
                 headerShown:true,  headerShadowVisible: false, headerBackTitle: "Back"
               }}/>

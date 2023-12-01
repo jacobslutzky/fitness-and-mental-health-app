@@ -10,13 +10,10 @@ const Exercise = (props) => {
 
   const label = props.label
   const exercise = props.exercise
-  const title = props.title
   const weekNumber = props.weekNumber
   const index = props.index
 
-  // const { data, loading, error } = useQuery(gql`${queries.getExercise}`, {
-  //   variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}::${label}` : `${label}-${workout}-week${weekNumber}-${title}`}
-  // }); 
+
   
   return (
     <View key={index}>
@@ -41,13 +38,7 @@ const Exercise = (props) => {
   )
 }
 
-function WorkoutPreviewPopUp({ isVisible, workout, togglePopup, title, weekNumber }) {
-
-//  const { data : dataWorkout, loading: loadingWorkout, error: errorWorkout, refetch: refetchWorkout } = useQuery(gql`${queries.getWorkout}`, {
-//   variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}` : `${workout}-week${weekNumber}-${title}`},
-//   enabled: false
-// }); 
-
+function WorkoutPreviewPopUp({ isVisible, workout, togglePopup, weekNumber }) {
 
 
 
@@ -60,7 +51,7 @@ function WorkoutPreviewPopUp({ isVisible, workout, togglePopup, title, weekNumbe
         <Text style={styles.title}>{workout.title}</Text>
         <ScrollView style={styles.exerciseList}>
           {workout.userExercises.items.map((exercise, index) => (
-            <Exercise title={title} exercise={exercise} key={index} index={index}/>
+            <Exercise exercise={exercise} key={index} index={index}/>
           ))}
         </ScrollView>
         

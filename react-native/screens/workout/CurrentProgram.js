@@ -10,7 +10,6 @@ import WorkoutPreviewPopUp from '../../components/WorkoutPreviewPopUp';
 
 const Workout = (props) => {
     // const dataR = props.dataR
-    // const title = props.title
     const togglePopup = props.togglePopup
    
 
@@ -41,20 +40,23 @@ const Workout = (props) => {
         </View>
     )
 }
+export  function CurrentProgramNavigator({ navigation, route }){
+    
+    return <CurrentProgram navigation={navigation} currProgram={route.params.program} />
+}
 
-
-export default function CurrentProgram({ navigation, route }) {
+export  function CurrentProgram({navigation, currProgram, taskCompletionList,taskCompletionListIndex}) {
     const colors = useTheme().colors;
-    const title = route.params.title
-    const titleToNameMap = route.params.titleToNameMap
+  //  const titleToNameMap = route.params.titleToNameMap
     const [workoutBeingPreviewed, setWorkoutBeingPreviewed] = useState(null);
-    const [program, setProgram] = useState(null)
+    const [program, setProgram] = useState()
     const [currentWeek, setCurrentWeek] = useState(null)
     const [currentWorkout, setCurrentWorkout] = useState(null)
     
 
     useEffect(() => {
-        const userProgram = route.params.program
+        if(currProgram!=null){
+        const userProgram = currProgram
         const sortedUserProgramWeeks = [...userProgram.userProgramWeeks.items];
         sortedUserProgramWeeks.sort((a, b) => a.weekNumber - b.weekNumber);
         const sortedProgram = {
@@ -71,15 +73,16 @@ export default function CurrentProgram({ navigation, route }) {
 
         setProgram(sortedProgram);
         setWorkoutToCurrent(sortedProgram)
-    }, []);
+    }
+    }, [currProgram]);
    
 
 
     const navigateToSelectProgram = () => {
-        navigation.navigate("SelectWorkoutProgram")
+        navigation.navigate("SelectWorkoutProgram",{selectingProgram:true})
     }
     const navigatedToWorkout = () => {
-         navigation.navigate("DuringWorkout", { workout: currentWorkout, onWorkoutComplete: onWorkoutComplete, title: title, taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
+         navigation.navigate("DuringWorkout", { workout: currentWorkout, onWorkoutComplete: onWorkoutComplete, taskCompletionList: taskCompletionList,  taskCompletionListIndex: taskCompletionListIndex  })
     }
 
 
@@ -159,7 +162,7 @@ const setWorkoutToCurrent = (program) => {
                 </TouchableOpacity>
             </View>
 
-            {program ? <WorkoutPreviewPopUp isVisible={isModalVisible} workout={workoutBeingPreviewed} togglePopup={togglePopup} title={title} />
+            {program ? <WorkoutPreviewPopUp isVisible={isModalVisible} workout={workoutBeingPreviewed} togglePopup={togglePopup} />
                 : <View></View>}
         </ScrollView>
         </View>

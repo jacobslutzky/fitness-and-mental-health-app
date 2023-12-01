@@ -11,7 +11,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 const Exercise = (props) => {
     const colors = useTheme().colors;
-    const title = props.title
+   
     const exercise = props.exercise
     const workout = props.workout
     const weekNumber = props.weekNumber
@@ -64,7 +64,7 @@ const Exercise = (props) => {
     // }, [data, dataLog, props.isFocused]);
 
     const navigateToExerciseScreen = () => {
-        navigation.navigate("ExerciseDuringWorkout", {exercise: exercise, weekNumber: weekNumber, workout: workout, title: title })
+        navigation.navigate("ExerciseDuringWorkout", {exercise: exercise, weekNumber: weekNumber, workout: workout})
     }
 
     return (
@@ -153,7 +153,7 @@ export default function DuringWorkout({ navigation, route}) {
 
         if(route.params.taskCompletionList) route.params.taskCompletionList[route.params.taskCompletionListIndex] = true
 
-        navigation.navigate("CurrentProgram", { title: title, titleToNameMap: titleToNameMap })
+        navigation.goBack(null)
     }
 
     return (
@@ -164,7 +164,7 @@ export default function DuringWorkout({ navigation, route}) {
             </View>
             <View style={{ marginBottom: 150 }}>
                 {workout.userExercises.items.map((exercise, index) => (
-                    <Exercise key={index} exercise={exercise} title={title} workout={workout} weekNumber={weekNumber} isFocused={isFocused} navigation={navigation} />
+                    <Exercise key={index} exercise={exercise} workout={workout} weekNumber={weekNumber} isFocused={isFocused} navigation={navigation} />
                 ))}
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.bottomButton} onPress={() => completeWorkout()} >

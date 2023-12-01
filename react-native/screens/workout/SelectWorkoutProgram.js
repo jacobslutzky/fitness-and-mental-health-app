@@ -6,64 +6,13 @@ import * as queries from "../../../src/graphql/queries";
 import { Colors } from '../../constants/Colors';
 import { SearchBar } from 'react-native-elements';
 
-
 export default function SelectWorkoutProgram({ route, navigation }) {
-      const getCurrentProgram = /* GraphQL */ `
-    query GetUserStats($id: ID!) {
-      getUserStats(id: $id) {
-        id
-        currentProgram { 
-          id
-          title
-          userProgramWeeks {
-            items {
-              id
-              weekNumber
-              userWorkouts {
-                items {
-                  id
-                  workoutNumber
-                  title
-                  status
-                  notes
-                  userExercises{
-                    items {
-                      id
-                      sets
-                      RIR
-                      restMinutes
-                      repRange
-                      exerciseNum
-                      notes
-                      completed
-                      exerciseInfoID
-                      exerciseInfo {
-                          id
-                          name
-                          muscleWorked
-                          workoutType
-                          createdAt
-                          updatedAt
-                          __typename
-                        }
-                    }
-                  }
-                }
-                }
-              }
-            }
-          }
-          
-        }
-    }
-  `;
-  const { data: dataProgram, loading: loadingProgram, error: errorProgram } = useQuery(gql`${getCurrentProgram}`, {
-    variables: { id: "stats-" + global.userId}
-});
+     
+
 
   const colors = useTheme().colors;
 
-  const newProgram = route.params ? route.params.newProgram : null
+  const newProgram = route?.params ? route.params.newProgram : null
 
   const handleProgramCreated = () => {
     
@@ -119,13 +68,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
   }, [data]);
 
 
-  useEffect(()=> {
-   
-    if(dataProgram?.getUserStats?.currentProgram != undefined){
-      navigation.navigate("CurrentProgram", { program: dataProgram.getUserStats.currentProgram,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
-    }
 
-  }, [dataProgram])
 
   const [gymindPrograms, setGymindPrograms] = useState(communityCards);
   const [createdPrograms, setCreatedPrograms] = useState([]);
@@ -211,7 +154,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
 
   return (
-    !loadingProgram?(<View style={styles.container}>
+<View style={styles.container}>
 
       <Text style={[styles.header, { color: colors.text }]}>Select Your Program</Text>
 
@@ -267,8 +210,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
         </View>
       </ScrollView>
 
-    </View>):(<></>)
-  )
+    </View>)
 };
 
 const styles = StyleSheet.create({

@@ -68,7 +68,6 @@ const Set = (props) => {
 export default function ExerciseDuringWorkout({ navigation, route }) {
     
     const colors = useTheme().colors;
-    const title = route.params.title
     const workout = route.params.workout
     const weekNumber = route.params.weekNumber
     const exercise = route.params.exercise

@@ -30,7 +30,7 @@ export default function Main() {
             }
              
           },
-
+          lazy:false,
           tabBarStyle: {backgroundColor: colors.backgroundColor, opacity: .9},
           sceneContainerStyle: {height: '100%', flex: 1},
           tabBarIcon: ({color, size }) => {

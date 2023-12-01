@@ -152,7 +152,7 @@ export default function WorkoutProgramInfo({ route, navigation }) {
         }
         updateUserStats({ variables: { input: statsInput } })
 
-       navigation.navigate("CurrentProgram", { program: newProgram,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
+       navigation.navigate("CurrentProgramNavigator", { program: newProgram,  taskCompletionList: route.params ? route.params.taskCompletionList : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null })
     }
 
     return (
