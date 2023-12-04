@@ -126,7 +126,6 @@ const setWorkoutToCurrent = (program) => {
 
     return (
         <View style={styles.container}>
-        <ScrollView>
             {/* Header */}
             <ScrollView horizontal={true}>
             
@@ -142,7 +141,9 @@ const setWorkoutToCurrent = (program) => {
                     }
                 </View>
             </ScrollView>
-            <View style={{ marginTop: 40, height: "70%" }}>
+        <ScrollView style={{width:"90%"}}>
+
+            <View style={{  height: "70%"}}>
                 <Text style={styles.programHeader}> {program!=null?(program.title):"loading"}</Text>
                 <View style={{ flexDirection: "column",  }}>
                     {
@@ -153,7 +154,9 @@ const setWorkoutToCurrent = (program) => {
                     }
                 </View>
             </View>
-            <View style={{ flexDirection: "row", justifyContent: "space-evenly", marginTop: 40, }}>
+           
+        </ScrollView>
+        <View style={{ flexDirection: "row",justifyContent: "space-between",gap:"20%"}}>
                 <TouchableOpacity style={styles.bottomButton} onPress={() => navigatedToWorkout()} >
                     <Text style={styles.buttonText} >Start Workout</Text>
                 </TouchableOpacity>
@@ -164,7 +167,6 @@ const setWorkoutToCurrent = (program) => {
 
             {program ? <WorkoutPreviewPopUp isVisible={isModalVisible} workout={workoutBeingPreviewed} togglePopup={togglePopup} />
                 : <View></View>}
-        </ScrollView>
         </View>
     )
 }
@@ -172,17 +174,20 @@ const setWorkoutToCurrent = (program) => {
 const styles = StyleSheet.create({
 
     container: {
-        marginTop: 40,
+        
         alignItems:"center",
-        justifyContent: "center"
+        justifyContent: "center",
+       
+        flex:1,
+        marginBottom:50
     },
 
     buttonsContainerBugged: {
-        //   alignItems: 'center',
+          alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: "row",
-        marginTop: 20,
-        height: 150
+       
+
     },
     buttonsContainer: {
         //   alignItems: 'center',
@@ -220,7 +225,7 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         justifyContent: 'center',
         marginVertical: 5,
-        marginHorizontal: 10
+        marginHorizontal: 10,
     },
     bottomButton: {
 
