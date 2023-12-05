@@ -96,7 +96,6 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
     useEffect(() => {
         
         if(!loadingLog){
-           
         if (dataLog && !dataLog.getExerciseLog) {
             const input = {
                 id: exerciseLogID,
@@ -105,6 +104,12 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
             }
             
             createLog({ variables: { input: input } })
+                .then(() => {
+                 refetchLog();
+                })
+                .catch(error => {
+                    console.error("Errorr creating log:", error);
+                });
         }
         else if (dataLog && dataLog.getExerciseLog) {
             const newEntries = dataLog.getExerciseLog.entries.items;

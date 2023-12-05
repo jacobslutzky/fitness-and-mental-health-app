@@ -11,6 +11,8 @@ import * as mutations from "../../../src/graphql/mutations";
 import { useQuery, gql, useMutation } from "@apollo/client";
 import uuid from 'react-native-uuid';
 import { ConsoleLogger } from '@aws-amplify/core';
+import { colors } from 'react-native-elements';
+import { NestableScrollContainer, NestableDraggableFlatList } from "react-native-draggable-flatlist"
 
 
 const Workout = (props) => {
@@ -43,22 +45,29 @@ const Workout = (props) => {
         })
     }
     return (
+
         <TouchableOpacity style={styles.exerciseCard} onPress={() => handleWorkoutPressed()}>
             {/* Exercise Icon */}
+            <View style={styles.trashContainer}>
             <Image source={require("../../../assets/workoutBackground.png")} style={styles.exerciseIcon}></Image>
 
             {/* Exercise Text Container */}
             <View style={styles.exerciseTextContainer}>
                 <Text style={styles.bodyText}>{props.workout.title}</Text>
             </View>
+            </View>
             {/* Trash Container */}
             <View style={styles.trashContainer}>
+            <TouchableOpacity onPressIn={props.drag}>
+                <Ionicons name={"reorder-three"} size={20} color={"white"}/>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.trashButton} onPress={() => setUpdateParent(true)}>
                     <EvilIcons name="trash" size={24} color="white" />
                 </TouchableOpacity>
             </View>
            
         </TouchableOpacity>
+       
     )
 }
 
@@ -66,13 +75,13 @@ const Week = (props) => {
     const [workouts, setWorkouts] = useState([])
     const [createWorkout] = useMutation(gql`${mutations.createWorkout}`);
     const [createExercise] = useMutation(gql`${mutations.createExercise}`);
-    
+    const [isMinimized, setIsMinimized] = useState(false)
+    console.log(props)
     useEffect(() => {
         if (props.weekToChange == props.week.id) {
-            
-            setWorkouts(workouts => [...workouts, props.workout])
+            setWorkouts(workouts => [...workouts, ...props.workoutsToAdd])
         }
-    }, [props.workout])
+    }, [props.workoutsToAdd]);
 
     useEffect(()=> {
         if(props.saveWorkouts){
@@ -118,53 +127,78 @@ const Week = (props) => {
           });
 
     }
+    const handleDragEnd = ({ data }) => {
+        setWorkouts(data);
+      };
+    
 
     return (
         <View style={styles.weekContainer}>
             {/* Week Card */}
-            <View style={styles.weekCard}>
+            <TouchableOpacity onPress={()=>setIsMinimized(prev=>!prev)}style={styles.weekCard}>
                 {/* Week Text */}
                 <View style={styles.weekNumberContainer}>
-                    <Text style={styles.weekNumberText}>{"Week " + (props.index + 1)}</Text>
+                    <Text style={styles.weekNumberText}>{"WEEK " + (props.index + 1)}</Text>
                 </View>
-
+                <View style={{flexDirection:"row"}}>
+                <TouchableOpacity onPress={()=>{props.duplicateWeek(props.index,workouts)}}>
+                <Ionicons name={"duplicate-outline"} size={20} color={"white"}/>
+                </TouchableOpacity>
+                <TouchableOpacity onPressIn={props.drag}>
+                <Ionicons name={"reorder-three"} size={20} color={"white"}/>
+                </TouchableOpacity>
+                </View>
                 {/* Difficulty Container */}
-                <View style={styles.difficultyContainer}>
+                {/* <View style={styles.difficultyContainer}>
                     <Text style={[styles.bodyText, { marginBottom: 0, marginTop: 5 }]}>Difficulty:</Text>
                     <Text style={styles.bodyText}>--</Text>
-                </View>
+                </View> */}
 
                 {/* Exercises Container */}
-                <View style={styles.exerciseNumberContainer}>
+                {/* <View style={styles.exerciseNumberContainer}>
                     <Text style={[styles.bodyText, { marginBottom: 0, marginTop: 5 }]}>Exercises:</Text>
                     <Text style={styles.bodyText}>--</Text>
-                </View>
+                </View> */}
 
                 {/* Duration Container */}
-                <View style={styles.durationContainer}>
+                {/* <View style={styles.durationContainer}>
                     <Text style={[styles.bodyText, { marginBottom: 0,
                          marginTop: 5 }]}>Duration:</Text>
                     <Text style={styles.bodyText}>--</Text>
-                </View>
-            </View>
-
+                </View> */}
+            </TouchableOpacity>
             {/* workout List */}
-            <View style={styles.wourkoutsList}>
-                {
-                    workouts && workouts.map((workout, index) => (
-                        <Workout index={index} workout={workout} setWorkouts={setWorkouts} handleWorkoutChanged={handleWorkoutChanged} workouts={workouts} navigation={props.navigation}/>
-                    ))
-                }
-            </View>
+            {!isMinimized && (
+            
 
-            {/* Add Workout */}
+            <View style={styles.workoutsList}>
+                 <NestableDraggableFlatList
+                            data={workouts}
+                            renderItem={({ item, getIndex, drag, isActive }) => (
+                                <Workout 
+                                index={getIndex} 
+                                workout={item}
+                                 setWorkouts={setWorkouts} 
+                                 handleWorkoutChanged={handleWorkoutChanged} 
+                                 workouts={workouts}
+                                  navigation={props.navigation}
+                                  drag={drag}
+                              />
+                            )}
+                            keyExtractor={(item) => item.id.toString()}
+                            onDragEnd={handleDragEnd}
+                        />
+            </View>
+           )}
+           {!isMinimized && (
             <TouchableOpacity style={styles.addContainer} onPress={() => { props.setWeekToChange(props.week.id); props.togglePopup();}}>
                 <AntDesign name="pluscircle" size={16} color={Colors.primary} />
                 <View style={styles.addTextContainer}>
                     <Text style={{ color: Colors.primary }}>Add</Text>
                 </View>
             </TouchableOpacity>
-              
+           )} 
+        
         </View>
     )
 }
@@ -173,7 +207,7 @@ export default function CreateProgram({ route, navigation }) {
     const [section, setSection] = useState(1)
     const [weeks, setWeeks] = useState([])
     const [weekToChange, setWeekToChange] = useState(null)
-    const [workout, setWorkout] = useState("")
+    const [workoutsToAdd, setWorkoutsToAdd] = useState(null)
     const [isModalVisible, setModalVisible] = useState(false);
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
@@ -197,12 +231,31 @@ export default function CreateProgram({ route, navigation }) {
         setWeeks(prevWeeks => [...prevWeeks, programWeekInput]);
     }
 
+    const duplicateWeek = async(index, workouts) => {
+        const newWeek = {...weeks[index]}
+        newWeek.id = uuid.v4()
+       // setWeekToChange(newWeek.id)
+
+        setWeeks(prevWeeks => [
+            ...prevWeeks.slice(0, index + 1),
+            { ...newWeek },
+            ...prevWeeks.slice(index + 1)
+        ]);
+       
+       applySetWorkouts(newWeek.id,workouts)
+
+    }
+
 
     const applySetWorkout = (weekID, workoutInput) => {
-        setWorkout(workoutInput)
+        setWorkoutsToAdd([workoutInput])
         setWeekToChange(weekID)
     }
 
+    const applySetWorkouts =  (weekID, workoutInputs) => {
+        setWorkoutsToAdd([...workoutInputs])
+        setWeekToChange(weekID)
+    }
   
     const handleSetWeekToChange = (weekID) => {
         setWeekToChange(weekID)
@@ -240,9 +293,14 @@ export default function CreateProgram({ route, navigation }) {
     const togglePopup = () => {
         setModalVisible(!isModalVisible)
     };
+    
+    const handleDragEnd = ({ data }) => {
+        setWeeks(data);
+      };
+    
    
     return (
-        <ScrollView style={styles.container}>
+        <NestableScrollContainer style={styles.container}>
             {section == 1 ?
                 <View>
                     {/* Section Title */}
@@ -324,13 +382,29 @@ export default function CreateProgram({ route, navigation }) {
 
                         {/* Weeks */}
                         <View style={styles.weeksContainer}>
-                            {
-                                weeks.map((item, index) => (
-                                    <Week index={index} key={item.id} week = {item} weekToChange={weekToChange} saveWorkouts={saveWorkouts} togglePopup={togglePopup} navigation={navigation} workout={workout} setWeekToChange={handleSetWeekToChange}/>
-                                )) 
-                            }
+                            <NestableDraggableFlatList
+                            data={weeks}
+                            renderItem={({ item, getIndex, drag, isActive }) => (
+                            <Week
+                                key={item.id}
+                                index={getIndex()}
+                                week={item}
+                                duplicateWeek={duplicateWeek}
+                                weekToChange={weekToChange}
+                                saveWorkouts={saveWorkouts}
+                                togglePopup={togglePopup}
+                                navigation={navigation}
+                                workoutsToAdd={workoutsToAdd}
+                                setWeekToChange={handleSetWeekToChange}
+                                drag={drag}
+                            />
+                            )}
+                            keyExtractor={(item) => item.id.toString()}
+                            onDragEnd={handleDragEnd}
+                            
+                        />
                         </View>
-
+                        <View style={{marginVertical:10}}>
                         {/* Create New Week Button */}
                         <View style={styles.addWeekContainer}>
                             <TouchableOpacity style={styles.addWeekButton} onPress={() => addWeek()}>
@@ -344,7 +418,7 @@ export default function CreateProgram({ route, navigation }) {
                                 <Text style={{ color: 'white' }}>Continue</Text>
                             </TouchableOpacity>
                         </View>
-
+                        </View>
                         {/* Pop up */}
                         <SelectWorkoutPopup isVisible={isModalVisible} setWorkout={applySetWorkout} weekToChange={weekToChange} togglePopup={togglePopup} title={""} navigation={navigation}/>
                     </View>
@@ -353,13 +427,17 @@ export default function CreateProgram({ route, navigation }) {
                     </View>
             }
             
-        </ScrollView>
+        </NestableScrollContainer>
 
     )
 }
 
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+       
+    },
     bodyText: {
         color: 'white',
         marginBottom: 10
@@ -477,6 +555,7 @@ const styles = StyleSheet.create({
         marginTop: 50,
         alignItems: 'center',
         justifyContent: 'center',
+        flex:1
     },
     weekCard: {
         width: '80%',
@@ -485,17 +564,23 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 15,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent:"space-between",
+        paddingHorizontal: 10,
+        flex:1
     },
     weekContainer: {
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 30
+        marginBottom: 10,
+        flex:1
     },
     weekNumberText: {
-        color: Colors.primary,
-        fontSize: 16
+        color: Colors.text,
+        fontSize: 16,
+        fontWeight: "bold",
+        marginLeft:10
     },
     weekNumberContainer: {
         alignItems: 'center',
@@ -523,25 +608,25 @@ const styles = StyleSheet.create({
     },
     exerciseCard: {
         height: 50,
-        width: '75%',
+        width: '80%',
         flexDirection: 'row',
         borderBottomColor: 'grey',
         borderBottomWidth: 1,
-        alignItems: 'center',
+        alignSelf: 'center',
+        justifyContent:"space-between"
     },
     exerciseList: {
         alignItems: 'center'
     },
     exerciseIcon: {
         height: '70%',
-        width: '15%',
+        width: 50,
         opacity: '0.8',
         borderRadius: 10
     },
     exerciseTextContainer: {
         justifyContent: 'center',
         marginLeft: 10,
-        width: '80%',
     },
     informationContainer: {
         alignItems: 'center',
@@ -551,7 +636,8 @@ const styles = StyleSheet.create({
     trashContainer: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: '7.5%'
+        flexDirection:"row",
+
     },
     addContainer: {
         justifyContent: 'center',
@@ -564,5 +650,12 @@ const styles = StyleSheet.create({
     addTextContainer: {
         width: '90%',
         marginLeft: 10
-    }
+    },
+    workoutsList: {
+        flex: 1,
+        width: '100%', // Adjusted width to 100%
+        alignItems:"center",
+        justifyContent:"center"
+      },
+    
 });
