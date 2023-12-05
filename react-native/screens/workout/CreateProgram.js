@@ -12,7 +12,7 @@ import { useQuery, gql, useMutation } from "@apollo/client";
 import uuid from 'react-native-uuid';
 import { ConsoleLogger } from '@aws-amplify/core';
 import { colors } from 'react-native-elements';
-import DraggableFlatList from 'react-native-draggable-flatlist';
+import { NestableScrollContainer, NestableDraggableFlatList } from "react-native-draggable-flatlist"
 
 
 const Workout = (props) => {
@@ -172,7 +172,7 @@ const Week = (props) => {
             
 
             <View style={styles.workoutsList}>
-                 <DraggableFlatList
+                 <NestableDraggableFlatList
                             data={workouts}
                             renderItem={({ item, getIndex, drag, isActive }) => (
                                 <Workout 
@@ -183,14 +183,13 @@ const Week = (props) => {
                                  workouts={workouts}
                                   navigation={props.navigation}
                                   drag={drag}
-                                  />
+                              />
                             )}
                             keyExtractor={(item) => item.id.toString()}
                             onDragEnd={handleDragEnd}
-                            scrollEnabled={false}
                         />
             </View>
-            )}
+           )}
            {!isMinimized && (
             <TouchableOpacity style={styles.addContainer} onPress={() => { props.setWeekToChange(props.week.id); props.togglePopup();}}>
                 <AntDesign name="pluscircle" size={16} color={Colors.primary} />
@@ -198,7 +197,7 @@ const Week = (props) => {
                     <Text style={{ color: Colors.primary }}>Add</Text>
                 </View>
             </TouchableOpacity>
-           )}
+           )} 
         
         </View>
     )
@@ -301,7 +300,7 @@ export default function CreateProgram({ route, navigation }) {
     
    
     return (
-        <View style={styles.container}>
+        <NestableScrollContainer style={styles.container}>
             {section == 1 ?
                 <View>
                     {/* Section Title */}
@@ -383,7 +382,7 @@ export default function CreateProgram({ route, navigation }) {
 
                         {/* Weeks */}
                         <View style={styles.weeksContainer}>
-                            <DraggableFlatList
+                            <NestableDraggableFlatList
                             data={weeks}
                             renderItem={({ item, getIndex, drag, isActive }) => (
                             <Week
@@ -402,6 +401,7 @@ export default function CreateProgram({ route, navigation }) {
                             )}
                             keyExtractor={(item) => item.id.toString()}
                             onDragEnd={handleDragEnd}
+                            
                         />
                         </View>
                         <View style={{marginVertical:10}}>
@@ -427,7 +427,7 @@ export default function CreateProgram({ route, navigation }) {
                     </View>
             }
             
-        </View>
+        </NestableScrollContainer>
 
     )
 }
