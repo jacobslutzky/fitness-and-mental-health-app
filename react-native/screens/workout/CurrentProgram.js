@@ -21,8 +21,6 @@ const Workout = (props) => {
 
     const workout = {...props.workout  }
     
-    workout.userExercises.items = props.workout.userExercises.items.slice().sort((a, b) => a.exerciseNum - b.exerciseNum);
-
     return (
         <View key={workout} style={styles.card}>
             <View style={styles.cardNumber}>
@@ -65,7 +63,13 @@ export  function CurrentProgram({navigation, currProgram, taskCompletionList,tas
                 items: sortedUserProgramWeeks.map((week) => ({
                     ...week,
                     userWorkouts: {
-                        items: week.userWorkouts.items.slice().sort((a, b) => a.workoutNumber - b.workoutNumber),
+                        items: week.userWorkouts.items.slice().sort((a, b) => a.workoutNumber - b.workoutNumber)
+                            .map((workout) => ({
+                                ...workout,
+                                userExercises: {
+                                    items: workout.userExercises.items.slice().sort((a, b) => a.exerciseNum - b.exerciseNum),
+                                },
+                            })),
                     },
                 })),
             },
@@ -156,7 +160,7 @@ const setWorkoutToCurrent = (program) => {
             </View>
            
         </ScrollView>
-        <View style={{ flexDirection: "row",justifyContent: "space-between",gap:"20%"}}>
+        <View style={{ flexDirection: "row",justifyContent: "space-evenly",width:"100%"}}>
                 <TouchableOpacity style={styles.bottomButton} onPress={() => navigatedToWorkout()} >
                     <Text style={styles.buttonText} >Start Workout</Text>
                 </TouchableOpacity>

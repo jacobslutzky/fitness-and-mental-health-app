@@ -108,7 +108,7 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
                  refetchLog();
                 })
                 .catch(error => {
-                    console.error("Errorr creating log:", error);
+                    console.error("Error creating log:", error);
                 });
         }
         else if (dataLog && dataLog.getExerciseLog) {

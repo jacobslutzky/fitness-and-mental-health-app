@@ -308,11 +308,6 @@ export default function CreateProgram({ route, navigation }) {
                         <Text style={styles.sectionTitleText}>CREATE NEW PROGRAM</Text>
                     </View>
 
-                    {/* Current Step */}
-                    <View style={styles.currentStepContainer}>
-                        <Text style={styles.stepText}>Step 1/4</Text>
-                    </View>
-
                     {/* Program Title Text */}
                     <View style={styles.programTitleContainer}>
                         <Text style={[styles.bodyText, { width: '80%' }]}>Title</Text>
@@ -375,10 +370,6 @@ export default function CreateProgram({ route, navigation }) {
                             <Text style={styles.sectionTitleText}>CREATE NEW PROGRAM</Text>
                         </View>
 
-                        {/* Current Step */}
-                        <View style={styles.currentStepContainer}>
-                            <Text style={styles.stepText}>Step 2/4</Text>
-                        </View>
 
                         {/* Weeks */}
                         <View style={styles.weeksContainer}>
