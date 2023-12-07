@@ -160,7 +160,7 @@ const setWorkoutToCurrent = (program) => {
             </View>
            
         </ScrollView>
-        <View style={{ flexDirection: "row",justifyContent: "space-evenly",width:"100%"}}>
+        <View style={{ flexDirection: "row",justifyContent: "space-evenly",width:"100%", paddingTop: 20}}>
                 <TouchableOpacity style={styles.bottomButton} onPress={() => navigatedToWorkout()} >
                     <Text style={styles.buttonText} >Start Workout</Text>
                 </TouchableOpacity>
@@ -183,14 +183,15 @@ const styles = StyleSheet.create({
         justifyContent: "center",
        
         flex:1,
-        marginBottom:50
+        marginBottom:50,
+        marginTop: 50
     },
 
     buttonsContainerBugged: {
           alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: "row",
-       
+       marginBottom: 20
 
     },
     buttonsContainer: {

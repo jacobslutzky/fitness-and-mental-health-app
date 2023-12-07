@@ -39,32 +39,34 @@ const Workout = (props) => {
                 <ImageBackground source={require("../../assets/workoutBackground.png")} style={styles.weekCard} resizeMode="cover" imageStyle={{width: '100%', height: '100%', borderRadius: 15, opacity: 0.7}}>
                     <View style={styles.cardHeader}>
 
-                        {/* Difficulty Container */}
-                        <View style={styles.difficultyContainer}>
-                            <Text style={[styles.bodyText, {marginBottom: 0, marginTop: 5, fontWeight: 'bold'}]}>Difficulty:</Text>
-                            <Text style={styles.bodyText}>--</Text>
-                        </View>
-
-                        {/* Exercises Container */}
-                        <View style={styles.exerciseNumberContainer}>
-                            <Text style={[styles.bodyText, {marginBottom: 0, marginTop: 5, fontWeight: 'bold'}]}>Exercises:</Text>
-                            <Text style={styles.bodyText}>--</Text>
-                        </View>
-
-                        {/* Duration Container */}
-                        <View style={styles.durationContainer}>
-                            <Text style={[styles.bodyText, {marginBottom: 0, marginTop: 5, fontWeight: 'bold'}]}>Duration:</Text>
-                            <Text style={styles.bodyText}>--</Text>
-                        </View>
                     </View>
                     <View style={{height: '40%'}}></View>
                     <View style={styles.cardFooter}>
-                        <Text style={{color: 'white',fontWeight: 'bold'}}>{loading?"loading":props.workout.title}</Text>
+                        <Text style={{color: 'white',fontWeight: 'bold', fontSize: 20}}>{loading?"loading":props.workout.title}</Text>
                     </View>
                 </ImageBackground>
             </TouchableOpacity>
     )
 }
+
+/* 
+
+                        <View style={styles.difficultyContainer}>
+                            <Text style={[styles.bodyText, {marginBottom: 0, marginTop: 5, fontWeight: 'bold', fontSize: 12}]}>Difficulty:</Text>
+                            <Text style={styles.bodyText}>--</Text>
+                        </View>
+
+                        <View style={styles.exerciseNumberContainer}>
+                            <Text style={[styles.bodyText, {marginBottom: 0, marginTop: 5, fontWeight: 'bold', fontSize: 12}]}>Exercises:</Text>
+                            <Text style={styles.bodyText}>--</Text>
+                        </View>
+
+                        <View style={styles.durationContainer}>
+                            <Text style={[styles.bodyText, {marginBottom: 0, marginTop: 5, fontWeight: 'bold', fontSize: 12}]}>Duration:</Text>
+                            <Text style={styles.bodyText}>--</Text>
+                        </View>
+
+*/
 
 // const Exercise = (props) => {
 //   console.log("exercise reached")
@@ -189,9 +191,12 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
     return (
         <Modal isVisible={isVisible}>
         <View style={styles.outerContainer}>
-        <TouchableOpacity onPress={() => {togglePopup(); setSearch("")}}>
-        <Feather name = "x-circle" size = {17} color = {"white"}/>            
-        </TouchableOpacity>
+            <View style={{width: '100%'}}>
+                <TouchableOpacity onPress={() => {togglePopup(); setSearch("")}}>
+                <Feather name = "x-circle" size = {17} color = {"white"}/>            
+                </TouchableOpacity>
+            </View>
+
         <Text style={styles.headerOne}>WORKOUT CREATION</Text>
             <View style={[styles.innerContainer]}>
                     {/* <View style={styles.bottomButton}> */}
@@ -549,7 +554,8 @@ cardHeader : {
 },
 cardFooter : {
     width: '100%',
-    marginLeft: 15
+    alignItems: 'center',
+    textAlign: 'center'
 },
 communityCard: {
     height: "100%",
