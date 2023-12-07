@@ -219,7 +219,7 @@ const AddExercisePopUp = ({isVisible, closeAddExercisePopUp, startingExerciseInp
     },
     name: {
       flexDirection: "row",
-      gap: "20%"
+      width:"100%"
     },
     aboveButtonText: {
       fontSize: 20,
