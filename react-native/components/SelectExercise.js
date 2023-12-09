@@ -24,14 +24,19 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
     const [workoutTypes, setWorkoutTypes] = useState([])
 
 
-    const { data, loading, error, refetch } = useQuery(gql`${queries.listExerciseInfos}`)
+    const { data, loading, error, refetch } = useQuery(gql`${queries.listExerciseInfos}`,
+    {
+      variables: {
+         limit: 200, 
+      }
+  })
   
     useEffect(() => {
         if(loading==false){
           const exerciseInfos = data.listExerciseInfos.items
           
-          setMusclesWorked([...new Set(exerciseInfos.map(exercise => exercise.muscleWorked))])
-          setWorkoutTypes([...new Set(exerciseInfos.map(exercise => exercise.workoutType))])
+          setMusclesWorked([...new Set(exerciseInfos.flatMap(exercise => exercise.muscleWorked.split('/')))])
+          setWorkoutTypes([...new Set(exerciseInfos.flatMap(exercise => exercise.workoutType.split('/')))])
           setExercises(exerciseInfos)
           
         }
@@ -132,8 +137,8 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
         />
       </Collapsible>
     <FlatList
-        data={exercises.filter(exercise=>(selectedMuscleWorked == null || exercise.muscleWorked==selectedMuscleWorked ) 
-          && (selectedWorkoutType==null || exercise.workoutType==selectedWorkoutType) 
+        data={exercises.filter(exercise=>(selectedMuscleWorked == null || exercise.muscleWorked.split("/").includes(selectedMuscleWorked) ) 
+          && (selectedWorkoutType==null || exercise.workoutType.split("/").includes(selectedWorkoutType)) 
           && exercise.name.toLowerCase().includes(searchResult.toLowerCase()))}
         renderItem={exerciseItem}
         keyExtractor={(item) => item.id}

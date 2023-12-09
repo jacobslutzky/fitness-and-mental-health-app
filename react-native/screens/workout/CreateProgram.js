@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, ScrollView, StyleSheet, TouchableOpacity, Text, View, TextInput } from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, Text, View, TextInput, Pressable} from 'react-native';
 import { Colors } from '../../constants/Colors';
 import { AntDesign } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
@@ -11,8 +11,9 @@ import * as mutations from "../../../src/graphql/mutations";
 import { useQuery, gql, useMutation } from "@apollo/client";
 import uuid from 'react-native-uuid';
 import { ConsoleLogger } from '@aws-amplify/core';
-import { colors } from 'react-native-elements';
 import { NestableScrollContainer, NestableDraggableFlatList } from "react-native-draggable-flatlist"
+import { Swipeable } from 'react-native-gesture-handler';
+import SwipeToDelete from '../../components/SwipeToDelete';
 
 
 const Workout = (props) => {
@@ -44,8 +45,14 @@ const Workout = (props) => {
             index: props.index
         })
     }
+    
+    const handleDelete = () => {
+        setUpdateParent(true)
+    }
     return (
+        <View style={{width:"100%"}}>
 
+        <Swipeable renderRightActions={(progress, dragX) => <SwipeToDelete progress={progress} dragX={dragX} iconSize={24} onDelete={handleDelete}/>}>
         <TouchableOpacity style={styles.exerciseCard} onPress={() => handleWorkoutPressed()}>
             {/* Exercise Icon */}
             <View style={styles.trashContainer}>
@@ -61,12 +68,11 @@ const Workout = (props) => {
             <TouchableOpacity onPressIn={props.drag}>
                 <Ionicons name={"reorder-three"} size={20} color={"white"}/>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.trashButton} onPress={() => setUpdateParent(true)}>
-                    <EvilIcons name="trash" size={24} color="white" />
-                </TouchableOpacity>
             </View>
            
         </TouchableOpacity>
+        </Swipeable>
+        </View>
        
     )
 }
@@ -76,7 +82,7 @@ const Week = (props) => {
     const [createWorkout] = useMutation(gql`${mutations.createWorkout}`);
     const [createExercise] = useMutation(gql`${mutations.createExercise}`);
     const [isMinimized, setIsMinimized] = useState(false)
-    console.log(props)
+   
     useEffect(() => {
         if (props.weekToChange == props.week.id) {
             setWorkouts(workouts => [...workouts, ...props.workoutsToAdd])
@@ -131,11 +137,15 @@ const Week = (props) => {
         setWorkouts(data);
       };
     
+  
 
     return (
+        
         <View style={styles.weekContainer}>
             {/* Week Card */}
-            <TouchableOpacity onPress={()=>setIsMinimized(prev=>!prev)}style={styles.weekCard}>
+            <View  style={{width:"100%"}}>
+            <Swipeable renderRightActions={(progress, dragX) => <SwipeToDelete progress={progress} dragX={dragX} onDelete={()=>props.deleteWeek(props.index)} iconSize={30}/>}>
+             <TouchableOpacity onPress={()=>setIsMinimized(prev=>!prev)} style={styles.weekCard}>
                 {/* Week Text */}
                 <View style={styles.weekNumberContainer}>
                     <Text style={styles.weekNumberText}>{"WEEK " + (props.index + 1)}</Text>
@@ -148,25 +158,10 @@ const Week = (props) => {
                 <Ionicons name={"reorder-three"} size={20} color={"white"}/>
                 </TouchableOpacity>
                 </View>
-                {/* Difficulty Container */}
-                {/* <View style={styles.difficultyContainer}>
-                    <Text style={[styles.bodyText, { marginBottom: 0, marginTop: 5 }]}>Difficulty:</Text>
-                    <Text style={styles.bodyText}>--</Text>
-                </View> */}
-
-                {/* Exercises Container */}
-                {/* <View style={styles.exerciseNumberContainer}>
-                    <Text style={[styles.bodyText, { marginBottom: 0, marginTop: 5 }]}>Exercises:</Text>
-                    <Text style={styles.bodyText}>--</Text>
-                </View> */}
-
-                {/* Duration Container */}
-                {/* <View style={styles.durationContainer}>
-                    <Text style={[styles.bodyText, { marginBottom: 0,
-                         marginTop: 5 }]}>Duration:</Text>
-                    <Text style={styles.bodyText}>--</Text>
-                </View> */}
             </TouchableOpacity>
+          
+            </Swipeable>
+            </View>
             {/* workout List */}
             {!isMinimized && (
             
@@ -200,6 +195,7 @@ const Week = (props) => {
            )} 
         
         </View>
+        
     )
 }
 
@@ -243,6 +239,13 @@ export default function CreateProgram({ route, navigation }) {
         ]);
        
        applySetWorkouts(newWeek.id,workouts)
+
+    }
+
+    const deleteWeek = async(index) => {
+        setWeeks((prevWeeks) => 
+        [...prevWeeks.slice(0, index),
+         ...prevWeeks.slice(index + 1)]);
 
     }
 
@@ -358,7 +361,7 @@ export default function CreateProgram({ route, navigation }) {
 
                     {/* Continue Button */}
                     <View style={styles.continueContainer}>
-                        <TouchableOpacity style={styles.continueButton} onPress={handleProgramInitialized}>
+                        <TouchableOpacity style={styles.continueToBuildProgramButton} onPress={handleProgramInitialized}>
                             <Text>Continue</Text>
                         </TouchableOpacity>
                     </View>
@@ -381,6 +384,7 @@ export default function CreateProgram({ route, navigation }) {
                                 index={getIndex()}
                                 week={item}
                                 duplicateWeek={duplicateWeek}
+                                deleteWeek={deleteWeek}
                                 weekToChange={weekToChange}
                                 saveWorkouts={saveWorkouts}
                                 togglePopup={togglePopup}
@@ -426,8 +430,8 @@ export default function CreateProgram({ route, navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-       
+       alignSelf:"center",
+       width:"95%"
     },
     bodyText: {
         color: 'white',
@@ -516,7 +520,16 @@ const styles = StyleSheet.create({
     },
     continueButton: {
         backgroundColor: Colors.primary,
-        width: '80%',
+        width:"100%",
+        height: 50,
+        borderRadius: 10,
+        marginTop: 20,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    continueToBuildProgramButton: {
+        backgroundColor: Colors.primary,
+        width:"80%",
         height: 50,
         borderRadius: 10,
         marginTop: 20,
@@ -532,10 +545,11 @@ const styles = StyleSheet.create({
     },
     addWeekContainer: {
         alignItems: 'center'
+        
     },
     addWeekButton: {
         backgroundColor: 'grey',
-        width: '80%',
+        width: '100%',
         height: 50,
         borderRadius: 10,
         
@@ -546,10 +560,10 @@ const styles = StyleSheet.create({
         marginTop: 50,
         alignItems: 'center',
         justifyContent: 'center',
-        flex:1
+        alignSelf:"center",
+        flex:1,
     },
     weekCard: {
-        width: '80%',
         height: 55,
         borderColor: Colors.primary,
         borderWidth: 1,
@@ -558,14 +572,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent:"space-between",
         paddingHorizontal: 10,
-        flex:1
+        width:"100%",
+        alignSelf:"center",
+        backgroundColor:Colors.background
+        
+        
     },
     weekContainer: {
-        width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 10,
-        flex:1
     },
     weekNumberText: {
         color: Colors.text,
@@ -587,11 +603,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    weekNumberContainer: {
-        width: '25%',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
+   
     durationContainer: {
         width: '25%',
         alignItems: 'center',
@@ -599,7 +611,7 @@ const styles = StyleSheet.create({
     },
     exerciseCard: {
         height: 50,
-        width: '80%',
+        width: '100%',
         flexDirection: 'row',
         borderBottomColor: 'grey',
         borderBottomWidth: 1,
@@ -634,12 +646,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        width: '80%',
+        alignSelf:"flex-start",
         marginTop: 10,
-        marginLeft: 30
+        marginLeft: 10
+
     },
     addTextContainer: {
-        width: '90%',
         marginLeft: 10
     },
     workoutsList: {
