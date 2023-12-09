@@ -5,7 +5,7 @@ import { useQuery, gql } from "@apollo/client";
 import * as queries from "../../../src/graphql/queries";
 import { Colors } from '../../constants/Colors';
 import { SearchBar } from 'react-native-elements';
-
+import { EvilIcons } from '@expo/vector-icons';
 export default function SelectWorkoutProgram({ route, navigation }) {
      
 
@@ -195,11 +195,17 @@ export default function SelectWorkoutProgram({ route, navigation }) {
           {tasksSearched ? tasksSearched.map((item, index) => (
             <>
             {item?
+            <View style={{width:"100%"}}>
             <ImageBackground source={ require('../../../assets/quickWorkouts1.jpeg')} style={styles.communityCard} key={index} imageStyle={{ opacity: 0.2 }}>
               <TouchableOpacity style={styles.cardTouchable} onPress={() => navigateToWorkoutInfo(item, setCurrentProgram)}>
                 <Text style={styles.cardText}>{item.title.toUpperCase()}</Text>
               </TouchableOpacity>
             </ImageBackground>
+            {item.authorID==userId?(
+            <TouchableOpacity style={{ position: 'absolute', top: 0,  right: 0, padding: 10,}}>
+              <EvilIcons name="trash" size={30} color="white" />
+             </TouchableOpacity>):(<></>)}
+             </View>
             :
             <></>
             }
