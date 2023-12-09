@@ -146,7 +146,8 @@ const styles = StyleSheet.create({
     paddingTop: 25,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingHorizontal: 25
+    paddingHorizontal: 25,
+    height: '100%'
   }, 
   allTimeProgressButtonContainer : {
     marginLeft: 'auto',

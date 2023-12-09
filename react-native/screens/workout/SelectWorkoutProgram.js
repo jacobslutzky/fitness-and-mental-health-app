@@ -236,7 +236,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: "center",
     width: "90%",
-    alignSelf: "center"
+    alignSelf: "center",
+    marginTop: 30
   },
   scene: {
     flex: 1,

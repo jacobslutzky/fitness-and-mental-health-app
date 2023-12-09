@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 40,
         fontWeight: "bold",
+        marginTop: 30
     },
     scene: {
         flex: 1,

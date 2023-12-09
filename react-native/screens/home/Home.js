@@ -596,6 +596,7 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 40,
         fontWeight: "bold",
+        marginTop: 30
     },
 
     tasks: {
@@ -625,7 +626,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         marginLeft: 15,
-        fontSize: 18,
+        fontSize: 16,
         textAlign: "center",
     },
     searchBar: {

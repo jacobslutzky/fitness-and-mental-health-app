@@ -156,8 +156,8 @@ export default function WorkoutProgramInfo({ route, navigation }) {
     }
 
     return (
-        <ScrollView>
-            <ImageBackground resizeMode={'cover'} style={styles.container} source={require('../../../assets/boulderWeightRoom.webp')} imageStyle={{ opacity: .2 }}>
+        <View style={{height:'100%'}}>
+            <ImageBackground resizeMode={'cover'} style={styles.container} source={require('../../../assets/boulderWeightRoom.webp')} imageStyle={{ opacity: .2, height: '100%' }}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.programName}>{program!=null?program.title.toUpperCase():"loading"}</Text>
                 </View>
@@ -169,6 +169,7 @@ export default function WorkoutProgramInfo({ route, navigation }) {
                 <View style={styles.descriptionContainer}>
                     <Text style={styles.description}>{program!=null?program.description:"loading"}</Text>
                 </View>
+                <View style={{marginHorizontal: 20, zIndex: 100}}>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button} onPress={() => navigateToPreviewSplit()} >
                         <Text style={styles.buttonText}>PREVIEW SPLIT</Text>
@@ -177,7 +178,8 @@ export default function WorkoutProgramInfo({ route, navigation }) {
                         <Text style={styles.buttonText}>SELECT PROGRAM</Text>
                     </TouchableOpacity>
                 </View>
-                <Svg height="100%" width="100%" style={StyleSheet.absoluteFillObject}>
+                </View>
+                <Svg height="100%" width="100%" style={[StyleSheet.absoluteFillObject, styles.svg]}>
                     <Defs>
                         <LinearGradient id="grad" x1="0%" y1="40%" x2="0%" y2="100%">
                             <Stop offset="0" stopOpacity="0.2" stopColor={'black'} />
@@ -187,8 +189,7 @@ export default function WorkoutProgramInfo({ route, navigation }) {
                     <Rect width="100%" height="100%" fill="url(#grad)" />
                 </Svg>
             </ImageBackground>
-        </ScrollView>
-        
+        </View>
     )
 }
 
@@ -228,9 +229,10 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginTop: 30,
         zIndex: 100,
-        marginHorizontal: 20
+        position: 'absolute',
+        bottom: 50,
+        width: '100%',
     },
     button: {
         width: "45%", // Adjust the width for better alignment
@@ -246,11 +248,17 @@ const styles = StyleSheet.create({
     },
     descriptionContainer: {
         marginHorizontal: 20,
-        zIndex: 20
+        marginTop: 100,
+        zIndex: 20,
+        flex: 1
     },
     titleContainer: {
         width: '100%',
         backgroundColor: '#101214',
         paddingVertical: 30
+    },
+    svg : {
+        marginTop: 150,
+        height: '100%'
     }
 });

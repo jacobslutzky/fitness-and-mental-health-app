@@ -148,7 +148,7 @@ const setWorkoutToCurrent = (program) => {
         <ScrollView style={{width:"90%"}}>
 
             <View style={{  height: "70%"}}>
-                <Text style={styles.programHeader}> {program!=null?(program.title):"loading"}</Text>
+                <Text style={styles.programHeader}>{program!=null?(program.title):"loading"}</Text>
                 <View style={{ flexDirection: "column",  }}>
                     {
                         currentWeek!=null ? currentWeek.userWorkouts.items.map((workout, index) => (
@@ -191,7 +191,8 @@ const styles = StyleSheet.create({
           alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: "row",
-       marginBottom: 20
+       marginBottom: 20,
+       marginTop: 10
 
     },
     buttonsContainer: {
@@ -202,10 +203,10 @@ const styles = StyleSheet.create({
     },
     programHeader:
     {
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: 'bold',
         color: "white",
-        marginHorizontal: 20,
+        marginTop: 20
     },
     header: {
         fontSize: 16,
