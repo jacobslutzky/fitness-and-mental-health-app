@@ -225,6 +225,7 @@ export default function CreateProgram({ route, navigation }) {
                 id: programWeekId,
             }
         setWeeks(prevWeeks => [...prevWeeks, programWeekInput]);
+
     }
 
     const duplicateWeek = async(index, workouts) => {
@@ -279,13 +280,14 @@ export default function CreateProgram({ route, navigation }) {
             description: description
         }
         await createProgram({ variables: { input: programInput } }) 
-        
-        const newWeeks = weeks
-        newWeeks.forEach(async(weekInput,index) => {
+       
+        const newWeeks = [...weeks]
+        for (let index = 0; index < newWeeks.length; index++) {
+            const weekInput = {...newWeeks[index]};
             weekInput.weekNumber = index+1
             weekInput.programID = programID
             await createProgramWeek({ variables: { input: weekInput } });
-        });
+        }
         setSaveWorkouts(true)
         
         route.params.handleProgramCreated()

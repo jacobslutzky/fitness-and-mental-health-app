@@ -1,8 +1,9 @@
 import { React, useState, useEffect } from 'react';
 import { ImageBackground, ScrollView, StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, gql, useMutation} from "@apollo/client";
 import * as queries from "../../../src/graphql/queries";
+import * as mutations from '../../../src/graphql/mutations'
 import { Colors } from '../../constants/Colors';
 import { SearchBar } from 'react-native-elements';
 import { EvilIcons } from '@expo/vector-icons';
@@ -151,6 +152,29 @@ export default function SelectWorkoutProgram({ route, navigation }) {
     }
   }
 
+  const [updateUserPrograms, { data: dataLogUpdate, loading: loadingLogUpdate, error: errorLogUpdate }] = useMutation(gql`${mutations.updateExerciseLog}`);
+  const [deleteProgramFromTable, {data: dataProgramDelete, loadingProgramDelete, errorProgramDelete}] = useMutation(gql`${mutations.deleteProgram}`);
+  const [deleteProgramWeekFromTable, {data: dataPrograWeekDelete, loadingProgramWeekDelete, errorProgramWeekDelete}] = useMutation(gql`${mutations.deleteProgramWeek}`);
+  const [deleteWorkoutFromTable, {data: dataWorkoutDelete, loadingWorkoutDelete, errorWorkoutDelete}] = useMutation(gql`${mutations.deleteWorkout}`);
+  const [deleteExerciseFromTable, {data: dataExerciseDelete, loadingExerciseDelete, errorExerciseDelete}] = useMutation(gql`${mutations.deleteExercise}`);
+
+  const deleteProgram = async(programID) => {
+    console.log(programID)
+    const programWeeks = (await deleteProgramFromTable({variables: {input: {id: programID}}})).data.deleteProgram.weeks.items
+    refetch()
+    for(let programWeek of programWeeks){
+      const workouts = (await deleteProgramWeekFromTable({variables: {input: {id: programWeek.id}}})).data.deleteProgramWeek.workouts.items
+
+      for(let workout of workouts){
+        const exercises = (await deleteWorkoutFromTable({variables: {input: {id: workout.id}}})).data.deleteWorkout.exercises.items
+        for (let exercise of exercises){
+          await deleteExerciseFromTable({variables: {input: {id: exercise.id}}})
+        }
+      }
+
+    }
+
+  }
 
 
   return (
@@ -202,7 +226,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
               </TouchableOpacity>
             </ImageBackground>
             {item.authorID==userId?(
-            <TouchableOpacity style={{ position: 'absolute', top: 0,  right: 0, padding: 10,}}>
+            <TouchableOpacity onPress={()=>{deleteProgram(item.id)}}style={{ position: 'absolute', top: 0,  right: 0, padding: 10,}}>
               <EvilIcons name="trash" size={30} color="white" />
              </TouchableOpacity>):(<></>)}
              </View>
