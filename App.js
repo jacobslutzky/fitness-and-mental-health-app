@@ -19,8 +19,8 @@ import { AuthLink, createAuthLink } from "aws-appsync-auth-link"
 import awsmobile from './src/aws-exports.js'
 import { onError } from "@apollo/client/link/error";
 import { Ionicons } from '@expo/vector-icons';
-import { LogBox } from 'react-native';
-import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react-native';
+import { LogBox, useColorScheme, Text, View, Image, StyleSheet } from 'react-native';
+import { Authenticator, useAuthenticator, ThemeProvider, defaultDarkModeOverride } from '@aws-amplify/ui-react-native';
 LogBox.ignoreAllLogs();
 
 Amplify.configure(awsmobile);
@@ -124,16 +124,64 @@ const client = new ApolloClient({
     },
   })
 });
+
+
 client.resetStore() 
 function App() {
+  const colorMode = useColorScheme();
+
+  const MyAppHeader = () => {
+    return (
+      <View style={{textAlign: 'center'}}>
+        <Image style = {styles.buffalo} source={require('./assets/buffalo.png')} />
+      </View>
+    );
+  };
+
   
   return ( 
+    <ThemeProvider
+    colorMode={colorMode}
+    theme={{
+      tokens: {
+        colors: {
+          brand: {
+            primary: {
+              10: Colors.primary,
+              20: Colors.primary,
+              40: Colors.primary,
+              60: Colors.primary,
+              80: Colors.primary,
+              90: Colors.primary,
+              100: Colors.primary,
+            },
+          },
+          background : {
+            primary: {
+              value: Colors.background
+            },
+          },
+          font: {
+            interactive: {
+              value: 'white'
+            },
+            primary : {
+              value: 'white'
+            },
+            secondary: {
+              value: 'white'
+            }
+          },
+        },
+      },
+    }}
+  >
     <Authenticator.Provider>
       <Authenticator signUpAttributes={[
           "email",
           "name",
           "updated_at"
-        ]}>
+        ]} Header={MyAppHeader}>
     <ApolloProvider client={client}>
       <NavigationContainer theme = {MyTheme}>
         <Stack.Navigator cardStyle= {{height: "100%"}} screenOptions={{headerShown: false, headerStyle: {
@@ -159,6 +207,20 @@ function App() {
     </ApolloProvider>
     </Authenticator>
     </Authenticator.Provider>
+    </ThemeProvider>
   );
  }
+
+ const styles = StyleSheet.create({
+  buffalo: {
+      resizeMode: "contain",
+      height: "50%",
+      width: "80%",
+      justifyContent: "center",
+      alignSelf: "center",
+      marginTop: 50, 
+      marginBottom: -250
+  },
+});
+
  export default App;
