@@ -6,7 +6,6 @@ import { useQuery, gql, useMutation } from "@apollo/client";
 import * as queries from "../../src/graphql/queries";
 import * as mutations from "../../src/graphql/mutations";
 import { SearchBar } from 'react-native-elements';
-import { Svg, Defs, LinearGradient, Stop, Rect } from "react-native-svg";
 import { AntDesign,Ionicons,Feather} from '@expo/vector-icons';
 import uuid from 'react-native-uuid';
 import { NoDeprecatedCustomRule } from "graphql";
