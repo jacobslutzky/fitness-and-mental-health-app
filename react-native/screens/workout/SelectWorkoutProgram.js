@@ -28,7 +28,7 @@ export default function SelectWorkoutProgram({ route, navigation }) {
 
   const navigateToWorkoutInfo = (program, setCurrentProgram) => {
 
-    navigation.navigate("WorkoutProgramInfo", { program: program,  setCurrentProgram: setCurrentProgram, taskCompletionList: route.params ? route.params.taskCompletionList : null, taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null,  taskCompletionListIndex: route.params ? route.params.taskCompletionListIndex : null})
+    navigation.navigate("WorkoutProgramInfo", { program: program,  setCurrentProgram: setCurrentProgram, taskCompletionList: route?.params ? route.params.taskCompletionList : null, taskCompletionListIndex: route?.params ? route.params.taskCompletionListIndex : null,  taskCompletionListIndex: route?.params ? route.params.taskCompletionListIndex : null})
   }
   
   const { data, loading, error, refetch } = useQuery(gql`${queries.listPrograms}`,
