@@ -19,11 +19,12 @@ const Workout = (props) => {
 
     const cardPress = async() => {
         selectedWorkout = data.getWorkout
+        const exercises = selectedWorkout.exercises.items ? selectedWorkout.exercises.items.sort((a, b) => a.exerciseNum - b.exerciseNum) : selectedWorkout.exercises.items
         const workoutInput = {
             id: uuid.v4(),
             title: selectedWorkout.title,
             programWeekWorkoutsId: props.weekID,
-            exercises:selectedWorkout.exercises.items.sort((a, b) => a.exerciseNum - b.exerciseNum),
+            exercises: exercises,
             notes: selectedWorkout.notes,
             status: "incomplete"
           }
@@ -182,9 +183,6 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
             isNewWorkout: true,
             index: weekToChange
         })
-        
-        
-        
     }
 
     return (

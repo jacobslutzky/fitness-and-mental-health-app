@@ -106,7 +106,7 @@ const Week = (props) => {
             
             const newExercises = workout.exercises
 
-                newExercises.forEach((exercise,index) => {
+                newExercises ? newExercises.forEach((exercise,index) => {
                     const exerciseInput = {
                         id: uuid.v4(),
                         workoutID: workoutID,
@@ -119,7 +119,7 @@ const Week = (props) => {
                         notes: exercise.notes
                     }
                     createExercise({ variables: { input: exerciseInput } });
-                });
+                }) : undefined;
 
             });
 

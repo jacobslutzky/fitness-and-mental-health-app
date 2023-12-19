@@ -14,7 +14,7 @@ import PreviewSplit from './react-native/screens/workout/PreviewSplit'
 import { NavigationContainer } from '@react-navigation/native';
 import { Colors } from './react-native/constants/Colors';
 import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client';
-import { Amplify, Auth } from 'aws-amplify';
+import { Amplify, Auth, AuthModeStrategyType, DataStore } from 'aws-amplify';
 import { AuthLink, createAuthLink } from "aws-appsync-auth-link"
 import awsmobile from './src/aws-exports.js'
 import { onError } from "@apollo/client/link/error";

@@ -292,6 +292,8 @@ PODS:
   - React-jsinspector (0.71.14)
   - React-logger (0.71.14):
     - glog
+  - react-native-cookies (6.2.1):
+    - React-Core
   - react-native-netinfo (9.3.7):
     - React-Core
   - react-native-pager-view (6.1.2):
@@ -424,8 +426,8 @@ PODS:
   - RNScreens (3.27.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - RNSVG (14.1.0):
-    - React-Core
+  - RNSVG (7.2.1):
+    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -462,6 +464,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -555,6 +558,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-cookies:
+    :path: "../node_modules/@react-native-cookies/cookies"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-pager-view:
@@ -638,6 +643,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 94cfc1788637ceaf8841ef1f69b10cc0d62baadc
   React-jsinspector: 7bf923954b4e035f494b01ac16633963412660d7
   React-logger: 655ff5db8bd922acfbe76a4983ffab048916343e
+  react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
   react-native-pager-view: 54bed894cecebe28cede54c01038d9d1e122de43
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
@@ -660,9 +666,9 @@ SPEC CHECKSUMS:
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNReanimated: cc5e3aa479cb9170bcccf8204291a6950a3be128
   RNScreens: 3c2d122f5e08c192e254c510b212306da97d2581
-  RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
+  RNSVG: 6c8e8c6f9e5a0caf910dd25aa6e4216045426e1d
   Yoga: e71803b4c1fff832ccf9b92541e00f9b873119b9
 
 PODFILE CHECKSUM: ad0d23fa5a8fb49bdb760b98e98b07158f6c51e3
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.14.3
