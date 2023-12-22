@@ -106,6 +106,16 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
           <Text style={styles.exerciseItemText}>{item.name}</Text>
         </TouchableOpacity>
       );
+
+      function buildRegEx(str, keywords){
+        return new RegExp("(?=.*?\\b" + 
+          keywords
+            .split(" ")
+            .join(")(?=.*?\\b") +                     
+          ").*", 
+          "i"
+        );
+      }
     return(
         <ScrollView >
     <TouchableOpacity style={styles.dropdownButton} onPress={togglemuscleWorkedDropdown}>
@@ -139,7 +149,7 @@ const SelectExercise = ({callbackSelectedExercise, searchResult, closeSelectExer
     <FlatList
         data={exercises.filter(exercise=>(selectedMuscleWorked == null || exercise.muscleWorked.split("/").includes(selectedMuscleWorked) ) 
           && (selectedWorkoutType==null || exercise.workoutType.split("/").includes(selectedWorkoutType)) 
-          && exercise.name.toLowerCase().includes(searchResult.toLowerCase()))}
+          && searchResult.toLowerCase().split(" ").every(word => exercise.name.toLowerCase().indexOf(word) > -1))}
         renderItem={exerciseItem}
         keyExtractor={(item) => item.id}
         scrollEnabled={false} 

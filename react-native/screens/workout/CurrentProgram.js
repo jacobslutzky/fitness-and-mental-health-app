@@ -20,6 +20,10 @@ const Workout = (props) => {
     // });
 
     const workout = {...props.workout  }
+
+    useEffect(() => {
+        console.log("WORKOUT", workout)
+    }, [workout])
     
     return (
         <View key={workout} style={styles.card}>
@@ -50,6 +54,7 @@ export  function CurrentProgram({navigation, currProgram, taskCompletionList,tas
     const [program, setProgram] = useState()
     const [currentWeek, setCurrentWeek] = useState(null)
     const [currentWorkout, setCurrentWorkout] = useState(null)
+    const [currentProgramID, setCurrentProgramID] = useState(null)
     
 
     useEffect(() => {
@@ -115,10 +120,19 @@ const setWorkoutToCurrent = (program) => {
     const togglePopup = (workout) => {
         setModalVisible(!isModalVisible)
         const newWorkout = {...workout  }
+
+        console.log(workout)
     
         newWorkout.userExercises.items = workout.userExercises.items.slice().sort((a, b) => a.exerciseNum - b.exerciseNum);
+        
+
+        console.log("new workout", newWorkout)
         setWorkoutBeingPreviewed(newWorkout)
     };
+
+    useEffect(() => {
+        console.log("Current week ", currentWeek, currentWeek ? currentWeek.userWorkouts.items : "")
+    }, [currentWeek])
 
     
     const onWorkoutComplete = (completedWorkout) => {
@@ -127,6 +141,73 @@ const setWorkoutToCurrent = (program) => {
          setWorkoutToCurrent(program)
 
     };
+
+
+    const { data: dataGetStats, loading: loadingGetStats, error: errorGetStats } = useQuery(gql`${queries.getUserStats}`, {
+        variables: { id: `stats-${global.userId}` }
+    });
+
+    useEffect(() => {
+       if(dataGetStats) setCurrentProgramID(dataGetStats.getUserStats.currentProgramID)
+    }, [dataGetStats])
+
+    const getProgram = /* GraphQL */ `
+    query GetProgram($id: ID!) {
+      getProgram(id: $id) {
+        id
+        title
+        introVideo
+        image
+        description
+        weeks {
+          items {
+            id
+            weekNumber
+            workouts {
+              items {
+                id
+                workoutNumber
+                title
+                notes
+                exercises {
+                  items {
+                    id
+                    sets
+                    RIR
+                    restMinutes
+                    repRange
+                    exerciseNum
+                    exerciseInfoID
+                    exerciseInfo {
+                        id
+                        name
+                        muscleWorked
+                        workoutType
+                        createdAt
+                        updatedAt
+                        __typename
+                      }
+                    notes
+                  }
+                }
+              }
+            }
+          }
+        }
+        
+      }
+    }
+  `;
+
+const { data, loading, error, refetch } = useQuery(gql`${getProgram}`, {
+    variables: { id: currentProgramID}
+});
+
+useEffect(() => {
+    if(currentProgramID){
+        refetch()
+    }
+ }, [currentProgramID])
 
     return (
         <View style={styles.container}>
@@ -152,7 +233,7 @@ const setWorkoutToCurrent = (program) => {
                 <View style={{ flexDirection: "column",  }}>
                     {
                         currentWeek!=null ? currentWeek.userWorkouts.items.map((workout, index) => (
-                            <Workout key={index} workout={workout} togglePopup={togglePopup} workoutBeingPreviewed={workoutBeingPreviewed} index={index + 1}></Workout>
+                            <Workout key={index} workout={workout} currentWeek={currentWeek.userWorkouts.items} togglePopup={togglePopup} workoutBeingPreviewed={workoutBeingPreviewed} index={index + 1}></Workout>
                         ))
                             : <View></View>
                     }

@@ -157,38 +157,22 @@ export default function WorkoutProgramInfo({ route, navigation }) {
 
     return (
         <View style={{height:'100%'}}>
-            <ImageBackground resizeMode={'cover'} style={styles.container} source={require('../../../assets/boulderWeightRoom.webp')} imageStyle={{ opacity: .2, height: '100%' }}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.programName}>{program!=null?program.title.toUpperCase():"loading"}</Text>
-                </View>
-                <View style={{ alignItems: 'center' }}>
-                    <ImageBackground source={'../../../assets/affirmationTherapy.jpeg'} style={styles.imageContainer}>
-                        <AntDesign name="playcircleo" size={40} color="white" />
-                    </ImageBackground>
                 </View>
                 <View style={styles.descriptionContainer}>
                     <Text style={styles.description}>{program!=null?program.description:"loading"}</Text>
                 </View>
-                <View style={{marginHorizontal: 20, zIndex: 100}}>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={() => navigateToPreviewSplit()} >
-                        <Text style={styles.buttonText}>PREVIEW SPLIT</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => navigateToProgram()}>
-                        <Text style={styles.buttonText}>SELECT PROGRAM</Text>
-                    </TouchableOpacity>
+                <View style={{marginHorizontal: 20}}>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.button} onPress={() => navigateToPreviewSplit()} >
+                            <Text style={styles.buttonText}>PREVIEW SPLIT</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={() => navigateToProgram()}>
+                            <Text style={styles.buttonText}>SELECT PROGRAM</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                </View>
-                <Svg height="100%" width="100%" style={[StyleSheet.absoluteFillObject, styles.svg]}>
-                    <Defs>
-                        <LinearGradient id="grad" x1="0%" y1="40%" x2="0%" y2="100%">
-                            <Stop offset="0" stopOpacity="0.2" stopColor={'black'} />
-                            <Stop offset="1" stopOpacity="1" stopColor={"black"} />
-                        </LinearGradient>
-                    </Defs>
-                    <Rect width="100%" height="100%" fill="url(#grad)" />
-                </Svg>
-            </ImageBackground>
         </View>
     )
 }
@@ -208,15 +192,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: "center",
     },
-    imageContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '90%',
-        height: 200,
-        borderRadius: 15,
-        borderColor: Colors.primary,
-        borderWidth: 1,
-    },
     image: {
         width: "100%",
         height: "100%",
@@ -229,9 +204,6 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
-        zIndex: 100,
-        position: 'absolute',
-        bottom: 50,
         width: '100%',
     },
     button: {
@@ -249,16 +221,11 @@ const styles = StyleSheet.create({
     descriptionContainer: {
         marginHorizontal: 20,
         marginTop: 100,
-        zIndex: 20,
-        flex: 1
     },
     titleContainer: {
         width: '100%',
         backgroundColor: '#101214',
-        paddingVertical: 30
-    },
-    svg : {
-        marginTop: 150,
-        height: '100%'
+        paddingVertical: 30,
+        marginTop: 100
     }
 });

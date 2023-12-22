@@ -14,7 +14,6 @@ const SwipeToDelete = ({ dragX, onDelete,iconSize }) => {
     <Animated.View
       style={{
         justifyContent: 'center',
-        transform: [{ scale }],
       }}
     >
       <TouchableOpacity style={styles.deleteButton} onPress={() => onDelete()}>

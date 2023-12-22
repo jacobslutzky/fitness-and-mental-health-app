@@ -11,7 +11,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 const Exercise = (props) => {
     const colors = useTheme().colors;
-   
+    const title = props.title
     const exercise = props.exercise
     const workout = props.workout
     const weekNumber = props.weekNumber
@@ -64,7 +64,7 @@ const Exercise = (props) => {
     // }, [data, dataLog, props.isFocused]);
 
     const navigateToExerciseScreen = () => {
-        navigation.navigate("ExerciseDuringWorkout", {exercise: exercise, weekNumber: weekNumber, workout: workout})
+        navigation.navigate("ExerciseDuringWorkout", {exercise: exercise, weekNumber: weekNumber, workout: workout, title: title })
     }
 
     return (
@@ -76,11 +76,11 @@ const Exercise = (props) => {
                             <Text style={{ color: colors.text, fontSize: 16, marginBottom: 5 }}>{exercise.exerciseInfo.name}</Text>
                             <Text style={{ color: "grey" }}>{exercise.sets} sets x {exercise.repRange} reps</Text>
                         </View>
-                        <View style={styles.expandExerciseButtonContainer}>
+                        <View style={{ alignItems: 'center', width: "40%", justifyContent: 'center', marginLeft: 15}}>
                             <AntDesign name="right" size={20} color="white" />
                         </View>
                     </View>
-
+   
                 </View>
         </TouchableOpacity>
 
@@ -153,8 +153,12 @@ export default function DuringWorkout({ navigation, route}) {
 
         if(route.params.taskCompletionList) route.params.taskCompletionList[route.params.taskCompletionListIndex] = true
 
-        navigation.goBack(null)
+        navigation.navigate("CurrentProgram", { title: title, titleToNameMap: titleToNameMap })
     }
+
+    useEffect(() => {
+        console.log('hi')
+    }, [isFocused])
 
     return (
 
@@ -164,7 +168,7 @@ export default function DuringWorkout({ navigation, route}) {
             </View>
             <View style={{ marginBottom: 150 }}>
                 {workout.userExercises.items.map((exercise, index) => (
-                    <Exercise key={index} exercise={exercise} workout={workout} weekNumber={weekNumber} isFocused={isFocused} navigation={navigation} />
+                    <Exercise key={index} exercise={exercise} title={title} workout={workout} weekNumber={weekNumber} isFocused={isFocused} navigation={navigation} />
                 ))}
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.bottomButton} onPress={() => completeWorkout()} >
@@ -184,9 +188,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         backgroundColor: "rgba(207, 184, 124, 0.3)",
         borderRadius: 10,
-    },
-    container: {
-
     },
     title: {
         color: 'white',
@@ -215,11 +216,6 @@ const styles = StyleSheet.create({
     exerciseHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between'
-    },
-    expandExerciseButtonContainer: {
-        width: "40%",
-        justifyContent: 'center',
-        marginLeft: 15
     },
     exerciseHeaderText: {
         width: "90%",
