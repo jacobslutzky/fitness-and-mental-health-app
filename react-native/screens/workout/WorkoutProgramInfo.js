@@ -156,14 +156,14 @@ export default function WorkoutProgramInfo({ route, navigation }) {
     }
 
     return (
-        <View style={{height:'100%'}}>
+        <ScrollView style={{height:'100%'}}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.programName}>{program!=null?program.title.toUpperCase():"loading"}</Text>
                 </View>
                 <View style={styles.descriptionContainer}>
                     <Text style={styles.description}>{program!=null?program.description:"loading"}</Text>
                 </View>
-                <View style={{marginHorizontal: 20}}>
+                <View style={{marginHorizontal: 20, paddingTop: 50}}>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.button} onPress={() => navigateToPreviewSplit()} >
                             <Text style={styles.buttonText}>PREVIEW SPLIT</Text>
@@ -173,7 +173,7 @@ export default function WorkoutProgramInfo({ route, navigation }) {
                         </TouchableOpacity>
                     </View>
                 </View>
-        </View>
+        </ScrollView>
     )
 }
 

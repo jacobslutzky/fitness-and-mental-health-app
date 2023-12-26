@@ -36,9 +36,9 @@ const AddExercisePopUp = ({isVisible, closeAddExercisePopUp, startingExerciseInp
       setExerciseInfo(null)
       setSearchResult("")
       setRepRange("")
-      setSets("")
-      setRIR("")
-      setRestMinutes("")
+      setSets(0)
+      setRIR(0)
+      setRestMinutes(0)
       setNotes("")
     }
     
