@@ -153,7 +153,7 @@ export default function DuringWorkout({ navigation, route}) {
 
         if(route.params.taskCompletionList) route.params.taskCompletionList[route.params.taskCompletionListIndex] = true
 
-        navigation.navigate("CurrentProgram", { title: title, titleToNameMap: titleToNameMap })
+        navigation.navigate("CurrentProgramNavigator", { title: title, titleToNameMap: titleToNameMap })
     }
 
     useEffect(() => {
