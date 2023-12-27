@@ -21,10 +21,6 @@ const Workout = (props) => {
 
     const workout = {...props.workout  }
 
-    useEffect(() => {
-        console.log("WORKOUT", workout)
-    }, [workout])
-    
     return (
         <View key={workout} style={styles.card}>
             <View style={styles.cardNumber}>
@@ -44,17 +40,16 @@ const Workout = (props) => {
 }
 export  function CurrentProgramNavigator({ navigation, route }){
     
-    return <CurrentProgram navigation={navigation} currProgram={route.params.program} />
+    return <CurrentProgram navigation={navigation} currProgram={route.params.program} programInput={route.params.programInput}/>
 }
 
-export  function CurrentProgram({navigation, currProgram, taskCompletionList,taskCompletionListIndex}) {
+export  function CurrentProgram({navigation, currProgram, programInput, taskCompletionList,taskCompletionListIndex}) {
     const colors = useTheme().colors;
   //  const titleToNameMap = route.params.titleToNameMap
     const [workoutBeingPreviewed, setWorkoutBeingPreviewed] = useState(null);
-    const [program, setProgram] = useState()
+    const [program, setProgram] = useState(programInput)
     const [currentWeek, setCurrentWeek] = useState(null)
     const [currentWorkout, setCurrentWorkout] = useState(null)
-    const [currentProgramID, setCurrentProgramID] = useState(null)
     
 
     useEffect(() => {
@@ -90,50 +85,38 @@ export  function CurrentProgram({navigation, currProgram, taskCompletionList,tas
     const navigateToSelectProgram = () => {
         navigation.navigate("SelectWorkoutProgram",{selectingProgram:true})
     }
+
     const navigatedToWorkout = () => {
-         navigation.navigate("DuringWorkout", { workout: currentWorkout, onWorkoutComplete: onWorkoutComplete, taskCompletionList: taskCompletionList,  taskCompletionListIndex: taskCompletionListIndex  })
+         navigation.navigate("DuringWorkout", { workout: currentWorkout, onWorkoutComplete: onWorkoutComplete, taskCompletionList: taskCompletionList,  taskCompletionListIndex: taskCompletionListIndex, currentProgram: program  })
     }
 
+    const setWorkoutToCurrent = (program) => {
+        let earliestIncompleteWorkout = null;
+        let weekOfEarliestIncompleteWorkout = null;
 
-const setWorkoutToCurrent = (program) => {
-    let earliestIncompleteWorkout = null;
-    let weekOfEarliestIncompleteWorkout = null;
+        for (const week of program.userProgramWeeks.items) {
+            const incompleteWorkout = week.userWorkouts.items.find((workout) => workout.status === "incomplete");
 
-    for (const week of program.userProgramWeeks.items) {
-        const incompleteWorkout = week.userWorkouts.items.find((workout) => workout.status === "incomplete");
-
-        if (incompleteWorkout) {
-            earliestIncompleteWorkout = incompleteWorkout;
-            weekOfEarliestIncompleteWorkout = week;
-            break
+            if (incompleteWorkout) {
+                earliestIncompleteWorkout = incompleteWorkout;
+                weekOfEarliestIncompleteWorkout = week;
+                break
+            }
         }
+        setCurrentWorkout(earliestIncompleteWorkout)
+        setCurrentWeek(weekOfEarliestIncompleteWorkout);
     }
-    setCurrentWorkout(earliestIncompleteWorkout)
-    setCurrentWeek(weekOfEarliestIncompleteWorkout);
-
-    
-}
 
     const [isModalVisible, setModalVisible] = useState(false);
 
-   
     const togglePopup = (workout) => {
         setModalVisible(!isModalVisible)
         const newWorkout = {...workout  }
 
-        console.log(workout)
-    
         newWorkout.userExercises.items = workout.userExercises.items.slice().sort((a, b) => a.exerciseNum - b.exerciseNum);
         
-
-        console.log("new workout", newWorkout)
         setWorkoutBeingPreviewed(newWorkout)
     };
-
-    useEffect(() => {
-        console.log("Current week ", currentWeek, currentWeek ? currentWeek.userWorkouts.items : "")
-    }, [currentWeek])
-
     
     const onWorkoutComplete = (completedWorkout) => {
         completedWorkout.status = "complete";
@@ -141,73 +124,6 @@ const setWorkoutToCurrent = (program) => {
          setWorkoutToCurrent(program)
 
     };
-
-
-    const { data: dataGetStats, loading: loadingGetStats, error: errorGetStats } = useQuery(gql`${queries.getUserStats}`, {
-        variables: { id: `stats-${global.userId}` }
-    });
-
-    useEffect(() => {
-       if(dataGetStats) setCurrentProgramID(dataGetStats.getUserStats.currentProgramID)
-    }, [dataGetStats])
-
-    const getProgram = /* GraphQL */ `
-    query GetProgram($id: ID!) {
-      getProgram(id: $id) {
-        id
-        title
-        introVideo
-        image
-        description
-        weeks {
-          items {
-            id
-            weekNumber
-            workouts {
-              items {
-                id
-                workoutNumber
-                title
-                notes
-                exercises {
-                  items {
-                    id
-                    sets
-                    RIR
-                    restMinutes
-                    repRange
-                    exerciseNum
-                    exerciseInfoID
-                    exerciseInfo {
-                        id
-                        name
-                        muscleWorked
-                        workoutType
-                        createdAt
-                        updatedAt
-                        __typename
-                      }
-                    notes
-                  }
-                }
-              }
-            }
-          }
-        }
-        
-      }
-    }
-  `;
-
-const { data, loading, error, refetch } = useQuery(gql`${getProgram}`, {
-    variables: { id: currentProgramID}
-});
-
-useEffect(() => {
-    if(currentProgramID){
-        refetch()
-    }
- }, [currentProgramID])
 
     return (
         <View style={styles.container}>

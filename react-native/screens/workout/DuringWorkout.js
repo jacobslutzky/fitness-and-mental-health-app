@@ -146,19 +146,14 @@ export default function DuringWorkout({ navigation, route}) {
             status: "complete"
         }
 
-        
+        console.log("Completed workout ", workoutInput)
         updateUserWorkout({variables: { input: workoutInput }})
 
         route.params.onWorkoutComplete(workout)
 
         if(route.params.taskCompletionList) route.params.taskCompletionList[route.params.taskCompletionListIndex] = true
-
-        navigation.navigate("CurrentProgramNavigator", { title: title, titleToNameMap: titleToNameMap })
+        navigation.navigate("CurrentProgramNavigator", { title: title, programInput: route.params.currentProgram, titleToNameMap: titleToNameMap })
     }
-
-    useEffect(() => {
-        console.log('hi')
-    }, [isFocused])
 
     return (
 
