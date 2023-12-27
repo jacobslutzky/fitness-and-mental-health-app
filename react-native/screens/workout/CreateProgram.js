@@ -208,15 +208,17 @@ export default function CreateProgram({ route, navigation }) {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [saveWorkouts, setSaveWorkouts] =useState(false)
+    const [continueAttempted, setContinueAttempted] = useState(false)
 
     const [createProgram] = useMutation(gql`${mutations.createProgram}`);
     const [createProgramWeek] = useMutation(gql`${mutations.createProgramWeek}`);
-    
 
     const handleProgramInitialized = () => {
-        setSection(2)
-        addWeek()
-    
+        setContinueAttempted(true)
+        if(title){
+            setSection(2)
+            addWeek()
+        }
     }
 
  const addWeek = () => {
@@ -321,7 +323,7 @@ export default function CreateProgram({ route, navigation }) {
                     {/* Program Title Field */}
                     <View style={styles.programTitleFieldContainer}>
                         <TextInput
-                            style={styles.programTitleField}
+                            style={[styles.programTitleField, { borderColor: title == "" && continueAttempted ? 'red' : 'grey'}]}
                             onChangeText={setTitle}
                             placeholder="My great workout program..."
                             placeholderTextColor="rgba(255, 255, 255, 0.4)" />

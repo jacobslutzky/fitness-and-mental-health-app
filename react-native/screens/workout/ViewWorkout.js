@@ -56,7 +56,7 @@ export default function ViewWorkout({ navigation, route }) {
     const [isAddExerciseVisible, setIsAddExerciseVisible] = useState(false)
     const [selectedExerciseInput, setSelectedExerciseInput] = useState(null)
     const [selectedExerciseInfo, setSelectedExerciseInfo] = useState(null)
-    const [title, setTitle] = useState(workout.title)
+    const [title, setTitle] = useState("")
     const [selectedExerciseIndex, setSelectedExerciseIndex] = useState(-1)
 
     const [createExercise] = useMutation(gql`${mutations.createExercise}`);
@@ -87,6 +87,12 @@ export default function ViewWorkout({ navigation, route }) {
         setIsAddExerciseVisible(false)
     }
     const saveExercise = async(props) => {
+        props.setSaveAttempted(true)
+        if(props.RIR && isNaN(parseInt(props.RIR))) return 
+        if(isNaN(parseInt(props.sets))) return
+        if(typeof props.repRange !== "string") return
+        if(isNaN(parseInt(props.restMinutes))) return
+        if(props.sets == 0 || props.repRange == "" || props.restMinutes == 0) return
         const exerciseInput = {
             sets: parseInt(props.sets),
             exerciseInfoID: props.exerciseInfo.id,
@@ -107,11 +113,13 @@ export default function ViewWorkout({ navigation, route }) {
                 return newExercises;
               });
         }
+        props.setSaveAttempted(false)
         closeAddExercisePopUp()
     }
     
 
     const handleSaveWorkout = () => {
+        if(title && exercises.length > 0){
             const newWorkout = workout
             if(isNewWorkout){
                 const workoutID = uuid.v4()
@@ -134,6 +142,7 @@ export default function ViewWorkout({ navigation, route }) {
             saveWorkout(index, newWorkout)
             navigation.goBack(null)
              };
+        }
 
     return (
 
@@ -142,6 +151,8 @@ export default function ViewWorkout({ navigation, route }) {
                 <TextInput
                     style={styles.title}
                     value={title}
+                    placeholder={"NAME YOUR WORKOUT"}
+                    placeholderTextColor={'white'}
                     onChangeText={setTitle}
                 />
                 <AntDesign name="edit" size={20} color="white" />
