@@ -1,6 +1,4 @@
 import { StyleSheet, TouchableOpacity, ImageBackground, Text, View } from 'react-native';
-import { AntDesign } from '@expo/vector-icons'; 
-import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 export default function VideoCard( {item, index} ) {
@@ -12,20 +10,6 @@ export default function VideoCard( {item, index} ) {
       image: item.img,
     });
   }
-
-  /*
-              <View style={styles.cardTimeContainer}>
-              <Text style={styles.cardTimeText}>{item.time}</Text>
-            </View>
-            <View style={styles.cardHeartContainer}>
-              <AntDesign name="heart" size={13} color="white" />
-            </View>
-            <View style={styles.cardStarsContainer}>
-              <FontAwesome name="star" size={15} color="white" style = {{marginLeft: 10}}/>
-              <Text style={styles.cardStarsText}>{item.stars}</Text>
-            </View>
-
-  */
 
     return (
         <View style={[styles.communityCard]} key={index} >

@@ -1,15 +1,8 @@
-// SwipeToDelete.js
 import React from 'react';
-import { View, StyleSheet, Animated, TouchableOpacity } from 'react-native';
+import { StyleSheet, Animated, TouchableOpacity } from 'react-native';
 import { EvilIcons } from '@expo/vector-icons';
 
-const SwipeToDelete = ({ dragX, onDelete,iconSize }) => {
-  const scale = dragX.interpolate({
-    inputRange: [0, 100],
-    outputRange: [1, 1.5], // Adjust the output range as needed
-    extrapolate: 'clamp',
-  });
-
+const SwipeToDelete = ({ onDelete,iconSize }) => {
   return (
     <Animated.View
       style={{

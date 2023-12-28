@@ -1,5 +1,4 @@
 import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'react-native';
-import { useTheme } from '@react-navigation/native';
 import { useState, useEffect, useRef } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';

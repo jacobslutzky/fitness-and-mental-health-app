@@ -1,6 +1,4 @@
-import { StyleSheet, TouchableOpacity, ImageBackground, Text, View } from 'react-native';
-import { AntDesign } from '@expo/vector-icons'; 
-import { FontAwesome } from '@expo/vector-icons';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function AchievementBubble( {achievementName, achievementProgress, achievementProgressText} ) {
     return (

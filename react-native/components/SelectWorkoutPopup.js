@@ -1,23 +1,20 @@
-import React, { useState,useEffect} from "react";
-import {StyleSheet,TouchableOpacity, Text, View,ScrollView, ImageBackground, TextInput} from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, TouchableOpacity, Text, View, ScrollView, ImageBackground, TextInput } from "react-native";
 import Modal from "react-native-modal";
 import { Colors } from '../constants/Colors';
-import { useQuery, gql, useMutation } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import * as queries from "../../src/graphql/queries";
-import * as mutations from "../../src/graphql/mutations";
-import { SearchBar } from 'react-native-elements';
-import { AntDesign,Ionicons,Feather} from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import uuid from 'react-native-uuid';
-import { NoDeprecatedCustomRule } from "graphql";
 
 
 const Workout = (props) => {
-    
+
     const { data, loading, error } = useQuery(gql`${queries.getWorkout}`, {
         variables: { id: props.workout.id }
-  });
+    });
 
-    const cardPress = async() => {
+    const cardPress = async () => {
         selectedWorkout = data.getWorkout
         const exercises = selectedWorkout.exercises.items ? selectedWorkout.exercises.items.sort((a, b) => a.exerciseNum - b.exerciseNum) : selectedWorkout.exercises.items
         const workoutInput = {
@@ -27,144 +24,64 @@ const Workout = (props) => {
             exercises: exercises,
             notes: selectedWorkout.notes,
             status: "incomplete"
-          }
-          props.togglePopup()
-    
-        props.setWorkout( props.weekID, workoutInput)
+        }
+        props.togglePopup()
+
+        props.setWorkout(props.weekID, workoutInput)
     }
 
     return (
-            <TouchableOpacity style={styles.weekContainer} onPress={() => !loading?(cardPress()):undefined}>
-                {/* Week Card */}
-                <ImageBackground source={require("../../assets/workoutBackground.png")} style={styles.weekCard} resizeMode="cover" imageStyle={{width: '100%', height: '100%', borderRadius: 15, opacity: 0.7}}>
-                    <View style={styles.cardHeader}>
+        <TouchableOpacity style={styles.weekContainer} onPress={() => !loading ? (cardPress()) : undefined}>
+            {/* Week Card */}
+            <ImageBackground source={require("../../assets/workoutBackground.png")} style={styles.weekCard} resizeMode="cover" imageStyle={{ width: '100%', height: '100%', borderRadius: 15, opacity: 0.7 }}>
+                <View style={styles.cardHeader}>
 
-                    </View>
-                    <View style={{height: '40%'}}></View>
-                    <View style={styles.cardFooter}>
-                        <Text style={{color: 'white',fontWeight: 'bold', fontSize: 20}}>{loading?"loading":props.workout.title}</Text>
-                    </View>
-                </ImageBackground>
-            </TouchableOpacity>
+                </View>
+                <View style={{ height: '40%' }}></View>
+                <View style={styles.cardFooter}>
+                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>{loading ? "loading" : props.workout.title}</Text>
+                </View>
+            </ImageBackground>
+        </TouchableOpacity>
     )
 }
 
-/* 
-
-                        <View style={styles.difficultyContainer}>
-                            <Text style={[styles.bodyText, {marginBottom: 0, marginTop: 5, fontWeight: 'bold', fontSize: 12}]}>Difficulty:</Text>
-                            <Text style={styles.bodyText}>--</Text>
-                        </View>
-
-                        <View style={styles.exerciseNumberContainer}>
-                            <Text style={[styles.bodyText, {marginBottom: 0, marginTop: 5, fontWeight: 'bold', fontSize: 12}]}>Exercises:</Text>
-                            <Text style={styles.bodyText}>--</Text>
-                        </View>
-
-                        <View style={styles.durationContainer}>
-                            <Text style={[styles.bodyText, {marginBottom: 0, marginTop: 5, fontWeight: 'bold', fontSize: 12}]}>Duration:</Text>
-                            <Text style={styles.bodyText}>--</Text>
-                        </View>
-
-*/
-
-// const Exercise = (props) => {
-//   console.log("exercise reached")
-
-
-//   const label = props.label
-//   const workout = props.workout
-//   const title = props.title
-//   const weekNumber = props.weekNumber
-//   const index = props.index
-
-//   const { data, loading, error } = useQuery(gql`${queries.getExercise}`, {
-//     variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}::${label}` : `${label}-${workout}-week${weekNumber}-${title}`}
-//   }); 
-
-//   return (
-//     <View key={index}>
-//       {data && data.getExercise ?
-//         <View style={styles.exercise}>
-//               <View style={styles.exerciseNumberBox}>
-//                 <Text style={styles.exerciseNumber}>{index + 1}</Text>
-//               </View>
-//               <View style={styles.exerciseDetails}>
-//                 <Text style={styles.exerciseName}>{data.getExercise.name}</Text>
-//                 <View style={styles.exerciseStats}>
-//                   <Text style={styles.exerciseStat}>Sets: {data.getExercise.sets}</Text>
-//                   <Text style={styles.exerciseStat}>Reps: {data.getExercise.repRange}</Text>
-//                   <Text style={styles.exerciseStat}>Rest: {data.getExercise.restMinutes} min</Text>
-//                 </View>
-//               </View>
-//           </View>
-//               :
-//         <View></View>
-//         }
-//             </View>
-//   )
-// }
-
-
-
-function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToChange, navigation}) {
-    let communityCards = []
-
-    const [newWorkoutActive, setNewWorkoutActive] = useState(false)
+function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToChange, navigation }) {
     const [workouts, setWorkouts] = useState([])
     const [filteredWorkouts, setFilteredWorkouts] = useState([])
-    const [isAll, setIsAll] = useState(true)
     const [search, setSearch] = useState("")
-    const { data, loading, error, refetch } = useQuery(gql`${queries.listWorkouts}`,
-    {
-        variables: {
-            filter : {
-                programWeekWorkoutsId :  {attributeExists: false}
-           },
-           limit: 1000, 
-        }
-    })
     
-    useEffect(()=>{
-        if(isVisible){
-            refetch()
-            if(loading==false){
-            setWorkouts(data.listWorkouts.items)
-            setFilteredWorkouts(data.listWorkouts.items)
-            
-        }
-    }
-    },[isVisible])
+    const { data, loading, error, refetch } = useQuery(gql`${queries.listWorkouts}`,
+        {
+            variables: {
+                filter: {
+                    programWeekWorkoutsId: { attributeExists: false }
+                },
+                limit: 1000,
+            }
+        })
 
-    // const handleFilter = ( command ) => {
-    //     if(command == 'all'){
-    //     setTasksFiltered([...communityCards])
-    //     setTasksSearched([...communityCards])
-    //     setIsAll(true)
-    //     }
-    //     else if(command == 'not completed'){
-    //     communityCardsTemp = new Array();
-    //     for(let i = 0; i < communityCards.length; i++){
-    //         if(isPressed[i] == false){
-    //         communityCardsTemp.push(communityCards[i])
-    //         }
-    //     }
-    //     setTasksFiltered([...communityCardsTemp])
-    //     setTasksSearched([...communityCardsTemp])
-    //     setIsAll(false)
-    //     }
-    // }
+    useEffect(() => {
+        if (isVisible) {
+            refetch()
+            if (loading == false) {
+                setWorkouts(data.listWorkouts.items)
+                setFilteredWorkouts(data.listWorkouts.items)
+
+            }
+        }
+    }, [isVisible])
 
     const updateSearch = (text) => {
 
         const updatedData = workouts.filter((item) => {
-        const item_data = `${item.title.toLowerCase()})`;
-        const text_data = text.toLowerCase();
-        return item_data.indexOf(text_data) > -1;
+            const item_data = `${item.title.toLowerCase()})`;
+            const text_data = text.toLowerCase();
+            return item_data.indexOf(text_data) > -1;
         });
-        
+
         setFilteredWorkouts(updatedData)
-        
+
         setSearch(text)
     };
 
@@ -174,10 +91,10 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
             title: "NAME YOUR WORKOUT",
             programWeekWorkoutsId: weekToChange,
             exercises: []
-          }
-          togglePopup()
-     
-        navigation.navigate("ViewWorkout",  {
+        }
+        togglePopup()
+
+        navigation.navigate("ViewWorkout", {
             workout: workoutInput,
             saveWorkout: setWorkout,
             isNewWorkout: true,
@@ -187,415 +104,415 @@ function SelectWorkoutPopup({ isVisible, setWorkout, togglePopup, title, weekToC
 
     return (
         <Modal isVisible={isVisible}>
-        <View style={styles.outerContainer}>
-            <View style={{width: '100%'}}>
-                <TouchableOpacity onPress={() => {togglePopup(); setSearch("")}}>
-                <Feather name = "x-circle" size = {17} color = {"white"}/>            
-                </TouchableOpacity>
-            </View>
+            <View style={styles.outerContainer}>
+                <View style={{ width: '100%' }}>
+                    <TouchableOpacity onPress={() => { togglePopup(); setSearch("") }}>
+                        <Feather name="x-circle" size={17} color={"white"} />
+                    </TouchableOpacity>
+                </View>
 
-        <Text style={styles.headerOne}>WORKOUT CREATION</Text>
-            <View style={[styles.innerContainer]}>
+                <Text style={styles.headerOne}>WORKOUT CREATION</Text>
+                <View style={[styles.innerContainer]}>
                     {/* <View style={styles.bottomButton}> */}
                     <View style={styles.searchBarContainer}>
-                    <TextInput
-                    placeholder="Search"
-                    placeholderTextColor={"white"}
-                    onChangeText={updateSearch}
-                    style={styles.searchBarInput}
-                    value={search}
-                    autoCapitalize='none'
-                    // round={true}
-                    />
-                    <Ionicons name="search" size={15} color="white" style={{marginRight:10}} />
-                     </View>
+                        <TextInput
+                            placeholder="Search"
+                            placeholderTextColor={"white"}
+                            onChangeText={updateSearch}
+                            style={styles.searchBarInput}
+                            value={search}
+                            autoCapitalize='none'
+                        // round={true}
+                        />
+                        <Ionicons name="search" size={15} color="white" style={{ marginRight: 10 }} />
+                    </View>
 
                     <ScrollView persistentScrollbar={true}>
                         <View style={styles.weeksContainer}>
                             {
                                 filteredWorkouts.map((item, index) => (
-                                    <Workout workout={item} weekID={weekToChange} key ={item.id} index={index} togglePopup={togglePopup} setWorkout={setWorkout}/>
+                                    <Workout workout={item} weekID={weekToChange} key={item.id} index={index} togglePopup={togglePopup} setWorkout={setWorkout} />
                                 ))
                             }
                         </View>
-                    </ScrollView>                  
-                    
+                    </ScrollView>
+
                 </View>
                 <TouchableOpacity style={styles.bottomButton} onPress={() => handleCreateWorkoutButtonPressed()}>
-                        <Text style={styles.bottomButtonText}>Create New Workout</Text>
-                </TouchableOpacity> 
+                    <Text style={styles.bottomButtonText}>Create New Workout</Text>
+                </TouchableOpacity>
             </View>
         </Modal>
     );
 }
 
 const styles = StyleSheet.create({
-  outerContainer: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: "#383838",
-    height: "80%",
-    width: "90%",
-    borderRadius: 15,
-    alignSelf: "center",
-    padding:10
-  },
-  innerContainer: {
-    backgroundColor: "#595555",
-    borderRadius: 10,
-    height: "85%",
-    width: "90%",
-    paddingHorizontal: 10,
-    paddingTop:10
+    outerContainer: {
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: "#383838",
+        height: "80%",
+        width: "90%",
+        borderRadius: 15,
+        alignSelf: "center",
+        padding: 10
+    },
+    innerContainer: {
+        backgroundColor: "#595555",
+        borderRadius: 10,
+        height: "85%",
+        width: "90%",
+        paddingHorizontal: 10,
+        paddingTop: 10
 
-  },
-  headerOne:
-  {
-    alignSelf: "center",
-    fontWeight: "bold",
-    color: "white",
-    fontSize: 20,
-    marginBottom: 10
-  },
-  title: {
-    color: "white",
-    fontSize: 20,
-    marginBottom: 10,
-    fontWeight: "bold"
-  },
-//   exerciseList: {
-//     flexDirection: "column",
-//     marginBottom:20,
-//     maxHeight: "90%",
-//     borderTopColor: "grey",
-//     borderTopWidth: 2
-//   },
-//   exerciseNumberBox: {
-//     width: 24,
-//     height: 24,
-//     backgroundColor: Colors.primary,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     marginRight: 10,
-//     borderRadius: 4,
-//     marginVertical:10
-//   },
-  exercise: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    borderBottomWidth: 2,
-    borderBottomColor: "grey"
-  },
-  exerciseNumber: {
-    color: Colors.background,
-    fontSize: 12,
-    alignSelf:"center",
-    padding: 5,
-    fontWeight: "bold",
+    },
+    headerOne:
+    {
+        alignSelf: "center",
+        fontWeight: "bold",
+        color: "white",
+        fontSize: 20,
+        marginBottom: 10
+    },
+    title: {
+        color: "white",
+        fontSize: 20,
+        marginBottom: 10,
+        fontWeight: "bold"
+    },
+    //   exerciseList: {
+    //     flexDirection: "column",
+    //     marginBottom:20,
+    //     maxHeight: "90%",
+    //     borderTopColor: "grey",
+    //     borderTopWidth: 2
+    //   },
+    //   exerciseNumberBox: {
+    //     width: 24,
+    //     height: 24,
+    //     backgroundColor: Colors.primary,
+    //     justifyContent: "center",
+    //     alignItems: "center",
+    //     marginRight: 10,
+    //     borderRadius: 4,
+    //     marginVertical:10
+    //   },
+    exercise: {
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        borderBottomWidth: 2,
+        borderBottomColor: "grey"
+    },
+    exerciseNumber: {
+        color: Colors.background,
+        fontSize: 12,
+        alignSelf: "center",
+        padding: 5,
+        fontWeight: "bold",
 
-  },
-  exerciseDetails: {
-    flexDirection: "column",
-    marginVertical:10
-  },
-  exerciseName: {
-    color: "white",
-    fontSize: 12,
-    fontWeight: "bold",
-  },
-  exerciseStats: {
-    flexDirection: "row",
-    
-  },
-  exerciseStat: {
-    color: "white",
-    fontSize: 12,
-    marginRight: 10,
-  },
-  closeButton: {
-    width: "60%",
-    height: 50,
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 6,
-    justifyContent: 'center',
-    alignSelf: "center",
-  },
-  closeButtonText: {
-    textAlign: "center",
-    verticalAlign: "center",
-    color: 'white'
-  },
-  searchBar : {
-    backgroundColor: "#444444",
-    textAlign: "left",
-    justifyContent: "center",
-    borderRadius: 15,
-    width: '95%',
-    height: 50,
-    borderColor: 'white',
-    borderWidth: 1,
-    borderBottomWidth: 1
-  },
-  
-  bodyText : {
-    color: 'white',
-    marginBottom: 10
-},
-sectionTitleText : {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16
-},
-sectionTitleContainer : {
-    alignItems: 'center'
-},
-currentStepContainer : {
-    alignItems: 'center'
-},
-stepText : {
-    color: 'grey',
-    fontStyle: 'italic',
-    opacity: '0.6',
-    marginTop: 5
-}, 
-programTitleFieldContainer : {
-    alignItems: 'center'
-},
-programTitleField : {
-    borderColor: 'grey',
-    borderWidth: 1,
-    height: 50,
-    borderRadius: 10,
-    width: '80%',
-    color: 'white',
-    paddingHorizontal: 10
-},
-programTitleContainer : {
-    alignItems: 'center'
-},
-programDescriptionTextContainer: {
-    alignItems: 'center',
-    marginTop: 30
-},
-programDescriptionField : {
-    borderColor: 'grey',
-    borderWidth: 1,
-    height: 150,
-    borderRadius: 10,
-    width: '80%',
-    color: 'white',
-    paddingHorizontal: 10
-},
-programDescriptionFieldContainer : {
-    alignItems: 'center'
-},
-coverImageTextContainer : {
-    alignItems: 'center',
-    marginTop: 30
-},
-buttonContainer : {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center'
-},
-uploadButton : {
-    borderColor: 'grey',
-    borderWidth: 1,
-    width: '37%',
-    height: 50,
-    marginRight: 10,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row'
-}, 
-generateButton : {
-    borderColor: 'grey',
-    borderWidth: 1,
-    width: '37%',
-    height: 50,
-    marginLeft: 10, 
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center'
-},
-continueContainer: {
-    alignItems: 'center'
-},
-continueButton : {
-    backgroundColor: Colors.primary,
-    width: '80%',
-    height: 50,
-    borderRadius: 10,
-    marginTop: 50,
-    alignItems: 'center',
-    justifyContent: 'center'
-},
-uploadButtonText: {
-    color: Colors.primary,
-    marginLeft: 10
-},
-generateButtonText: {
-    color: Colors.primary
-}, 
-addWeekContainer : {
-    alignItems: 'center'
-}, 
-addWeekButton : {
-    backgroundColor: 'grey',
-    width: '80%',
-    height: 50,
-    borderRadius: 10,
-    marginBottom: -30,
-    alignItems: 'center',
-    justifyContent: 'center'
-},
-weeksContainer : {
-    marginTop: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    
-},
-weekCard : {
-    width: '100%',
-    height: 140,
-    borderRadius: 15
-},
-weekContainer : {
-    width: '100%',
-    height: 120,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 40,
-    borderRadius: 15
-},
-weekNumberText : {
-    color: Colors.primary,
-    fontSize: 16
-},
-weekNumberContainer : {
-    alignItems: 'center',
-    justifyContent: 'center'
-},
-exerciseNumberContainer : {
-    width: '25%',
-    alignItems: 'center',
-    justifyContent: 'center'
-}, 
-difficultyContainer : {
-    width: '25%',
-    alignItems: 'center',
-    justifyContent: 'center',
-}, 
-weekNumberContainer : {
-    width: '25%',
-    alignItems: 'center',
-    justifyContent: 'center'
-}, 
-durationContainer : {
-    width: '25%',
-    alignItems: 'center',
-    justifyContent: 'center'
-},
-exerciseCard : {
-    height: 50,
-    width: '75%',
-    flexDirection: 'row',
-    borderBottomColor: 'grey',
-    borderBottomWidth: 1,
-    alignItems: 'center',
-},
-exerciseList : {
-    alignItems: 'center'
-},
-exerciseIcon : {
-    height: '70%',
-    width: '15%',
-    backgroundColor: 'grey',
-    opacity: 0.3,
-    borderRadius: 10
-},
-exerciseTextContainer : {
-    justifyContent: 'center',
-    marginLeft: 10,
-    width: '70%',
-}, 
-informationContainer : {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '7.5%'
-},
-trashContainer : {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '7.5%'
-}, 
-addContainer : {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: '80%',
-    marginTop: 10,
-    marginLeft: 30
-}, 
-addTextContainer : {
-    width: '90%',
-    marginLeft: 10
-},
-cardHeader : {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-},
-cardFooter : {
-    width: '100%',
-    alignItems: 'center',
-    textAlign: 'center'
-},
-communityCard: {
-    height: "100%",
-    width: "100%",
-    overflow: "hidden",
-    borderColor: Colors.primary,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  bottomButton: {
-    borderWidth: 1,
-    borderRadius: 15,
-    borderColor: 'rgba(139, 136, 136, 1)',
-    width: "90%",
-    marginTop: "5%",
-    paddingVertical: 5,
-  },
-  bottomButtonText: {
-    color: "white",
-    textAlign: "center",
-    fontWeight:"bold"
-  },
-  searchBarContainer: {
-    borderWidth: 1,
-    borderRadius: 15,
-    justifyContent: "space-between",
-    width: "100%",
-    alignSelf: "center",
-    flexDirection: "row",
-    alignItems:"center",
-    marginBottom: 10,
-  },
-  searchBarInput: {
-    color: "white",
-    fontSize: 14,
-    fontWeight: "bold",
-    flex: 1, // Take up all available space
-    paddingLeft: 15,
-    paddingVertical: 5,
-    
+    },
+    exerciseDetails: {
+        flexDirection: "column",
+        marginVertical: 10
+    },
+    exerciseName: {
+        color: "white",
+        fontSize: 12,
+        fontWeight: "bold",
+    },
+    exerciseStats: {
+        flexDirection: "row",
 
-  },
+    },
+    exerciseStat: {
+        color: "white",
+        fontSize: 12,
+        marginRight: 10,
+    },
+    closeButton: {
+        width: "60%",
+        height: 50,
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignSelf: "center",
+    },
+    closeButtonText: {
+        textAlign: "center",
+        verticalAlign: "center",
+        color: 'white'
+    },
+    searchBar: {
+        backgroundColor: "#444444",
+        textAlign: "left",
+        justifyContent: "center",
+        borderRadius: 15,
+        width: '95%',
+        height: 50,
+        borderColor: 'white',
+        borderWidth: 1,
+        borderBottomWidth: 1
+    },
+
+    bodyText: {
+        color: 'white',
+        marginBottom: 10
+    },
+    sectionTitleText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16
+    },
+    sectionTitleContainer: {
+        alignItems: 'center'
+    },
+    currentStepContainer: {
+        alignItems: 'center'
+    },
+    stepText: {
+        color: 'grey',
+        fontStyle: 'italic',
+        opacity: '0.6',
+        marginTop: 5
+    },
+    programTitleFieldContainer: {
+        alignItems: 'center'
+    },
+    programTitleField: {
+        borderColor: 'grey',
+        borderWidth: 1,
+        height: 50,
+        borderRadius: 10,
+        width: '80%',
+        color: 'white',
+        paddingHorizontal: 10
+    },
+    programTitleContainer: {
+        alignItems: 'center'
+    },
+    programDescriptionTextContainer: {
+        alignItems: 'center',
+        marginTop: 30
+    },
+    programDescriptionField: {
+        borderColor: 'grey',
+        borderWidth: 1,
+        height: 150,
+        borderRadius: 10,
+        width: '80%',
+        color: 'white',
+        paddingHorizontal: 10
+    },
+    programDescriptionFieldContainer: {
+        alignItems: 'center'
+    },
+    coverImageTextContainer: {
+        alignItems: 'center',
+        marginTop: 30
+    },
+    buttonContainer: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    uploadButton: {
+        borderColor: 'grey',
+        borderWidth: 1,
+        width: '37%',
+        height: 50,
+        marginRight: 10,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row'
+    },
+    generateButton: {
+        borderColor: 'grey',
+        borderWidth: 1,
+        width: '37%',
+        height: 50,
+        marginLeft: 10,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    continueContainer: {
+        alignItems: 'center'
+    },
+    continueButton: {
+        backgroundColor: Colors.primary,
+        width: '80%',
+        height: 50,
+        borderRadius: 10,
+        marginTop: 50,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    uploadButtonText: {
+        color: Colors.primary,
+        marginLeft: 10
+    },
+    generateButtonText: {
+        color: Colors.primary
+    },
+    addWeekContainer: {
+        alignItems: 'center'
+    },
+    addWeekButton: {
+        backgroundColor: 'grey',
+        width: '80%',
+        height: 50,
+        borderRadius: 10,
+        marginBottom: -30,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    weeksContainer: {
+        marginTop: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+    weekCard: {
+        width: '100%',
+        height: 140,
+        borderRadius: 15
+    },
+    weekContainer: {
+        width: '100%',
+        height: 120,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 40,
+        borderRadius: 15
+    },
+    weekNumberText: {
+        color: Colors.primary,
+        fontSize: 16
+    },
+    weekNumberContainer: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    exerciseNumberContainer: {
+        width: '25%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    difficultyContainer: {
+        width: '25%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    weekNumberContainer: {
+        width: '25%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    durationContainer: {
+        width: '25%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    exerciseCard: {
+        height: 50,
+        width: '75%',
+        flexDirection: 'row',
+        borderBottomColor: 'grey',
+        borderBottomWidth: 1,
+        alignItems: 'center',
+    },
+    exerciseList: {
+        alignItems: 'center'
+    },
+    exerciseIcon: {
+        height: '70%',
+        width: '15%',
+        backgroundColor: 'grey',
+        opacity: 0.3,
+        borderRadius: 10
+    },
+    exerciseTextContainer: {
+        justifyContent: 'center',
+        marginLeft: 10,
+        width: '70%',
+    },
+    informationContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '7.5%'
+    },
+    trashContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '7.5%'
+    },
+    addContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: '80%',
+        marginTop: 10,
+        marginLeft: 30
+    },
+    addTextContainer: {
+        width: '90%',
+        marginLeft: 10
+    },
+    cardHeader: {
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+    },
+    cardFooter: {
+        width: '100%',
+        alignItems: 'center',
+        textAlign: 'center'
+    },
+    communityCard: {
+        height: "100%",
+        width: "100%",
+        overflow: "hidden",
+        borderColor: Colors.primary,
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    bottomButton: {
+        borderWidth: 1,
+        borderRadius: 15,
+        borderColor: 'rgba(139, 136, 136, 1)',
+        width: "90%",
+        marginTop: "5%",
+        paddingVertical: 5,
+    },
+    bottomButtonText: {
+        color: "white",
+        textAlign: "center",
+        fontWeight: "bold"
+    },
+    searchBarContainer: {
+        borderWidth: 1,
+        borderRadius: 15,
+        justifyContent: "space-between",
+        width: "100%",
+        alignSelf: "center",
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 10,
+    },
+    searchBarInput: {
+        color: "white",
+        fontSize: 14,
+        fontWeight: "bold",
+        flex: 1, // Take up all available space
+        paddingLeft: 15,
+        paddingVertical: 5,
+
+
+    },
 });
 
 export default SelectWorkoutPopup

@@ -1,57 +1,44 @@
-import { StyleSheet, TouchableOpacity, ScrollView, Text, View, Image, TextInput } from 'react-native';
+import { StyleSheet, TouchableOpacity, ScrollView, Text, View, TextInput } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { Colors } from '../../constants/Colors';
-import { useState, React, useEffect,useRef } from 'react';
+import { useState, React } from 'react';
 import { useQuery, gql, useMutation } from "@apollo/client";
 import * as queries from "../../../src/graphql/queries";
 import * as mutations from "../../../src/graphql/mutations";
-import { useIsFocused } from '@react-navigation/native'
-import { EvilIcons,AntDesign} from '@expo/vector-icons';
+import { EvilIcons, AntDesign } from '@expo/vector-icons';
 import AddExercisePopUp from '../../components/AddExercisePopUp';
 import uuid from 'react-native-uuid';
-
-
-
 
 const Exercise = (props) => {
     const colors = useTheme().colors;
     const exerciseInput = props.exerciseInput
     const index = props.index
- 
+
     const { data, loading, error } = useQuery(gql`${queries.getExerciseInfo}`,
-    {
-        variables: {id: exerciseInput.exerciseInfoID}
-    });
-
-
+        {
+            variables: { id: exerciseInput.exerciseInfoID }
+        });
 
     return (
-
         <View style={styles.exerciseContainer}>
-            
-        <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-            <TouchableOpacity style={styles.exerciseHeader} onPress={() =>props.openAddExercisePopUp(exerciseInput, data.getExerciseInfo,index)}>
-                <View style={styles.exerciseHeaderText}>
-                    <Text style={{ color: colors.text, fontSize: 16, marginBottom: 5 }}>{loading||data==null?("loading"):(data.getExerciseInfo.name)}</Text>
-                    <Text style={{ color: "grey" }}>{exerciseInput.sets} sets x {exerciseInput.repRange} reps</Text>
-                </View>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                <TouchableOpacity style={styles.exerciseHeader} onPress={() => props.openAddExercisePopUp(exerciseInput, data.getExerciseInfo, index)}>
+                    <View style={styles.exerciseHeaderText}>
+                        <Text style={{ color: colors.text, fontSize: 16, marginBottom: 5 }}>{loading || data == null ? ("loading") : (data.getExerciseInfo.name)}</Text>
+                        <Text style={{ color: "grey" }}>{exerciseInput.sets} sets x {exerciseInput.repRange} reps</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { props.removeExercise(index) }}>
+                    <EvilIcons size={24} color={"white"} name="trash" />
+                </TouchableOpacity>
+            </View>
 
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => {props.removeExercise(index)}}>
-                <EvilIcons size={24} color={"white"} name="trash"/>
-            </TouchableOpacity>
         </View>
-    
-        </View>
-
     )
 }
 
 export default function ViewWorkout({ navigation, route }) {
-    const { workout, saveWorkout,isNewWorkout, index} = route.params;
-
-    const colors = useTheme().colors;
-
+    const { workout, saveWorkout, isNewWorkout, index } = route.params;
     const [exercises, setExercises] = useState(route.params.workout.exercises)
     const [isAddExerciseVisible, setIsAddExerciseVisible] = useState(false)
     const [selectedExerciseInput, setSelectedExerciseInput] = useState(null)
@@ -62,11 +49,7 @@ export default function ViewWorkout({ navigation, route }) {
     const [createExercise] = useMutation(gql`${mutations.createExercise}`);
     const [createWorkout] = useMutation(gql`${mutations.createWorkout}`);
 
-    
-
-    const weekNumber = route.params.weekNumber
-
-    const openAddExercisePopUp = (exerciseInput, exerciseInfo,index) => {
+    const openAddExercisePopUp = (exerciseInput, exerciseInfo, index) => {
         setSelectedExerciseInput(exerciseInput)
         setSelectedExerciseInfo(exerciseInfo)
         setSelectedExerciseIndex(index)
@@ -80,19 +63,20 @@ export default function ViewWorkout({ navigation, route }) {
             return newExercises;
         });
     };
-    
+
     const closeAddExercisePopUp = () => {
         setSelectedExerciseInput(null)
         setSelectedExerciseInfo(null)
         setIsAddExerciseVisible(false)
     }
-    const saveExercise = async(props) => {
+
+    const saveExercise = async (props) => {
         props.setSaveAttempted(true)
-        if(props.RIR && isNaN(parseInt(props.RIR))) return 
-        if(isNaN(parseInt(props.sets))) return
-        if(typeof props.repRange !== "string") return
-        if(isNaN(parseInt(props.restMinutes))) return
-        if(props.sets == 0 || props.repRange == "" || props.restMinutes == 0) return
+        if (props.RIR && isNaN(parseInt(props.RIR))) return
+        if (isNaN(parseInt(props.sets))) return
+        if (typeof props.repRange !== "string") return
+        if (isNaN(parseInt(props.restMinutes))) return
+        if (props.sets == 0 || props.repRange == "" || props.restMinutes == 0) return
         const exerciseInput = {
             sets: parseInt(props.sets),
             exerciseInfoID: props.exerciseInfo.id,
@@ -103,37 +87,36 @@ export default function ViewWorkout({ navigation, route }) {
             notes: props.notes,
         }
 
-        if(selectedExerciseInput==null){
+        if (selectedExerciseInput == null) {
             setExercises(prevExercises => [...prevExercises, exerciseInput]);
         }
-        else{
+        else {
             setExercises(prevExercises => {
                 const newExercises = [...prevExercises];
                 newExercises[selectedExerciseIndex] = exerciseInput;
                 return newExercises;
-              });
+            });
         }
         props.setSaveAttempted(false)
         closeAddExercisePopUp()
     }
-    
 
     const handleSaveWorkout = () => {
-        if(title && exercises.length > 0){
+        if (title && exercises.length > 0) {
             const newWorkout = workout
-            if(isNewWorkout){
+            if (isNewWorkout) {
                 const workoutID = uuid.v4()
                 const workoutInput = {
                     id: workoutID,
-                    title: title,                
-                  }
-                    
-                createWorkout({variables: {input: workoutInput}})
+                    title: title,
+                }
+
+                createWorkout({ variables: { input: workoutInput } })
                 const newExercises = exercises
-                newExercises.forEach((exerciseInput,index) => {
+                newExercises.forEach((exerciseInput, index) => {
                     exerciseInput.id = uuid.v4();
                     exerciseInput.workoutID = workoutID;
-                    exerciseInput.exerciseNum = index+1
+                    exerciseInput.exerciseNum = index + 1
                     createExercise({ variables: { input: exerciseInput } });
                 });
             }
@@ -141,11 +124,10 @@ export default function ViewWorkout({ navigation, route }) {
             newWorkout.title = title
             saveWorkout(index, newWorkout)
             navigation.goBack(null)
-             };
-        }
+        };
+    }
 
     return (
-
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <TextInput
@@ -156,23 +138,21 @@ export default function ViewWorkout({ navigation, route }) {
                     onChangeText={setTitle}
                 />
                 <AntDesign name="edit" size={20} color="white" />
-
             </View>
             <ScrollView style={{ marginBottom: 150 }}>
                 {exercises.map((exercise, index) => (
-                    <Exercise openAddExercisePopUp={openAddExercisePopUp} key={exercise.id} index={index} exerciseInput={exercise} removeExercise={removeExercise}/>
+                    <Exercise openAddExercisePopUp={openAddExercisePopUp} key={exercise.id} index={index} exerciseInput={exercise} removeExercise={removeExercise} />
                 ))}
-                <View style={styles.buttonContainer}> 
-                    <TouchableOpacity style={styles.addButton} onPress={() => openAddExercisePopUp(null,null,-1)} >
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.addButton} onPress={() => openAddExercisePopUp(null, null, -1)} >
                         <AntDesign name="pluscircleo" size={20} color="white" />
                     </TouchableOpacity>
                 </View>
             </ScrollView>
             <TouchableOpacity style={styles.bottomButton} onPress={() => handleSaveWorkout()}>
-                        <Text style={styles.bottomButtonText}>Save Workout</Text>
-                </TouchableOpacity> 
-            <AddExercisePopUp isVisible={isAddExerciseVisible} startingExerciseInput={selectedExerciseInput} startingExerciseInfo={selectedExerciseInfo} closeAddExercisePopUp={closeAddExercisePopUp} saveExercise={saveExercise}/>
-
+                <Text style={styles.bottomButtonText}>Save Workout</Text>
+            </TouchableOpacity>
+            <AddExercisePopUp isVisible={isAddExerciseVisible} startingExerciseInput={selectedExerciseInput} startingExerciseInfo={selectedExerciseInfo} closeAddExercisePopUp={closeAddExercisePopUp} saveExercise={saveExercise} />
         </View>
     )
 
@@ -187,29 +167,29 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     container: {
-        justifyContent: "center", 
-        paddingVertical: 10 ,
-        flex:1
+        justifyContent: "center",
+        paddingVertical: 10,
+        flex: 1
     },
     exerciseContainer: {
-        justifyContent: "center", 
-        marginHorizontal: 30, 
-        paddingVertical: 10 ,
-        borderBottomColor:Colors.primary,
-        borderBottomWidth: 2, 
+        justifyContent: "center",
+        marginHorizontal: 30,
+        paddingVertical: 10,
+        borderBottomColor: Colors.primary,
+        borderBottomWidth: 2,
     },
     title: {
         color: 'white',
         fontSize: 25,
         opacity: 1,
-        fontWeight:  "bold"
+        fontWeight: "bold"
     },
     titleContainer: {
         alignItems: 'center',
-        alignSelf:"center",
+        alignSelf: "center",
         marginVertical: 40,
-        flexDirection:"row",
-        
+        flexDirection: "row",
+
     },
     addButton: {
         height: 50,
@@ -252,12 +232,12 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 30,
         alignSelf: "center",
-      },
-      bottomButtonText: {
+    },
+    bottomButtonText: {
         color: "black",
         textAlign: "center",
-        fontWeight:"bold",
+        fontWeight: "bold",
         fontSize: 15,
         padding: 10
-      },
+    },
 })

@@ -1,7 +1,7 @@
-import { StyleSheet, TouchableOpacity, ScrollView, Text, View, Image, TextInput } from 'react-native';
+import { StyleSheet, TouchableOpacity, ScrollView, Text, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { Colors } from '../../constants/Colors';
-import { useState, React, useEffect } from 'react';
+import { React } from 'react';
 import { useQuery, gql, useMutation } from "@apollo/client";
 import * as queries from "../../../src/graphql/queries";
 import * as mutations from "../../../src/graphql/mutations";
@@ -17,91 +17,37 @@ const Exercise = (props) => {
     const weekNumber = props.weekNumber
     const navigation = props.navigation
 
-
-    // const { data, loading, error } = useQuery(gql`${queries.getExercise}`, {
-    //     variables: { id: title != "womenintermediate4xweek" ? `${title}::${weekNumber}::${workout}::${label}` : `${label}-${workout}-week${weekNumber}-${title}` }
-    // });
-
-    // const { data: dataLog, loading: loadingLog, error: errorLog, refetch: refetchLog } = useQuery(gql`${queries.getExerciseLog}`, {
-    //     skip: !data,
-    //     variables: { id: data && data.getExercise ? `${global.userId}::${data.getExercise.name}` : "" }
-    // });
-
-
-    // const [createLog] = useMutation(gql`${mutations.createExerciseLog}`);
-
-    // const [lastEntries, setLastEntries] = useState({})
-    // useEffect(() => {
-    //     refetchLog()
-    //     if (dataLog && !dataLog.getExerciseLog) {
-    //         const input = {
-    //             id: `${global.userId}::${data.getExercise.name}`,
-    //             exercise: title,
-    //             entryLabels: [],
-    //             userExerciseLogsId: global.userId
-    //         }
-    //         createLog({ variables: { input: input, id: `${global.userId}::${data.getExercise.name}` } })
-    //         refetchLog()
-    //     }
-    //     else if (data && dataLog && dataLog.getExerciseLog) {
-    //         const entryLabels2 = dataLog.getExerciseLog.entryLabels
-    //         const numSets = data.getExercise.sets
-    //         for (let j = Math.min(entryLabels2.length - 1, numSets - 1); j >= 0; j--) {
-    //             let setNum = '';
-    //             for (let k = entryLabels2[j].length - 1; k >= 0; k--) {
-    //                 if (entryLabels2[j][k] == ':') break
-    //                 setNum += entryLabels2[j][k]
-    //             }
-    //             setNum.split('').reverse().join('')
-
-    //             let copyEntries = lastEntries
-    //             copyEntries[parseInt(setNum)] = entryLabels2[j]
-    //             setLastEntries(copyEntries)
-
-    //         }
-    //         refetchLog()
-    //     }
-    // }, [data, dataLog, props.isFocused]);
-
     const navigateToExerciseScreen = () => {
-        navigation.navigate("ExerciseDuringWorkout", {exercise: exercise, weekNumber: weekNumber, workout: workout, title: title })
+        navigation.navigate("ExerciseDuringWorkout", { exercise: exercise, weekNumber: weekNumber, workout: workout, title: title })
     }
 
     return (
 
         <TouchableOpacity style={{ justifyContent: "center", marginHorizontal: 30, borderBottomColor: '#CFB87C', borderBottomWidth: 2, paddingVertical: 10 }} onPress={() => navigateToExerciseScreen()}>
-                <View>
-                    <View style={styles.exerciseHeader}>
-                        <View style={styles.exerciseHeaderText}>
-                            <Text style={{ color: colors.text, fontSize: 16, marginBottom: 5 }}>{exercise.exerciseInfo.name}</Text>
-                            <Text style={{ color: "grey" }}>{exercise.sets} sets x {exercise.repRange} reps</Text>
-                        </View>
-                        <View style={{ alignItems: 'center', width: "40%", justifyContent: 'center', marginLeft: 15}}>
-                            <AntDesign name="right" size={20} color="white" />
-                        </View>
+            <View>
+                <View style={styles.exerciseHeader}>
+                    <View style={styles.exerciseHeaderText}>
+                        <Text style={{ color: colors.text, fontSize: 16, marginBottom: 5 }}>{exercise.exerciseInfo.name}</Text>
+                        <Text style={{ color: "grey" }}>{exercise.sets} sets x {exercise.repRange} reps</Text>
                     </View>
-   
+                    <View style={{ alignItems: 'center', width: "40%", justifyContent: 'center', marginLeft: 15 }}>
+                        <AntDesign name="right" size={20} color="white" />
+                    </View>
                 </View>
+
+            </View>
         </TouchableOpacity>
 
     )
 }
 
-export default function DuringWorkout({ navigation, route}) {
+export default function DuringWorkout({ navigation, route }) {
     const colors = useTheme().colors;
-    //const exercises2 = route.params.workouts.exercises.items
-
-
     const workout = route.params.workout
-
     const title = route.params.title
-
     const exerciseLabels = route.params.exerciseLabels
-
     const titleToNameMap = route.params.titleToNameMap
-
     const weekNumber = route.params.weekNumber
-
     const isFocused = useIsFocused()
 
     const { data: dataGetStats, loading: loadingGetStats, error: errorGetStats } = useQuery(gql`${queries.getUserStats}`, {
@@ -109,30 +55,15 @@ export default function DuringWorkout({ navigation, route}) {
     });
 
 
-    const { data : dataUser, loading : loadingUser, error : errorUser } = useQuery(gql`${queries.getUser}`, {
-        variables: { id: `${global.userId}`}
-      }); 
-
-    
-    const [updateUser, { data: dataUpdateUser, loading: loadingUpdateUser, error: errorUpdateUser }] = useMutation(gql`${mutations.updateUser}`);
+    const { data: dataUser, loading: loadingUser, error: errorUser } = useQuery(gql`${queries.getUser}`, {
+        variables: { id: `${global.userId}` }
+    });
 
     const [updateUserStats, { data: dataUpdateStats, loading: loadingUpdateStats, error: errorUpdateStats }] = useMutation(gql`${mutations.updateUserStats}`);
 
     const [updateUserWorkout] = useMutation(gql`${mutations.updateUserWorkout}`)
 
     const completeWorkout = () => {
-        // const userInput = {
-        //     id: `${global.userId}`,
-        //     name: dataUser.getUser.name,
-        //     email: global.userId,
-        //     profilePicture: dataUser.getUser.profilePicture,
-        //     currentProgram: dataUser.getUser.currentProgram,
-        //     taskCompletionList: [1,0]
-        // }
-        
-        // updateUser({ variables: { input: userInput } })
-
-
         const statsInput = {
             id: `stats-${global.userId}`,
             workoutsCompleted: dataGetStats.getUserStats ? dataGetStats.getUserStats.workoutsCompleted + 1 : 1,
@@ -147,11 +78,11 @@ export default function DuringWorkout({ navigation, route}) {
         }
 
         console.log("Completed workout ", workoutInput)
-        updateUserWorkout({variables: { input: workoutInput }})
+        updateUserWorkout({ variables: { input: workoutInput } })
 
         route.params.onWorkoutComplete(workout)
 
-        if(route.params.taskCompletionList) route.params.taskCompletionList[route.params.taskCompletionListIndex] = true
+        if (route.params.taskCompletionList) route.params.taskCompletionList[route.params.taskCompletionListIndex] = true
         navigation.navigate("CurrentProgramNavigator", { title: title, programInput: route.params.currentProgram, titleToNameMap: titleToNameMap })
     }
 

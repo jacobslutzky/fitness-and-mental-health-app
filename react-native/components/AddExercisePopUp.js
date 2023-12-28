@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Modal from 'react-native-modal';
-import { useTheme } from '@react-navigation/native';
 import { Feather, Ionicons } from 'react-native-vector-icons'
 import SelectExercise from './SelectExercise'
 import Collapsible from 'react-native-collapsible';
 import { Colors } from '../constants/Colors';
-import { secondsToMinutes } from 'date-fns';
-
-
 
 const AddExercisePopUp = ({ isVisible, closeAddExercisePopUp, startingExerciseInput, startingExerciseInfo, saveExercise }) => {
   const [searchingForExercise, setSearchingForExercise] = useState(false)
@@ -137,7 +133,7 @@ const AddExercisePopUp = ({ isVisible, closeAddExercisePopUp, startingExerciseIn
                   <View style={styles.labelAndInput}>
                     <Text style={styles.labels}>RIR (Optional)</Text>
                     <TextInput
-                      style={[styles.input, { width: "97%" , borderColor: typeof RIR != "number" && saveAttempted ? 'red' : 'white'}]}
+                      style={[styles.input, { width: "97%", borderColor: typeof RIR != "number" && saveAttempted ? 'red' : 'white' }]}
                       value={RIR}
                       onChangeText={setRIR}
                     />

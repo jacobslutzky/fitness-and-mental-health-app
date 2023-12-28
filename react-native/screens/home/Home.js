@@ -13,12 +13,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { SearchBar } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useQuery, gql, useMutation } from "@apollo/client";
-import { useNavigation } from "@react-navigation/native";
 import * as mutations from "../../../src/graphql/mutations";
 import * as queries from "../../../src/graphql/queries";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
-import AchievementCard from "../../components/AchievementCard.js";
-import { removeConnectionDirectiveFromDocument } from "@apollo/client/utilities";
 
 export default function Home({ navigation }) {
     const { user } = useAuthenticator((context) => [context.user]);
@@ -135,195 +132,6 @@ export default function Home({ navigation }) {
         }
     }, [dataGetStats, dataUser]);
 
-    const titleToNameMap = {
-        womensintermediate: "Women's Glute Dominant Program",
-        menslvl3PPL: "Men Level 3 PPLUL",
-        menslvl2UL: "Men Level 2 UL",
-        mensfullbody: "Men Full Body",
-        mensPPL: "Men PPL",
-        womenintermediate2: "Women's Full Body Upper Lower",
-    };
-
-    const [
-        createProgramWeek,
-        { data: dataPw, loading: loadingPw, error: errorPw },
-    ] = useMutation(
-        gql`
-            ${mutations.createProgramWeek}
-        `
-    );
-    const [createProgram, { data: dataP, loading: loadingP, error: errorP }] =
-        useMutation(
-            gql`
-                ${mutations.createProgram}
-            `
-        );
-    const [createWorkout, { data: dataW, loading: loadingW, error: errorW }] =
-        useMutation(
-            gql`
-                ${mutations.createWorkout}
-            `
-        );
-    const [createExercise, { data: dataE, loading: loadingE, error: errorE }] =
-        useMutation(
-            gql`
-                ${mutations.createExercise}
-            `
-        );
-
-    const addWorkout = () => {
-        //Create program
-        titles.forEach(function (title) {
-            const programInput = {
-                id: title,
-                author: "Caleb Saks",
-                image: "null",
-                title: title,
-                introVideo: "null",
-            };
-
-            createProgram({ variables: { input: programInput } });
-
-            let rows = rowsMap[title];
-
-            //Create program weeks
-
-            let weeksToWorkoutLabels = {};
-            rows.forEach(function (row) {
-                let weeks =
-                    row["Weeks"].length > 1
-                        ? row["Weeks"].split("-")
-                        : [row["Weeks"]];
-                if (weeks.length == 2) {
-                    let weeksCopy = [];
-                    for (
-                        let i = parseInt(weeks[0]);
-                        i <= parseInt(weeks[1]);
-                        i++
-                    ) {
-                        weeksCopy.push(i);
-                    }
-                    weeks = weeksCopy;
-                }
-                if (weeks) {
-                    weeks.forEach(function (week) {
-                        if (weeksToWorkoutLabels[week]) {
-                            weeksToWorkoutLabels[week].add(row["Workout"]);
-                        } else {
-                            weeksToWorkoutLabels[week] = new Set();
-                            weeksToWorkoutLabels[week].add(row["Workout"]);
-                        }
-                    });
-                }
-            });
-
-            for (const key in weeksToWorkoutLabels) {
-                const value = weeksToWorkoutLabels[key];
-                if (!key) continue;
-                const weekInput = {
-                    id: `${title}::${key}`,
-                    weekNumber: key,
-                    workoutLabels: Array.from(value),
-                    programWeeksId: title,
-                };
-                createProgramWeek({ variables: { input: weekInput } });
-            }
-
-            //Create Workouts
-
-            let workoutsToExerciseLabels = {};
-
-            rows.forEach(function (row) {
-                let weeks =
-                    row["Weeks"].length > 1
-                        ? row["Weeks"].split("-")
-                        : [row["Weeks"]];
-                if (weeks.length == 2) {
-                    let weeksCopy = [];
-                    for (
-                        let i = parseInt(weeks[0]);
-                        i <= parseInt(weeks[1]);
-                        i++
-                    ) {
-                        weeksCopy.push(i);
-                    }
-                    weeks = weeksCopy;
-                }
-                weeks.forEach(function (week) {
-                    const id = `${title}::${week}::${row["Workout"]}`;
-                    if (workoutsToExerciseLabels[id]) {
-                        workoutsToExerciseLabels[id].labels.add(
-                            row["Exercise:"].substring(3)
-                        );
-                        workoutsToExerciseLabels[id].workout = row["Workout"];
-                        workoutsToExerciseLabels[
-                            id
-                        ].programWeekWorkoutsId = `${title}::${week}`;
-                    } else {
-                        workoutsToExerciseLabels[id] = {};
-                        workoutsToExerciseLabels[id].labels = new Set();
-                        workoutsToExerciseLabels[id].labels.add(
-                            row["Exercise:"].substring(3)
-                        );
-                        workoutsToExerciseLabels[id].workout = row["Workout"];
-                        workoutsToExerciseLabels[
-                            id
-                        ].programWeekWorkoutsId = `${title}::${week}`;
-                    }
-                });
-            });
-
-            for (const key in workoutsToExerciseLabels) {
-                const value = workoutsToExerciseLabels[key];
-                if (!key) continue;
-                const workoutInput = {
-                    id: key,
-                    workoutNumber: -1,
-                    title: value.workout,
-                    status: "incomplete",
-                    exerciseLabels: Array.from(value.labels),
-                    programWeekWorkoutsId: value.programWeekWorkoutsId,
-                };
-                createWorkout({ variables: { input: workoutInput } });
-            }
-
-            //Create exercises
-            rows.forEach(function (row) {
-                let weeks =
-                    row["Weeks"].length > 1
-                        ? row["Weeks"].split("-")
-                        : [row["Weeks"]];
-                if (weeks.length == 2) {
-                    let weeksCopy = [];
-                    for (
-                        let i = parseInt(weeks[0]);
-                        i <= parseInt(weeks[1]);
-                        i++
-                    ) {
-                        weeksCopy.push(i);
-                    }
-                    weeks = weeksCopy;
-                }
-                weeks.forEach(function (week) {
-                    const id = `${title}::${week}::${row["Workout"]}::${row[
-                        "Exercise:"
-                    ].substring(3)}`;
-                    const exerciseInput = {
-                        id: id,
-                        name: row["Exercise:"],
-                        sets: parseInt(row["Sets:"]),
-                        RIR: row["RIR"],
-                        restMinutes: parseFloat(row["Rest:"].substring(0, 1)),
-                        repRange: row["Reps:"],
-                        exerciseNum: -1,
-                        workoutExercisesId: `${title}::${week}::${row["Workout"]}`,
-                    };
-                    createExercise({ variables: { input: exerciseInput } });
-                });
-            });
-        });
-    };
-
     const [mutateFunction, { data, loading, error }] = useMutation(
         gql`
             ${mutations.createDailyTask}
@@ -371,21 +179,6 @@ export default function Home({ navigation }) {
         }
     };
 
-    const [isAchievmentVisible, setIsAchievementVisible] = useState(true);
-
-    const handleDismiss = () => {
-        setIsAchievementVisible(!isAchievmentVisible);
-        // Handle the dismiss action
-    };
-
-    const handleShare = () => {
-        // Handle the share action
-    };
-
-    const handleProfile = () => {
-        // Handle the profile action
-    };
-
     const updateSearch = (text) => {
         const updatedData = tasksFiltered.filter((item) => {
             const item_data = `${item.label.toUpperCase()})`;
@@ -409,7 +202,6 @@ export default function Home({ navigation }) {
         id: `${global.userId}`,
         name: dataUser.getUser.name,
         profilePicture: dataUser.getUser.profilePicture,
-       // currentProgram: dataUser.getUser.currentProgram,
         taskCompletionList: isPressed
       }
 
@@ -422,7 +214,6 @@ export default function Home({ navigation }) {
         id: `${global.userId}`,
         name: dataUser.getUser.name,
         profilePicture: dataUser.getUser.profilePicture,
-        //: dataUser.getUser.currentProgram,
         taskCompletionList: isPressed
       }
 
@@ -558,27 +349,6 @@ export default function Home({ navigation }) {
                     </View>
                 ))}
             </View>
-
-            {/* Achievement Card */}
-            {/*
-            <View>
-                {isAchievmentVisible && (
-                    <View style={styles.achievementCard}>
-                        <AchievementCard
-                            onDismiss={handleDismiss}
-                            onShare={handleShare}
-                            onProfile={handleProfile}
-                        />
-                    </View>
-                )}
-            </View>
-            */}
-            {/* Plus Button */}
-            {/*
-    <View style={styles.plusButtonContainer}>
-      <AntDesign name="pluscircle" size={35} color="#CFB87B" />
-    </View>
-        */}
         </ScrollView>
     );
 }

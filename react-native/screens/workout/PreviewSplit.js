@@ -1,47 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, Text, View, Image } from 'react-native';
-import { useTheme } from '@react-navigation/native';
-import { TabBar } from 'react-native-tab-view';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { Colors } from '../../constants/Colors';
-import VideoCard from '../../components/VideoCard';
 import Collapsible from 'react-native-collapsible';
-import { useQuery, gql, useMutation } from "@apollo/client";
-import * as queries from "../../../src/graphql/queries";
-import * as mutations from "../../../src/graphql/mutations";
 
 const Week = (props) => {
-  const title = props.title
   const index = props.index
   const setToggle = props.setToggle
-  
-  const week = {...props.week }
+
+  const week = { ...props.week }
   week.workouts.items = props.week.workouts.items.slice().sort((a, b) => a.workoutNumber - b.workoutNumber);
-  // const { data, loading, error, refetch } = useQuery(gql`${queries.getProgramWeek}`, {
-  //   variables: { id: title != "womenintermediate4xweek" ? `${title}::${index}` : `week${index}-${title}` }
-  // });
 
-  /*
-
-      <View>
-    <TouchableOpacity onPress={() => setToggle(props.toggle.map((tog, ind) => index - 1 == ind ? !tog : tog))}  style={[styles.header, props.toggle[index - 1] ? {borderBottomWidth: 2} : {borderBottomWidth: 0}]}>
-    <Text style={styles.headerText}>Week {data && data.getProgramWeek ? data.getProgramWeek.weekNumber : ""}</Text>
-    </TouchableOpacity>
-    <Collapsible collapsed={props.toggle[index - 1]} style={styles.dropdown}>
-        <View style={styles.dropdownContent}>
-        {data && data.getProgramWeek && data.getProgramWeek.workoutLabels ? data.getProgramWeek.workoutLabels.map((exercise,index) => (
-        <View style={styles.workoutContainer} key={index}>
-        <Text style={styles.workoutText}>{exercise}</Text>
-        </View>
-        ))
-        : <View></View>
-      }
-        </View>
-    </Collapsible>
-    </View>
-
-  */
-  
   return (
     <View>
       <TouchableOpacity style={styles.cardContainer} onPress={() => setToggle(props.toggle.map((tog, ind) => index - 1 == ind ? !tog : tog))}>
@@ -57,12 +25,12 @@ const Week = (props) => {
       </TouchableOpacity>
       <Collapsible collapsed={props.toggle[index - 1]} style={styles.dropdown}>
         <View style={styles.dropdownContent}>
-          { week.workouts.items.map((workout, index) => (
+          {week.workouts.items.map((workout, index) => (
             <View style={styles.workoutContainer} key={index}>
               <Text style={styles.workoutText}>{workout.title}</Text>
             </View>
           ))
-            
+
           }
         </View>
       </Collapsible>
@@ -70,16 +38,9 @@ const Week = (props) => {
   )
 }
 
-export default function PreviewSplit({ route, navigation }) {
+export default function PreviewSplit({ route }) {
   const program = route.params.program
-  
-
-  let weekQueries = []
-
-  weekQueries = weekQueries.map(week => { return { week: week.weekNumber, workouts: week.workoutLabels } })
-
   const [toggle, setToggle] = useState(Array(12).fill(true))
-
 
   return (
     <View style={{ flex: 1 }}>
