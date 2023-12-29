@@ -28,7 +28,7 @@ const Exercise = (props) => {
                 <View style={styles.exerciseHeader}>
                     <View style={styles.exerciseHeaderText}>
                         <Text style={{ color: colors.text, fontSize: 16, marginBottom: 5 }}>{exercise.exerciseInfo.name}</Text>
-                        <Text style={{ color: "grey" }}>{exercise.sets} sets x {exercise.repRange} reps</Text>
+                        <Text style={{ color: "grey" }}>{exercise.sets} sets x {exercise.repRange} reps.{exercise.restMinutes != 0 ? " Rest: " + exercise.restMinutes + " mins." : null}{exercise.RIR != 0 ? " RIR: " + exercise.RIR : null}</Text>
                     </View>
                     <View style={{ alignItems: 'center', width: "40%", justifyContent: 'center', marginLeft: 15 }}>
                         <AntDesign name="right" size={20} color="white" />
@@ -77,10 +77,9 @@ export default function DuringWorkout({ navigation, route }) {
             status: "complete"
         }
 
-        console.log("Completed workout ", workoutInput)
         updateUserWorkout({ variables: { input: workoutInput } })
 
-        route.params.onWorkoutComplete(workout)
+        route.params.onWorkoutComplete(workout, route.params.currentProgram)
 
         if (route.params.taskCompletionList) route.params.taskCompletionList[route.params.taskCompletionListIndex] = true
         navigation.navigate("CurrentProgramNavigator", { title: title, programInput: route.params.currentProgram, titleToNameMap: titleToNameMap })

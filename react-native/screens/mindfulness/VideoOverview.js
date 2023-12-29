@@ -91,7 +91,7 @@ export default function VideoOverview({ route, navigation }) {
 
 
           {/* Length */}
-          <Text style={styles.lengthText}>{sections.length} Sections · 2h 15m</Text>
+          <Text style={styles.lengthText}>{sections.length} Sections · 45m</Text>
 
           {/* Play Button */}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

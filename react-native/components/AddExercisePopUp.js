@@ -99,38 +99,44 @@ const AddExercisePopUp = ({ isVisible, closeAddExercisePopUp, startingExerciseIn
             {!searchingForExercise ? (
               <View style={{ marginBottom: 10 }}>
                 <View style={styles.name}>
-                  <View style={styles.labelAndInput}>
+                  <View style={[styles.labelAndInput, {paddingRight: 20}]}>
                     <Text style={styles.labels}>Reps</Text>
                     <TextInput
                       style={[styles.input, { borderColor: repRange == "" && saveAttempted ? 'red' : 'white' }]}
                       value={repRange}
+                      placeholder={"X reps"}
+                      placeholderTextColor={"rgba(255,255,255,.5)"}
                       onChangeText={setRepRange}
 
                     />
 
                   </View>
-                  <View style={styles.labelAndInput}>
+                  <View style={[styles.labelAndInput, {paddingLeft: 20}]}>
                     <Text style={styles.labels}>Sets</Text>
                     <TextInput
                       style={[styles.input, { width: "97%", borderColor: sets == 0 && saveAttempted ? 'red' : 'white' }]}
                       value={sets}
+                      placeholder={"X sets"}
+                      placeholderTextColor={"rgba(255,255,255,.5)"}
                       onChangeText={setSets}
                     // keyboardType="numeric"
                     />
                   </View>
                 </View>
                 <View style={styles.name}>
-                  <View style={styles.labelAndInput}>
+                  <View style={[styles.labelAndInput, {paddingRight: 20}]}>
                     <Text style={styles.labels}>Rest</Text>
                     <TextInput
                       style={[styles.input, { width: "97%", borderColor: restMinutes == 0 && saveAttempted ? 'red' : 'white' }]}
                       value={restMinutes}
                       onChangeText={setRestMinutes}
+                      placeholder={"X mins"}
+                      placeholderTextColor={"rgba(255,255,255,.5)"}
                       keyboardType="numeric"
                     />
 
                   </View>
-                  <View style={styles.labelAndInput}>
+                  <View style={[styles.labelAndInput, {paddingLeft: 20}]}>
                     <Text style={styles.labels}>RIR (Optional)</Text>
                     <TextInput
                       style={[styles.input, { width: "97%", borderColor: typeof RIR != "number" && saveAttempted ? 'red' : 'white' }]}

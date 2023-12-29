@@ -83,6 +83,17 @@ const SelectExercise = ({ callbackSelectedExercise, searchResult, closeSelectExe
     setIsmuscleWorkedDropdownCollapsed(true)
   }
 
+  
+  useEffect(() => {
+    setExercises(exercises => {
+      const tempExercises = [...exercises]
+      tempExercises.sort((exerciseA, exerciseB) => {
+        return exerciseA.id.toLowerCase().localeCompare(exerciseB.id.toLowerCase())
+      })
+      return tempExercises
+    })
+  }, [musclesWorked])
+
   const muscleWorkedItem = ({ item }) => (
     <TouchableOpacity style={[styles.dropdownContent, selectedMuscleWorked != null ? styles.highlightedItem : {}]} onPress={() => handleMuscleWorkedSelected(item)}>
       <Text style={styles.dropdownContentText}>{item}</Text>
@@ -136,6 +147,7 @@ const SelectExercise = ({ callbackSelectedExercise, searchResult, closeSelectExe
         data={exercises.filter(exercise => (selectedMuscleWorked == null || exercise.muscleWorked.split("/").includes(selectedMuscleWorked))
           && (selectedWorkoutType == null || exercise.workoutType.split("/").includes(selectedWorkoutType))
           && searchResult.toLowerCase().split(" ").every(word => exercise.name.toLowerCase().indexOf(word) > -1))}
+        extraData={exercises}
         renderItem={exerciseItem}
         keyExtractor={(item) => item.id}
         scrollEnabled={false}

@@ -105,10 +105,10 @@ export function CurrentProgram({ navigation, currProgram, programInput, taskComp
         setWorkoutBeingPreviewed(newWorkout)
     };
 
-    const onWorkoutComplete = (completedWorkout) => {
+    const onWorkoutComplete = (completedWorkout, programInput) => {
         completedWorkout.status = "complete";
-        setWorkoutToCurrent(program)
-
+        console.log("Current week ", currentWeek)
+        setWorkoutToCurrent(programInput)
     };
 
     return (
