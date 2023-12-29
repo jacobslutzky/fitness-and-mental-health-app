@@ -1,5 +1,4 @@
 import { StyleSheet, Image, TouchableOpacity, Text, View } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function Top({ navigation }) {
     return (

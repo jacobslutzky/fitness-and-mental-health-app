@@ -3,15 +3,13 @@ import { useTheme } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import * as queries from "../../../src/graphql/queries";
-import * as mutations from "../../../src/graphql/mutations";
 import { useState, React, useEffect } from 'react';
 import { Colors } from '../../constants/Colors';
 import { useAuthenticator } from '@aws-amplify/ui-react-native';
-import { Ionicons } from '@expo/vector-icons';
 
-export default function Profile({ navigation }) {
+export default function Profile() {
   const colors = useTheme().colors;
   const [leaders, setLeaders] = useState([
     { name: "Zach B.", rank: 1, points: 8000 },
@@ -22,44 +20,29 @@ export default function Profile({ navigation }) {
 
   const [achievements, setAchievements] = useState([])
 
-  const [createAchievement] = useMutation(gql`${mutations.createAchievement}`);
-
-  const [achievementProgresses, setAchievementProgresses] = useState([])
-
-  /*
-  useEffect(() => {
-    const title = `meditation-streak-10`
-    const input = {
-      id: title,
-      title: title,
-      description: "Meditate 10 days in a row",
-      goal: 10
-    }
-    createAchievement({ variables: { input: input, id: title } })
-  },[])
-  */
-
   const { data: dataAchievements } = useQuery(gql`${queries.listAchievements}`)
 
   const { data: dataAchievementProgresses } = useQuery(gql`${queries.listAchievementProgresses}`, {
-    variables: { filter: 
+    variables: {
+      filter:
       {
         userStatsAchievementProgressesId: {
           eq: `stats-${global.userId}`
         }
       }
-  }})
+    }
+  })
 
   const [achievementFlag, setAchievementFlag] = useState(false)
 
   useEffect(() => {
-    if(!dataAchievements) return
+    if (!dataAchievements) return
     console.log(dataAchievements.listAchievements.items)
 
-    for(let i = 0; i < dataAchievements.listAchievements.items.length; i++){
+    for (let i = 0; i < dataAchievements.listAchievements.items.length; i++) {
       const achievement = dataAchievements.listAchievements.items[i]
-      const achievementConverted = {name: achievement.title, description: achievement.description, progress: 0, goal: achievement.goal}
-      if(achievements.length == 0 || achievements[achievements.length - 1].name != achievementConverted.name){
+      const achievementConverted = { name: achievement.title, description: achievement.description, progress: 0, goal: achievement.goal }
+      if (achievements.length == 0 || achievements[achievements.length - 1].name != achievementConverted.name) {
         setAchievements([...achievements, achievementConverted])
       }
       console.log('achievements: ', achievementConverted)
@@ -76,22 +59,22 @@ export default function Profile({ navigation }) {
     console.log(dataAchievementProgresses ? dataAchievementProgresses.listAchievementProgresses : "not available")
     const achievementProgresses = dataAchievementProgresses ? dataAchievementProgresses.listAchievementProgresses.items : []
     console.log('lengths', achievements.length, achievementProgresses.length)
-    for(let i = 0; i < achievements.length; i++){
+    for (let i = 0; i < achievements.length; i++) {
       const achievement = achievements[i]
-      for(let j = 0; j < achievementProgresses.length; j++){
+      for (let j = 0; j < achievementProgresses.length; j++) {
         const achievementProgress = achievementProgresses[j]
         console.log('Achievement Progress: ', achievementProgress)
-        if(achievement.name == achievementProgress.title){
-          const achievementConverted = {name: achievement.name, description: achievement.description, progress: achievementProgress.progress, goal: achievement.goal}
+        if (achievement.name == achievementProgress.title) {
+          const achievementConverted = { name: achievement.name, description: achievement.description, progress: achievementProgress.progress, goal: achievement.goal }
           let achievementsTemp = achievements.slice()
           achievementsTemp[i] = achievementConverted
           setAchievements(achievementsTemp)
-          console.log('percent', achievements[i].progress, achievements[i].goal, 100*(achievements[i].progress / achievements[i].goal))
+          console.log('percent', achievements[i].progress, achievements[i].goal, 100 * (achievements[i].progress / achievements[i].goal))
         }
       }
     }
     console.log(achievements)
-    
+
   }, [dataGetStats, dataAchievements, achievementFlag, dataAchievementProgresses])
 
   const { user, signOut } = useAuthenticator((context) => [context.user]);
@@ -100,20 +83,21 @@ export default function Profile({ navigation }) {
   const { data: dataUserStats } = useQuery(gql`${queries.listUserStats}`)
 
   useEffect(() => {
-    if(!dataUserStats) return
+    if (!dataUserStats) return
     let tempLeaders = []
     let userStatsList = dataUserStats.listUserStats.items
-    for(let i = 0; i < userStatsList.length; i++){
-      tempLeaders.push({name: userStatsList[i].email, points: userStatsList[i].points})
+    for (let i = 0; i < userStatsList.length; i++) {
+      tempLeaders.push({ name: userStatsList[i].email, points: userStatsList[i].points })
     }
 
-    tempLeaders.sort(function(a, b) { 
+    tempLeaders.sort(function (a, b) {
       return b.points - a.points;
     })
-    
+
     setLeaders(tempLeaders)
   }, [dataUserStats])
 
+  const Tab = createMaterialTopTabNavigator();
 
   const Leaders = () => (
     <ScrollView style={styles.leaderboardContainer}>
@@ -131,27 +115,17 @@ export default function Profile({ navigation }) {
     </ScrollView>
   )
 
-  const Tab = createMaterialTopTabNavigator();
-
-
   return (
 
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.container}>
 
         <View style={styles.top}>
-          {/*
-          <TouchableOpacity>
-            <Ionicons name="ios-settings-sharp" size={25} color="white" />
-          </TouchableOpacity>
-        */}
           <Image style={styles.profilePic} source={require('../../../assets/buffalo.png')} />
         </View>
         {user ? <><Text style={[styles.name, { color: colors.primary }]}>{user.attributes.name}</Text>
           <Text style={[styles.accountName, { color: colors.text }]}>{user.attributes.email}</Text></>
           : <Text style={[styles.name, { color: colors.primary }]}></Text>}
-        
-
         <View style={styles.followerContainer}>
           <View style={styles.followers}>
             <Text style={[styles.followerCount, { color: colors.text }]}>0</Text>
@@ -162,10 +136,10 @@ export default function Profile({ navigation }) {
             <Text style={[styles.followerCount, { color: colors.text }]}>Following</Text>
           </View>
         </View>
-        
+
         <Text style={[styles.sectionName, { color: colors.text, marginTop: 50, textAlign: 'center' }]} >My Statistics</Text>
         <View style={styles.statsContainer}>
-          <View style={[styles.stat, {paddingRight: 25}]}>
+          <View style={[styles.stat, { paddingRight: 25 }]}>
             <FontAwesome5 name="brain" size={25} color={"white"} />
             <Text style={{ color: colors.text }}>{dataGetStats && dataGetStats.getUserStats ? dataGetStats.getUserStats.mindfulMinutes : 0}</Text>
             <Text style={styles.statsText}>Mindful{"\n"}Minutes</Text>
@@ -194,19 +168,19 @@ export default function Profile({ navigation }) {
             <Tab.Screen name="All time" component={Leaders} />
           </Tab.Navigator>
         </View>
-        
+
         <Text style={[styles.sectionName, { color: colors.text }]}>Achievements</Text>
-        
+
         <View style={styles.achievementBubbleContainer}>
           {achievements.map((achievement, index) => (
 
             <View style={styles.achievementBubble} key={index}>
               <Text style={styles.achievementName}>{achievement.description}</Text>
               <Text style={styles.achievementProgressText}>{100 * (achievement.progress / achievement.goal)}% of your weekly goal is complete.</Text>
-              
+
               <View style={styles.progressBarContainer}>
                 <View style={styles.progressBarOuter}>
-                  <View style={[styles.progressBarInner, {width:`${100 * (achievement.progress / achievement.goal)}%` }]}>
+                  <View style={[styles.progressBarInner, { width: `${100 * (achievement.progress / achievement.goal)}%` }]}>
                   </View>
                 </View>
               </View>
@@ -217,15 +191,12 @@ export default function Profile({ navigation }) {
         </View>
       </View>
       <View style={styles.signoutContainer}>
-          <TouchableOpacity style={styles.bottomButton} onPress={() => signOut()} >
-            <Text style={styles.buttonText} > Sign Out </Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.bottomButton} onPress={() => signOut()} >
+          <Text style={styles.buttonText} > Sign Out </Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
-
   )
-
-
 }
 
 

@@ -1,6 +1,6 @@
 import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'react-native';
-import { useTheme } from '@react-navigation/native';
 import { useState, useEffect, useRef } from 'react'
+import { useIsFocused } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -37,6 +37,7 @@ export default function VideoPlay({ navigation, route }) {
     const [bookmarked, setBookmarked] = useState(false)
     const [length, setLength] = useState(section.length)
     const [pointsAdded, setPointsAdded] = useState(false)
+    const isFocused = useIsFocused();
 
 
     useEffect(() => {
@@ -45,12 +46,11 @@ export default function VideoPlay({ navigation, route }) {
                 setCurrentTime((oldTime) => {
                     if(!dataGetStats || !dataGetStats.getUserStats) return oldTime
                     if (oldTime > length - 20 && !pointsAdded) {
+                        console.log("Length", Math.ceil(length / 60))
                         const statsInput = {
                             id: `stats-${global.userId}`,
-                            mindfulMinutes: dataGetStats.getUserStats.mindfulMinutes + length,
+                            mindfulMinutes: dataGetStats.getUserStats.mindfulMinutes + Math.ceil(length / 60),
                             meditationStreak: dataGetStats.getUserStats.meditationStreak + 1,
-                            workoutsCompleted: dataGetStats.getUserStats.workoutsCompleted,
-                            email: dataGetStats.getUserStats.email,
                             points: dataGetStats.getUserStats.points + 10
                         }
 
@@ -132,6 +132,7 @@ export default function VideoPlay({ navigation, route }) {
             console.log('error while playing the audio', e)
         }
     };
+    
 
     const PauseAudio = async () => {
         try {
@@ -188,6 +189,12 @@ export default function VideoPlay({ navigation, route }) {
         //setIsPlaying(!isPlaying)
         //ResumeAudio()
     }, []);
+
+    useEffect(() => {
+        if(!isFocused){
+            PauseAudio()
+        }
+    }, [isFocused])
 
 
     async function speedChange() {
@@ -310,7 +317,7 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         alignItems: 'center',
-        marginTop: 30
+        marginTop: 50
     },
     button: {
         width: '25%',

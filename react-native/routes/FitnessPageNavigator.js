@@ -21,9 +21,9 @@ export default function FitnessPageNavigator({route, navigation}) {
         return (
       
           <Stack.Navigator cardStyle= {{height: "100%"}} screenOptions={{headerShown: false, headerStyle: {
-            backgroundColor: colors.background
+            backgroundColor: Colors.background
           }, headerBackTitle: "Back",headerBackImage: () => (
-            <Ionicons name="arrow-back" size={24} marginLeft={"10%"} color={colors.primary}/>
+            <Ionicons name="arrow-back" size={24} marginLeft={"10%"}  color={colors.primary}/>
           ),
           }}>
           <Stack.Screen name = "InitialScreenRouter" component={InitialScreenRouter} />

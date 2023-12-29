@@ -1,85 +1,73 @@
 import React, { useState } from "react";
-import {StyleSheet,TouchableOpacity, Text, View,ScrollView } from "react-native";
+import { StyleSheet, TouchableOpacity, Text, View, ScrollView } from "react-native";
 import Modal from "react-native-modal";
 import { Colors } from '../constants/Colors';
-import { useQuery, gql, useMutation } from "@apollo/client";
-import * as queries from "../../src/graphql/queries";
-import * as mutations from "../../src/graphql/mutations";
 
 const Exercise = (props) => {
-
-  const label = props.label
   const exercise = props.exercise
-  const weekNumber = props.weekNumber
   const index = props.index
 
-
-  
   return (
     <View key={index}>
-      {exercise!=null?
+      {exercise != null ?
         <View style={styles.exercise}>
-              <View style={styles.exerciseNumberBox}>
-                <Text style={styles.exerciseNumber}>{index + 1}</Text>
-              </View>
-              <View style={styles.exerciseDetails}>
-                <Text style={styles.exerciseName}>{exercise.exerciseInfo.name}</Text>
-                <View style={styles.exerciseStats}>
-                  <Text style={styles.exerciseStat}>Sets: {exercise.sets}</Text>
-                  <Text style={styles.exerciseStat}>Reps: {exercise.repRange}</Text>
-                  <Text style={styles.exerciseStat}>Rest: {exercise.restMinutes} min</Text>
-                </View>
-              </View>
+          <View style={styles.exerciseNumberBox}>
+            <Text style={styles.exerciseNumber}>{index + 1}</Text>
           </View>
-              :
-        <View></View>
-        }
+          <View style={styles.exerciseDetails}>
+            <Text style={styles.exerciseName}>{exercise.exerciseInfo.name}</Text>
+            <View style={styles.exerciseStats}>
+              <Text style={styles.exerciseStat}>Sets: {exercise.sets}</Text>
+              <Text style={styles.exerciseStat}>Reps: {exercise.repRange}</Text>
+              <Text style={styles.exerciseStat}>Rest: {exercise.restMinutes} min</Text>
             </View>
+          </View>
+        </View>
+        :
+        <View></View>
+      }
+    </View>
   )
 }
 
 function WorkoutPreviewPopUp({ isVisible, workout, togglePopup, weekNumber }) {
-
-
-
- return (
-  
+  return (
     <Modal isVisible={isVisible}>
-      {workout!=null ? 
-      <View style={styles.popupContainer}>
-        <View style={{margin: 10}}>
-        <Text style={styles.title}>{workout.title}</Text>
-        <ScrollView style={styles.exerciseList}>
-          {workout.userExercises.items.map((exercise, index) => (
-            <Exercise exercise={exercise} key={index} index={index}/>
-          ))}
-        </ScrollView>
-        
-        <TouchableOpacity style={styles.closeButton} onPress={() => togglePopup(workout)}>
-          <Text style={styles.closeButtonText}>Close</Text>
-        </TouchableOpacity>
+      {workout != null ?
+        <View style={styles.popupContainer}>
+          <View style={{ margin: 10 }}>
+            <Text style={styles.title}>{workout.title}</Text>
+            <ScrollView style={styles.exerciseList}>
+              {workout.userExercises.items.map((exercise, index) => (
+                <Exercise exercise={exercise} key={index} index={index} />
+              ))}
+            </ScrollView>
+
+            <TouchableOpacity style={styles.closeButton} onPress={() => togglePopup(workout)}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      :
-      <View></View>
+        :
+        <View></View>
       }
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-    popupContainer: {
-    height: "60%", 
-    width: "80%", 
+  popupContainer: {
+    height: "60%",
+    width: "80%",
     backgroundColor: Colors.background,
     alignSelf: "center",
-   borderRadius: "10%",
-   shadowColor: "grey",
-   shadowOffset: {width: 0, height: 0},
-   shadowOpacity: .5,
-   shadowRadius:5,
+    borderRadius: "10%",
+    shadowColor: "grey",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: .5,
+    shadowRadius: 5,
 
-    
+
   },
   title: {
     color: "white",
@@ -89,7 +77,7 @@ const styles = StyleSheet.create({
   },
   exerciseList: {
     flexDirection: "column",
-    marginBottom:20,
+    marginBottom: 20,
     maxHeight: "90%",
     borderTopColor: "grey",
     borderTopWidth: 2
@@ -102,7 +90,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 10,
     borderRadius: 4,
-    marginVertical:10
+    marginVertical: 10
   },
   exercise: {
     flexDirection: "row",
@@ -113,14 +101,14 @@ const styles = StyleSheet.create({
   exerciseNumber: {
     color: Colors.background,
     fontSize: 12,
-    alignSelf:"center",
+    alignSelf: "center",
     padding: 5,
     fontWeight: "bold",
 
   },
   exerciseDetails: {
     flexDirection: "column",
-    marginVertical:10
+    marginVertical: 10
   },
   exerciseName: {
     color: "white",
@@ -129,7 +117,7 @@ const styles = StyleSheet.create({
   },
   exerciseStats: {
     flexDirection: "row",
-    
+
   },
   exerciseStat: {
     color: "white",
