@@ -61,7 +61,7 @@ export default function DuringWorkout({ navigation, route }) {
 
     const [updateUserStats, { data: dataUpdateStats, loading: loadingUpdateStats, error: errorUpdateStats }] = useMutation(gql`${mutations.updateUserStats}`);
 
-    const [updateUserWorkout] = useMutation(gql`${mutations.updateUserWorkout}`)
+    const [updateUserWorkout, { data: dataUpdateWorkout, loading: loadingUpdateWorkout, error: errorUpdateWorkout }] = useMutation(gql`${mutations.updateUserWorkout}`)
 
     const completeWorkout = () => {
         const statsInput = {
@@ -79,10 +79,10 @@ export default function DuringWorkout({ navigation, route }) {
 
         updateUserWorkout({ variables: { input: workoutInput } })
 
-        route.params.onWorkoutComplete(workout, route.params.currentProgram)
+        route.params.onWorkoutComplete(workout)
 
         if (route.params.taskCompletionList) route.params.taskCompletionList[route.params.taskCompletionListIndex] = true
-        navigation.navigate("CurrentProgramNavigator", { title: title, programInput: route.params.currentProgram, titleToNameMap: titleToNameMap })
+        navigation.goBack(null)
     }
 
     return (

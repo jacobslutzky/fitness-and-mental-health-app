@@ -40,7 +40,7 @@ export function CurrentProgram({ navigation, currProgram, programInput, taskComp
 
 
     useEffect(() => {
-        if (currProgram != null) {
+        if (currProgram != null && programInput == null) {
             const userProgram = currProgram
             const sortedUserProgramWeeks = [...userProgram.userProgramWeeks.items];
             sortedUserProgramWeeks.sort((a, b) => a.weekNumber - b.weekNumber);
@@ -77,21 +77,20 @@ export function CurrentProgram({ navigation, currProgram, programInput, taskComp
         navigation.navigate("DuringWorkout", { workout: currentWorkout, onWorkoutComplete: onWorkoutComplete, taskCompletionList: taskCompletionList, taskCompletionListIndex: taskCompletionListIndex, currentProgram: program })
     }
 
-    const setWorkoutToCurrent = (program) => {
-        let earliestIncompleteWorkout = null;
-        let weekOfEarliestIncompleteWorkout = null;
+    const navigateToLogbook = () => {
+        navigation.navigate("Logbook", { screen: 'Logbook' })
+    }
 
+    const setWorkoutToCurrent = (program) => {
         for (const week of program.userProgramWeeks.items) {
             const incompleteWorkout = week.userWorkouts.items.find((workout) => workout.status === "incomplete");
 
             if (incompleteWorkout) {
-                earliestIncompleteWorkout = incompleteWorkout;
-                weekOfEarliestIncompleteWorkout = week;
+                setCurrentWorkout(incompleteWorkout)
+                setCurrentWeek(week);
                 break
             }
         }
-        setCurrentWorkout(earliestIncompleteWorkout)
-        setCurrentWeek(weekOfEarliestIncompleteWorkout);
     }
 
     const [isModalVisible, setModalVisible] = useState(false);
@@ -105,50 +104,57 @@ export function CurrentProgram({ navigation, currProgram, programInput, taskComp
         setWorkoutBeingPreviewed(newWorkout)
     };
 
-    const onWorkoutComplete = (completedWorkout, programInput) => {
+    const onWorkoutComplete = (completedWorkout) => {
         completedWorkout.status = "complete";
-        console.log("Current week ", currentWeek)
-        setWorkoutToCurrent(programInput)
+        setWorkoutToCurrent(program)
     };
 
     return (
         <View style={styles.container}>
+            <View style={{marginLeft: 20 }}>
+                <Text style={styles.programHeader}>{program != null ? (program.title) : "loading"}</Text>
+            </View>
             {/* Header */}
-            <ScrollView horizontal={true}>
-
-                <View style={styles.buttonsContainerBugged}>
-                    {
-                        program != null ? (program.userProgramWeeks.items.map((week, index) => (
-                            <TouchableOpacity style={[styles.weekButton, { backgroundColor: currentWeek != null && currentWeek.weekNumber == index + 1 ? colors.primary : "#4c4c4c" }]} key={index} onPress={() => setCurrentWeek(week)} >
-                                <Text style={styles.buttonText}> Week {index + 1}</Text>
-                            </TouchableOpacity>
-
-                        )))
-                            : (<View></View>)
-                    }
-                </View>
-            </ScrollView>
-            <ScrollView style={{ width: "90%" }}>
-
-                <View style={{ height: "70%" }}>
-                    <Text style={styles.programHeader}>{program != null ? (program.title) : "loading"}</Text>
-                    <View style={{ flexDirection: "column", }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 40}}>
+                <ScrollView horizontal={true} style={{width: '90%'}}>
+                    <View style={styles.buttonsContainerBugged}>
                         {
-                            currentWeek != null ? currentWeek.userWorkouts.items.map((workout, index) => (
-                                <Workout key={index} workout={workout} currentWeek={currentWeek.userWorkouts.items} togglePopup={togglePopup} workoutBeingPreviewed={workoutBeingPreviewed} index={index + 1}></Workout>
-                            ))
-                                : <View></View>
+                            program != null ? (program.userProgramWeeks.items.map((week, index) => (
+                                <TouchableOpacity style={[styles.weekButton, { backgroundColor: currentWeek != null && currentWeek.weekNumber == index + 1 ? colors.primary : "#4c4c4c" }]} key={index} onPress={() => setCurrentWeek(week)} >
+                                    <Text style={styles.buttonText}> Week {index + 1}</Text>
+                                </TouchableOpacity>
+
+                            )))
+                                : (<View></View>)
                         }
                     </View>
-                </View>
+                </ScrollView>
+            </View>
+            <View style={{alignItems: 'center', justifyContent: 'center', height: 400}}>
+                <ScrollView style={{ width: "90%" }}>
 
-            </ScrollView>
+                    <View style={{ height: 300 }}>
+                        <View style={{ flexDirection: "column", }}>
+                            {
+                                currentWeek != null ? currentWeek.userWorkouts.items.map((workout, index) => (
+                                    <Workout key={index} workout={workout} currentWeek={currentWeek.userWorkouts.items} togglePopup={togglePopup} workoutBeingPreviewed={workoutBeingPreviewed} index={index + 1}></Workout>
+                                ))
+                                    : <Text style={{height: 500}}>Loading</Text>
+                            }
+                        </View>
+                    </View>
+
+                </ScrollView>
+            </View>
             <View style={{ flexDirection: "row", justifyContent: "space-evenly", width: "100%", paddingTop: 20 }}>
                 <TouchableOpacity style={styles.bottomButton} onPress={() => navigatedToWorkout()} >
                     <Text style={styles.buttonText} >Start Workout</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.bottomButton} onPress={() => navigateToSelectProgram()}>
                     <Text style={styles.buttonText}>Change Program</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.bottomButton} onPress={() => navigateToLogbook()}>
+                    <Text style={styles.buttonText}>Logbook</Text>
                 </TouchableOpacity>
             </View>
 
@@ -161,13 +167,8 @@ export function CurrentProgram({ navigation, currProgram, programInput, taskComp
 const styles = StyleSheet.create({
 
     container: {
-
-        alignItems: "center",
-        justifyContent: "center",
-
         flex: 1,
         marginBottom: 50,
-        marginTop: 50
     },
 
     buttonsContainerBugged: {
@@ -175,20 +176,17 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         flexDirection: "row",
         marginBottom: 20,
-        marginTop: 10
-
     },
     buttonsContainer: {
         justifyContent: 'flex-start',
         flexDirection: "row",
-        marginTop: 20,
     },
     programHeader:
     {
         fontSize: 25,
         fontWeight: 'bold',
         color: "white",
-        marginTop: 20
+        marginTop: 60
     },
     header: {
         fontSize: 16,
@@ -213,11 +211,11 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         justifyContent: 'center',
         marginVertical: 5,
-        marginHorizontal: 10,
+        marginRight: 20,
     },
     bottomButton: {
 
-        width: "40%",
+        width: "25%",
         height: 50,
         backgroundColor: Colors.primary,
         borderRadius: 6,

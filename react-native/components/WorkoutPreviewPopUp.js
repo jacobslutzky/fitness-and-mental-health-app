@@ -57,7 +57,8 @@ function WorkoutPreviewPopUp({ isVisible, workout, togglePopup, weekNumber }) {
 
 const styles = StyleSheet.create({
   popupContainer: {
-    height: "60%",
+    minHeight: "50%",
+    maxHeight: '80%',
     width: "80%",
     backgroundColor: Colors.background,
     alignSelf: "center",
@@ -66,8 +67,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: .5,
     shadowRadius: 5,
-
-
   },
   title: {
     color: "white",

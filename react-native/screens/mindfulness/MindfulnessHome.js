@@ -44,7 +44,7 @@ export default function Mindfulness() {
             {/* Header */}
             <View style={styles.headerContainer}>
                 <Text style={[styles.header, { color: colors.text }]}>
-                    Mindfulness
+                    MINDFULNESS
                 </Text>
             </View>
             <ScrollView
@@ -75,18 +75,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 20,
-        alignItems: 'center'
     },
     tabsContainer: {
         marginTop: 10,
         backgroundColor: "black",
     },
     headerContainer: {
-        alignItems: "center",
+        paddingLeft: 20,
         justifyContent: "center",
     },
     header: {
-        fontSize: 40,
+        fontSize: 30,
         fontWeight: "bold",
         marginTop: 30
     },

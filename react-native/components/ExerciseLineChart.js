@@ -2,35 +2,43 @@ import { Grid, LineChart, XAxis, YAxis } from 'react-native-svg-charts'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Colors } from '../constants/Colors';
 import { React } from 'react';
+import { useState, useEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import * as scale from 'd3-scale'
 
 
-export default function ExerciseLineChart({ entries, exercise, navigation }) {
+export default function ExerciseLineChart({ entries, exercise, logFlag, navigation }) {
+  const [data, setData] = useState([])
 
-  let data = entries != null ? entries.map((entry) => {
-    return { repsCompleted: entry.repsCompleted, weight: entry.weight, volume: entry.repsCompleted * entry.weight, date: entry.updatedAt, workout: entry.workout }
-  }) : []
-
-  data.sort((a, b) => new Date(a.date) - new Date(b.date));
+  useEffect(() => {
+      let tempData = entries.map((entry) => {
+        return { repsCompleted: entry.repsCompleted, weight: entry.weight, volume: entry.repsCompleted * entry.weight, date: entry.updatedAt, workout: entry.workout }
+      })
+      tempData.sort((a, b) => new Date(a.date) - new Date(b.date));
+      setData(tempData)
+  }, [entries])
 
   const axesSvg = { fontSize: 10, fill: 'grey' };
   const verticalContentInset = { top: 10, bottom: 10 }
   const xAxisHeight = 30
 
   const navigateToAllProgress = () => {
-    navigation.navigate("ExerciseProgress", { exercise: exercise, data: data })
+    navigation.navigate("ExerciseProgress", { exercise: exercise, exerciseData: data })
   }
 
   return (
     <View>
       {data.length > 0 ?
 
-        <View style={styles.container}>
+        <View style={logFlag ? styles.containerLog : styles.container}>
           <View style={styles.allTimeProgressButtonContainer}>
-            <TouchableOpacity onPress={() => navigateToAllProgress()}>
-              <AntDesign name="arrowsalt" size={20} color="white" />
-            </TouchableOpacity>
+            {!logFlag ? 
+              <TouchableOpacity onPress={() => navigateToAllProgress()}>
+                <AntDesign name="arrowsalt" size={20} color="white" />
+              </TouchableOpacity>
+              :
+              <View></View>
+            }
           </View>
           <View style={styles.progressTitleContainer}>
             <Text style={styles.progressTitleText}>PROGRESS</Text>
@@ -38,7 +46,7 @@ export default function ExerciseLineChart({ entries, exercise, navigation }) {
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>Volume (Weight x Reps) vs. Date</Text>
           </View>
-          <View style={{ height: 200, padding: 20, marginLeft: -10, flexDirection: 'row' }}>
+          <View style={{ height: 200, padding: 40,  flexDirection: 'row' }}>
             <View style={styles.yAxisLabel}>
               <Text style={styles.yAxisLabelText}>
                 Volume
@@ -126,6 +134,13 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     paddingHorizontal: 25,
     height: '100%'
+  },
+  containerLog: {
+    backgroundColor: "rgb(28,28,28)",
+    paddingTop: 25,
+    borderRadius: 25,
+    height: 300,
+    marginBottom: 50
   },
   allTimeProgressButtonContainer: {
     marginLeft: 'auto',

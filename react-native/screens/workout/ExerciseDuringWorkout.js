@@ -53,8 +53,11 @@ const Set = (props) => {
                         onBlur={() => handleSubmit(index)}
                     />
                 </View>
-                {lastEntry != null ? (<Text style={{ color: "grey" }}>{lastEntry.repsCompleted} x {lastEntry.weight} lbs</Text>) :
-                    (<Text style={{ color: "grey" }}>0 x 0 lbs</Text>)}
+                <View style={styles.lastEntryContainer}>
+                    {lastEntry != null ? 
+                    <Text style={{ color: "grey" }}>{lastEntry.repsCompleted} x {lastEntry.weight} lbs</Text> :
+                    <Text style={{ color: "grey" }}>0 x 0 lbs</Text>}
+                </View>
             </View>
         </View>
     )
@@ -166,6 +169,7 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
                     repsCompleted: parseInt(reps[index]),
                     weight: weight[index],
                     dateCompleted: date,
+                    workout: route.params.workout
                 }
                 updateLogEntry({ variables: { input: input } })
 
@@ -181,7 +185,8 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
                     dateCompleted: date,
                     userExerciseID: exercise.id,
                     exerciseLogID: exerciseLogID,
-                    setNumber: index + 1
+                    setNumber: index + 1,
+                    workout: route.params.workout
                 }
                 createLogEntry({ variables: { input: input } })
             }
@@ -203,9 +208,10 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
                     <Set key={index} exerciseEntryID={currentEntryIDs} index={index} updateReps={updateReps} updateWeights={updateWeights} reps={reps[index]} weight={weight[index]} handleSubmit={handleSubmit} colors={colors} lastEntry={lastEntries.length > index ? lastEntries[index] : null} exercise={exercise} />
                 ))) : (<></>)}
             </View>
-            {/* Build in graphs */}
+            {/* Build in graphs  */}
             <ExerciseLineChart navigation={navigation} entries={entries} exercise={exercise} />
-        </ScrollView>
+                
+            </ScrollView>
     )
 
 }
@@ -213,7 +219,7 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
 const styles = StyleSheet.create({
     input: {
         height: 35,
-        width: 100,
+        width: 80,
         backgroundColor: "rgb(22,19,10)",
         borderRadius: 20,
         borderColor: Colors.primary,
@@ -267,7 +273,9 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: Colors.primary,
-        paddingBottom: 20
+        paddingBottom: 20,
+        paddingTop: 10,
+        height: 100
     },
     graphContainer: {
         height: '25%',
@@ -288,18 +296,23 @@ const styles = StyleSheet.create({
     repsTextContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 100,
+        width: 80,
         marginLeft: 20
     },
     weightTextContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 100,
+        width: 80,
     },
     repsContianer: {
-        marginRight: 40,
+        marginRight: 20,
     },
     weightContainer: {
-
+        marginRight: 20,
+    },
+    lastEntryContainer : {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%'
     }
 })

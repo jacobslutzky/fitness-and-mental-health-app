@@ -234,7 +234,7 @@ export default function Home({ navigation }) {
         <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>
                 <Text style={[styles.header, { color: colors.text }]}>
-                    Home
+                    HOME
                 </Text>
             </View>
 
@@ -360,13 +360,14 @@ const styles = StyleSheet.create({
     },
 
     headerContainer: {
-        alignItems: "center",
+        paddingLeft: 20,
         justifyContent: "center",
     },
     header: {
-        fontSize: 40,
+        fontSize: 30,
         fontWeight: "bold",
-        marginTop: 30
+        marginTop: 30,
+        marginBottom: 20
     },
 
     tasks: {
@@ -411,7 +412,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
-        marginTop: 30,
+        marginTop: 10,
         marginBottom: 10,
         backgroundColor: "#101214",
     },
@@ -421,7 +422,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: "90%",
         flexDirection: "row",
-        marginBottom: 10,
+        marginBottom: 20,
     },
     allButton: {
         backgroundColor: "#CFB87B",
