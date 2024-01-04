@@ -82,10 +82,15 @@ export default function ExerciseProgress({ navigation, route }) {
         setMaxVolume(Math.max(...data.map((entry) => { return entry.volume })))
     }, [data])
 
+
+    useEffect(() => {
+        console.log("entriesGroupedByDate", entriesGroupedByDate)
+    },[entriesGroupedByDate])
+
     return (
         <ScrollView style={styles.container}>
             {
-                entriesGroupedByDate.length != {} ?
+                Object.keys(entriesGroupedByDate).length != 0 ?
                     <View>
                         <View style={styles.progressContainer}>
                             <Text style={styles.progressText}>All Time Progress</Text>
