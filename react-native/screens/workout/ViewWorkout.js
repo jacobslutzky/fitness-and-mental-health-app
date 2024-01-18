@@ -129,7 +129,7 @@ export default function ViewWorkout({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.titleContainer}>
+            <View style={[styles.titleContainer, {borderColor: title ? 'rgba(0, 0, 0, 0)' : 'red', borderWidth: 1, borderRadius: 10}]}>
                 <TextInput
                     style={styles.title}
                     value={title}

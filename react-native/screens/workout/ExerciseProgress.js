@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Colors } from '../../constants/Colors';
 import { useState, React, useEffect } from 'react';
 import { useQuery, gql, useMutation } from "@apollo/client";
 import * as queries from "../../../src/graphql/queries";
 import * as mutations from "../../../src/graphql/mutations";
 import ExerciseLineChart from '../../components/ExerciseLineChart';
+import uuid from 'react-native-uuid';
+
 
 const ExerciseEntry = (props) => {
     const repsCompleted = props.item.repsCompleted
@@ -40,13 +42,40 @@ export default function ExerciseProgress({ navigation, route }) {
     const entries = route.params.exerciseData
     const logFlag = route.params.logFlag
     const exercise = route.params.exercise
+    const [exerciseId, setExerciseId] = useState(uuid.v4())
     const exerciseLogID = logFlag ? `${global.userId}-${exercise.id}` : `${global.userId}-${exercise.exerciseInfoID}` 
     const [maxWeight, setMaxWeight] = useState(0)
     const [maxVolume, setMaxVolume] = useState(0)
     const [entriesGroupedByDate, setEntriesGroupedByDate] = useState({})
+    const [createUserExercise, { data: dataUE, loading: loadingUE, error: errorUE }] = useMutation(gql`${mutations.createUserExercise}`);
     const [data, setData] = useState(entries.map((entry) => {
         return { repsCompleted: entry.repsCompleted, weight: entry.weight, volume: entry.repsCompleted * entry.weight, date: entry.updatedAt, workout: entry.workout }
     }))
+
+    useEffect(() => {
+        const input = {
+            id: exerciseId,
+            exerciseInfoID: exercise.id,
+            exerciseNum: 0,
+            sets: 3,
+            restMinutes: 2,
+            notes: "empty",
+            completed: false,
+            repRange: "0-12"
+        }
+        createUserExercise({ variables: { input: input } })
+    }, [])
+
+
+    useEffect(() => {
+        console.log("data user exercise ", dataUE, loadingUE, errorUE)
+    }, [dataUE])
+
+    /*
+    const { data: dataUE, loading: loadingUE, error: errorUE, refetch: refetchUE } = useQuery(gql`${queries.getUserExercise}`, {
+        variables: { id: exerciseId }
+    });   
+    */
 
     const { data: dataLog, loading: loadingLog, error: errorLog, refetch: refetchLog } = useQuery(gql`${queries.getExerciseLog}`, {
         variables: { id: exerciseLogID }
@@ -82,10 +111,11 @@ export default function ExerciseProgress({ navigation, route }) {
         setMaxVolume(Math.max(...data.map((entry) => { return entry.volume })))
     }, [data])
 
-
-    useEffect(() => {
-        console.log("entriesGroupedByDate", entriesGroupedByDate)
-    },[entriesGroupedByDate])
+    const handleMuscleWorkedSelected = () => {
+        if(dataUE && dataUE.createUserExercise){
+            navigation.navigate("ExerciseDuringWorkout", { exercise: dataUE.createUserExercise, weekNumber: -1, workout: "", title: exercise.id })
+        }
+    } 
 
     return (
         <ScrollView style={styles.container}>
@@ -106,6 +136,13 @@ export default function ExerciseProgress({ navigation, route }) {
 
                         <ExerciseLineChart navigation={navigation} logFlag={true} entries={data} exercise={exercise} />
 
+                        {logFlag ? 
+                            <View style={{justifyContent: 'center',  marginBottom: 10, marginTop: -20}}>
+                                <TouchableOpacity onPress={() => handleMuscleWorkedSelected()} style={styles.addLogCard}>
+                                    <Text style={{color: 'black'}}>Add Log</Text>
+                                </TouchableOpacity>
+                            </View>
+                        : <View></View>}
                         {Object.keys(entriesGroupedByDate).map((item, index) => (
                             <Log key={index} item={entriesGroupedByDate[item]} />
                         ))}
@@ -113,6 +150,13 @@ export default function ExerciseProgress({ navigation, route }) {
                 : <View>
                     <View style={styles.progressContainer}>
                             <Text style={styles.progressText}>No Logs Available</Text>
+                            {logFlag ? 
+                            <View style={{justifyContent: 'center',  alignItems: 'center', marginBottom: 10, width: '100%', marginTop: 20}}>
+                                <TouchableOpacity onPress={() => handleMuscleWorkedSelected()} style={styles.addLogCard}>
+                                    <Text style={{color: 'black'}}>Add Log</Text>
+                                </TouchableOpacity>
+                            </View>
+                        : <View></View>}
                     </View>
                 </View>
             }
@@ -185,5 +229,13 @@ const styles = StyleSheet.create({
     },
     exerciseEntry: {
         marginBottom: 10
+    },
+    addLogCard: {
+        borderRadius: 10,
+        backgroundColor: Colors.primary,
+        width: '30%',
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

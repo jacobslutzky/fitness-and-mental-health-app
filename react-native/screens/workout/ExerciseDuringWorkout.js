@@ -1,13 +1,15 @@
-import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { Colors } from '../../constants/Colors';
-import { useState, React, useEffect } from 'react';
+import { useState, React, useEffect, useRef } from 'react';
 import { useQuery, gql, useMutation } from "@apollo/client";
 import * as queries from "../../../src/graphql/queries";
 import * as mutations from "../../../src/graphql/mutations";
 import { useIsFocused } from '@react-navigation/native'
 import ExerciseLineChart from '../../components/ExerciseLineChart';
 import uuid from 'react-native-uuid';
+import { Ionicons } from '@expo/vector-icons';
+import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'
 
 
 const Set = (props) => {
@@ -20,10 +22,34 @@ const Set = (props) => {
     const colors = props.colors
     const date = new Date()
     const lastEntry = props.lastEntry
+    const [isPlaying, setIsPlaying] = useState(false)
+    const [remainingTime, setRemainingTime] = useState(5)  
+    const myInterval = useRef();
+
+    useEffect(() => {
+        if(isPlaying && remainingTime > 0){
+            myInterval.current = setInterval(() => {
+                setRemainingTime(lastTimerCount => {
+                    return lastTimerCount - 1
+                })
+            }, 1000)
+            return () => {
+                clearInterval(myInterval.current);
+            };
+        }
+        else{
+            clearInterval(myInterval.current)
+        }
+    }, [isPlaying, remainingTime]);
+
+    const handleTimerPress = () => {
+        setIsPlaying(!isPlaying)
+    }
+
 
     return (
         <View key={index} style={styles.set}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={styles.setMain}>
                 <View style={styles.cardNumber}>
                     <Text style={{ color: 'white', fontWeight: 'bold' }}>Set {index + 1}</Text>
                 </View>
@@ -56,7 +82,17 @@ const Set = (props) => {
                 <View style={styles.lastEntryContainer}>
                     {lastEntry != null ? 
                     <Text style={{ color: "grey" }}>{lastEntry.repsCompleted} x {lastEntry.weight} lbs</Text> :
-                    <Text style={{ color: "grey" }}>0 x 0 lbs</Text>}
+                    <Text style={{ color: "grey" }}></Text>}
+                </View>
+            </View>
+            <View style={styles.timerContainer}>
+                <View></View>
+                <View style={styles.timerContentsContainer}>
+                    <Text style={{color: Colors.primary, marginRight: 10, fontSize: 16}}>Rest:</Text>
+                    <Text style={{color: 'white', marginRight: 10}}>{`${Math.floor(remainingTime / 60)}:${remainingTime % 60 < 10 ? 0 : ''}${remainingTime % 60}`}</Text>
+                    <TouchableOpacity onPress={() => handleTimerPress()}>
+                        <Ionicons name="timer-outline" size={24} color="white" />
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
@@ -70,8 +106,6 @@ export default function ExerciseDuringWorkout({ navigation, route }) {
     const colors = useTheme().colors;
     const exercise = route.params.exercise
     const exerciseLogID = `${global.userId}-${exercise.exerciseInfoID}`
-
-
     const [reps, setReps] = useState({})
     const [weight, setWeight] = useState({})
     const [currentEntryIDs, setCurrentEntryIDs] = useState({})
@@ -267,15 +301,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     set: {
-        flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         marginBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: Colors.primary,
-        paddingBottom: 20,
+        paddingBottom: 10,
         paddingTop: 10,
-        height: 100
     },
     graphContainer: {
         height: '25%',
@@ -313,6 +345,25 @@ const styles = StyleSheet.create({
     lastEntryContainer : {
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100%'
+    },
+    timerContainer : {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        paddingTop: 10
+    },
+    timerContentsContainer : {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    setMain: {
+        flexDirection: "row",
+        alignItems: "center",
+        borderBottomColor: 'rgba(128,128,128, .2)',
+        borderBottomWidth: 1,
+        width: '100%',
+        justifyContent: 'space-between',
+        paddingBottom: 10
     }
 })
