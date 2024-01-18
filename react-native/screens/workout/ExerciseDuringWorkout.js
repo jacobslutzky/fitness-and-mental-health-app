@@ -17,6 +17,7 @@ const Set = (props) => {
     const updateReps = props.updateReps
     const updateWeights = props.updateWeights
     const reps = props.reps
+    const rest = props.exercise.restMinutes * 60
     const weight = props.weight
     const handleSubmit = props.handleSubmit
     const colors = props.colors
@@ -46,6 +47,9 @@ const Set = (props) => {
         setIsPlaying(!isPlaying)
     }
 
+    useEffect(() => {
+        setRemainingTime(rest)
+    }, [rest])
 
     return (
         <View key={index} style={styles.set}>

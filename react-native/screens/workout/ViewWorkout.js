@@ -45,6 +45,7 @@ export default function ViewWorkout({ navigation, route }) {
     const [selectedExerciseInfo, setSelectedExerciseInfo] = useState(null)
     const [title, setTitle] = useState("")
     const [selectedExerciseIndex, setSelectedExerciseIndex] = useState(-1)
+    const [saveWorkoutAttempted, setSaveWorkoutAttempted] = useState(false)
 
     const [createExercise] = useMutation(gql`${mutations.createExercise}`);
     const [createWorkout] = useMutation(gql`${mutations.createWorkout}`);
@@ -102,6 +103,7 @@ export default function ViewWorkout({ navigation, route }) {
     }
 
     const handleSaveWorkout = () => {
+        setSaveWorkoutAttempted(true)
         if (title && exercises.length > 0) {
             const newWorkout = workout
             if (isNewWorkout) {
@@ -129,7 +131,7 @@ export default function ViewWorkout({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            <View style={[styles.titleContainer, {borderColor: title ? 'rgba(0, 0, 0, 0)' : 'red', borderWidth: 1, borderRadius: 10}]}>
+            <View style={[styles.titleContainer, {borderColor: !title && saveWorkoutAttempted ? 'red' : 'rgba(0, 0, 0, 0)', borderWidth: 1, borderRadius: 10}]}>
                 <TextInput
                     style={styles.title}
                     value={title}
