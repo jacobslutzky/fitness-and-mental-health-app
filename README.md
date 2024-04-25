@@ -7,7 +7,7 @@ This application is a fitness and mental health app built using React Native, AW
 
 - **Guided Meditations:** Access a variety of guided meditation sessions to promote relaxation, stress reduction, and mental clarity.
 - **Workout Programs:** Choose from pre-made workout programs or create custom routines tailored to individual fitness goals.
-- **Interactive Logbook:** Track workout sessions, meditation practices, and mood fluctuations over time to monitor progress and identify trends.
+- **Logbook:** Track workouts with detailed logs showing progress for each lift, including graphs displaying performance over time, previous workout stats, and personal records (PRs) for reps and weight.
 - **User Authentication:** Secure user authentication powered by AWS Amplify ensures data privacy and personalized user experiences.
 
 ## Tech Stack
